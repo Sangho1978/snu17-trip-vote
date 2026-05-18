@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "snu17_trip_vote_2026_v3_11dest": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}

@@ -2395,7 +2395,45 @@ function exportFeedbackCsv(){
 function exportJson(){downloadBlob(JSON.stringify({settings,votes},null,2),'2026_trip_vote_backup.json','application/json;charset=utf-8');}
 
 // Events
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const name=normalizeName($('loginName').value),pin=$('loginPin').value.trim();if(!name||!/^[0-9]{4}$/.test(pin)){alert('이름과 휴대전화 뒤 4자리 숫자를 입력해 주세요.');return;}const candidates=ROSTER.filter(u=>normalizeName(u.name)===name);if(!candidates.length){alert('명단에서 이름을 찾지 못했습니다.');return;}let matched=null;for(const u of candidates){const hp=await hashPin(u.name,pin);if(hp===u.pinHash || (Array.isArray(u.altPinHashes)&&u.altPinHashes.includes(hp))){matched=u;break;}}if(!matched){alert('비밀번호가 일치하지 않습니다.');return;}currentUser=matched;sessionStorage.setItem('tripVoteCurrentUserIdV3',currentUser.id);const rec=votes[currentUser.id];selectedChoices=(currentUser.viewerOnly||!validChoices(rec))?[null,null,null,null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);feedbackText=validChoices(rec)?(rec.feedback||''):'';$('loginName').value='';$('loginPin').value='';renderAll();toast(`${currentUser.name}님 로그인`);});
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = normalizeName($('loginName').value);
+  const pin = $('loginPin').value.trim();
+  if (!name || !/^[0-9]{4}$/.test(pin)) {
+    alert('이름과 휴대전화 뒤 4자리 숫자를 입력해 주세요.');
+    return;
+  }
+  const candidates = ROSTER.filter(u => normalizeName(u.name) === name);
+  if (!candidates.length) {
+    alert('명단에서 이름을 찾지 못했습니다.');
+    return;
+  }
+  let matched = null;
+  for (const u of candidates) {
+    const hp = await hashPin(u.name, pin);
+    const isHashMatched = hp === u.pinHash || (Array.isArray(u.altPinHashes) && u.altPinHashes.includes(hp));
+    // 김해영 계정은 이름 정정 과정에서 일부 브라우저/캐시 환경에서 해시 검증이 꼬이는 사례가 있어
+    // 요청에 따라 2083을 명시적으로 허용합니다. 다른 계정에는 적용되지 않습니다.
+    const isKimHaeyoungForced = normalizeName(u.name) === '김해영' && pin === '2083';
+    if (isHashMatched || isKimHaeyoungForced) {
+      matched = u;
+      break;
+    }
+  }
+  if (!matched) {
+    alert('비밀번호가 일치하지 않습니다.');
+    return;
+  }
+  currentUser = matched;
+  sessionStorage.setItem('tripVoteCurrentUserIdV3', currentUser.id);
+  const rec = votes[currentUser.id];
+  selectedChoices = (currentUser.viewerOnly || !validChoices(rec)) ? [null, null, null, null] : rec.choices.slice().sort((a, b) => a.rank - b.rank).map(c => c.optionId);
+  feedbackText = validChoices(rec) ? (rec.feedback || '') : '';
+  $('loginName').value = '';
+  $('loginPin').value = '';
+  renderAll();
+  toast(`${currentUser.name}님 로그인`);
+});
 $('logoutBtn').addEventListener('click',()=>{currentUser=null;selectedChoices=[null,null,null,null];feedbackText='';sessionStorage.removeItem('tripVoteCurrentUserIdV3');renderAll();});
 $('rankSelectors').addEventListener('change',e=>{const s=e.target.closest('[data-rankselect]');if(!s)return;const i=Number(s.dataset.rankselect)-1,v=s.value||null;if(v&&selectedChoices.some((x,idx)=>idx!==i&&x===v)){alert('이미 다른 지망에 선택한 후보입니다.');renderVotePanel();return;}selectedChoices[i]=v;renderVotePanel();});
 $('feedbackText').addEventListener('input',e=>{feedbackText=e.target.value.slice(0,200);if(e.target.value!==feedbackText)e.target.value=feedbackText;$('feedbackCount').textContent=`${feedbackText.length} / 200자`;});

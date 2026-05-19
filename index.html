@@ -21,9 +21,18 @@
   
     .rank-row.top1{border-color:#dca340;background:linear-gradient(135deg,#fff8e8,#fff)}.rank-row.top1 .rank-num{background:linear-gradient(135deg,#dca340,#9a5800)}.rank-row.top2 .rank-num{background:#4b5f82}.rank-row.top3 .rank-num{background:#8b5d3a}.rank-row.inactive-dest{opacity:.58}.rank-meter{height:8px;border-radius:999px;background:#edf0f5;overflow:hidden;margin-top:6px}.rank-meter span{display:block;height:100%;background:linear-gradient(90deg,#dca340,#b67720);border-radius:999px}.flight-box{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.flight-item{border:1px solid #d9e3f2;background:#f6f9ff;border-radius:13px;padding:9px 10px}.flight-item b{display:block;color:#071f55;font-size:12px}.flight-item span{display:block;color:#172033;font-size:14px;font-weight:950;margin-top:2px}.feedback-box{margin-top:12px;border-top:1px solid #edf0f4;padding-top:10px}.feedback-box label{display:flex;justify-content:space-between;gap:8px;font-weight:950;color:#3d465c;font-size:13px;margin-bottom:5px}.feedback-box textarea{width:100%;min-height:94px;resize:vertical;border:1px solid #d8dfec;border-radius:14px;padding:10px 11px;font-family:inherit;font-size:14px;line-height:1.45;background:#fff}.feedback-count{font-size:12px;color:#667085}.admin-dest-list{display:grid;gap:6px;max-height:300px;overflow:auto;border:1px solid #e7edf6;border-radius:14px;padding:8px;background:#fff}.admin-dest-list label{display:flex;align-items:flex-start;gap:8px;padding:8px;border-radius:10px;background:#fafafa;font-weight:850}.admin-dest-list input{margin-top:2px}.admin-report{margin-top:12px;display:grid;gap:8px}.report-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}.report-table th{text-align:left;color:#667085;font-weight:950}.report-table td,.report-table th{padding:6px}.report-table tbody tr{background:#fff;border:1px solid #e7edf6}.report-table td:first-child{border-radius:10px 0 0 10px}.report-table td:last-child{border-radius:0 10px 10px 0}.vote-blocked{border:1px solid #fecdca;background:#fff5f4;color:#b42318;border-radius:14px;padding:9px 10px;margin-top:9px;font-size:13px;font-weight:900;cursor:pointer}.tag.r4{background:#fff1f3;color:#9f1239}
     @media(max-width:719px){.flight-box{grid-template-columns:1fr}.report-table{font-size:11px}.report-table td,.report-table th{padding:5px}}
+
+    body.logged-out .statusbar, body.logged-out main, body.logged-out footer{display:none!important}
+    body.logged-out .hero{min-height:100vh;display:flex;align-items:center}
+    body.logged-out .hero .wrap{width:min(560px,calc(100% - 28px))}
+    body.logged-out .hero-grid{grid-template-columns:1fr!important;align-items:center}
+    body.logged-out .login-card{display:block!important;background:rgba(255,255,255,.18)}
+    body.logged-out .user-card{display:none!important}
+    body.logged-out .hero h1{font-size:clamp(30px,8vw,48px)}
+    body.logged-in .login-card{display:none!important}
 </style>
 </head>
-<body>
+<body class="logged-out">
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
@@ -1817,6 +1826,13 @@ function canSeeVoterNames(){return !!currentUser?.admin;}
 function canSeePendingNames(){return !!currentUser?.admin;}
 function validChoices(r){return r && Array.isArray(r.choices) && r.choices.length===4 && r.choices.every(c=>c && destById(c.optionId));}
 function hasFirebaseConfig(){return !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.projectId);}
+function withTimeout(promise, ms, message){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error(message)), ms))
+  ]);
+}
+
 function sha256Fallback(ascii) {
   function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
   const mathPow = Math.pow, maxWord = mathPow(2, 32);
@@ -1892,6 +1908,7 @@ async function initStore(){
   settings = {...DEFAULT_SETTINGS};
   votes = {};
   dataReady = true;
+  setStorePill('warn', '저장소 확인 중');
 
   if(!hasFirebaseConfig()){
     storeError = 'Firebase 설정 필요';
@@ -1899,24 +1916,49 @@ async function initStore(){
     renderAll();
     return;
   }
+
+  const waitForFirebaseSdk = async () => {
+    const started = Date.now();
+    while(!window.firebase && Date.now() - started < 8000){
+      await new Promise(r=>setTimeout(r,120));
+    }
+    return !!window.firebase;
+  };
+
   if(!window.firebase){
-    storeError = 'Firebase SDK 로딩 실패';
-    setStorePill('danger', 'Firebase SDK 실패');
-    renderAll();
-    return;
+    const loaded = await waitForFirebaseSdk();
+    if(!loaded){
+      storeError = 'Firebase SDK 로딩 실패';
+      setStorePill('danger', 'Firebase SDK 실패');
+      renderAll();
+      return;
+    }
   }
 
+  let slowTimer = null;
   try{
     setStorePill('warn', 'Firebase 연결 중');
     if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-    if(firebase.auth) await firebase.auth().signInAnonymously();
+    if(firebase.auth){
+      await withTimeout(firebase.auth().signInAnonymously(), 10000, 'Firebase 익명 로그인 시간 초과');
+    }
     db = firebase.database();
     usingFirebase = true;
 
     let seenSettings=false, seenVotes=false;
+    slowTimer = setTimeout(()=>{
+      if(!remoteReady){
+        storeError = 'Firebase 응답 지연: Realtime Database 규칙, databaseURL, Anonymous 인증 설정을 확인하세요.';
+        setStorePill('danger','Firebase 연결 지연');
+        renderAll();
+      }
+    }, 10000);
+
     function markReady(){
       if(seenSettings && seenVotes){
         remoteReady = true;
+        storeError = '';
+        if(slowTimer) clearTimeout(slowTimer);
         setStorePill('ok', 'Firebase 실시간 저장');
       }
       renderAll();
@@ -1942,6 +1984,7 @@ async function initStore(){
       renderAll();
     });
   }catch(err){
+    if(slowTimer) clearTimeout(slowTimer);
     console.error(err);
     usingFirebase = false;
     remoteReady = false;
@@ -2018,8 +2061,15 @@ function renderStatus(){
   $('timeStatus').textContent=`갱신 ${formatShortTime(Date.now())}`;
 }
 function renderLogin(){
-  $('loginCard').classList.toggle('hide',!!currentUser);$('userCard').classList.toggle('hide',!currentUser);
-  if(currentUser){$('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':(currentUser.viewerOnly?' 조회전용':'')}`;$('userOrg').textContent=`${currentUser.org} · ${currentUser.title||''}`;}
+  const loggedIn = !!currentUser;
+  document.body.classList.toggle('logged-in', loggedIn);
+  document.body.classList.toggle('logged-out', !loggedIn);
+  $('loginCard').classList.toggle('hide', loggedIn);
+  $('userCard').classList.toggle('hide', !loggedIn);
+  if(currentUser){
+    $('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':(currentUser.viewerOnly?' 조회전용':'')}`;
+    $('userOrg').textContent=`${currentUser.org} · ${currentUser.title||''}`;
+  }
   $('adminPanel').classList.toggle('visible',!!currentUser?.admin);
 }
 
@@ -2136,10 +2186,12 @@ function renderAdminReport(expanded=false){
   el.innerHTML=`<div class="notice">응답 ${complete}/${voterRoster().length}명 · 점수 기준: 1위 10점, 2위 7점, 3위 5점, 4위 2점</div><table class="report-table"><thead><tr><th>순위</th><th>후보지</th><th>점수</th><th>1위표</th><th>2위표</th><th>3위표</th><th>4위표</th><th>게시</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function renderAll(){
+  renderLogin();
+  if(!currentUser) return;
   if(!dataReady && !usingFirebase) return;
-  renderStatus();renderLogin();renderRanking();renderJump();renderDestinations();renderVotePanel();renderAdmin();renderPeople();
+  renderStatus();renderRanking();renderJump();renderDestinations();renderVotePanel();renderAdmin();renderPeople();
 }
-async 
+
 async function saveMyVote(){
   if(!currentUser){alert('먼저 로그인해 주세요.');return;}
   if(isViewerOnly()){alert('조회 전용 계정은 투표할 수 없습니다.');return;}
@@ -2214,7 +2266,28 @@ $('closeModal').addEventListener('click',()=>$('detailModal').classList.remove('
 $('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')$('detailModal').classList.remove('show');});
 $('saveSettingsBtn').addEventListener('click',async()=>{if(!currentUser?.admin){alert('관리자만 설정할 수 있습니다.');return;}const active=[...document.querySelectorAll('[data-admin-dest]')].filter(x=>x.checked).map(x=>x.dataset.adminDest);const ok=await saveSettings({startAt:$('adminStart').value,endAt:$('adminEnd').value,voteOpen:$('adminVoteOpen').checked,activeDestinations:active,showRanking:$('adminShowRanking').checked,showVoterNames:true,showPendingNames:true});if(ok)toast('설정 저장 완료');});
 $('exportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportCsv();});$('exportJsonBtn').addEventListener('click',()=>{if(currentUser?.admin)exportJson();});$('exportReportBtn').addEventListener('click',()=>{if(currentUser?.admin)renderAdminReport(true);});$('resetVotesBtn').addEventListener('click',async()=>{if(!currentUser?.admin)return;if(confirm('모든 투표를 초기화할까요?')){const ok=await resetVotes();if(ok)toast('투표를 초기화했습니다.');}});
-window.addEventListener('load',async()=>{await initStore();const saved=sessionStorage.getItem('tripVoteCurrentUserIdV3');if(saved){currentUser=ROSTER.find(u=>u.id===saved)||null;const rec=votes[currentUser?.id];selectedChoices=(currentUser?.viewerOnly||!validChoices(rec))?[null,null,null,null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);feedbackText=validChoices(rec)?(rec.feedback||''):'';}renderAll();});
+function restoreSession(){
+  const saved=sessionStorage.getItem('tripVoteCurrentUserIdV3');
+  if(saved){
+    currentUser=ROSTER.find(u=>u.id===saved)||null;
+    const rec=votes[currentUser?.id];
+    selectedChoices=(currentUser?.viewerOnly||!validChoices(rec))?[null,null,null,null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);
+    feedbackText=validChoices(rec)?(rec.feedback||''):'';
+  }
+}
+let booted=false;
+function bootstrap(){
+  if(booted) return;
+  booted=true;
+  restoreSession();
+  renderAll();
+  initStore();
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', bootstrap);
+}else{
+  bootstrap();
+}
 </script>
 </body>
 </html>

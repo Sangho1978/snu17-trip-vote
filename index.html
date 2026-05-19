@@ -143,6 +143,24 @@
             <button class="btn ghost" id="exportFeedbackCsvBtn" type="button">피드백 CSV</button>
             <button class="btn danger" id="resetVotesBtn" type="button">투표 초기화</button>
           </div>
+          <details class="listbox" style="margin-top:12px">
+            <summary>명단 로그인 검증 도구</summary>
+            <div class="people">
+              <div class="notice">원본 명단을 <strong>이름,전화번호뒤4자리</strong> 형식으로 붙여넣으면 index.html의 로그인 해시와 자동 비교합니다. 입력값은 저장되지 않고 관리자 화면에서만 일시적으로 계산됩니다.</div>
+              <div class="field">
+                <label for="verifyInput">원본 명단 붙여넣기</label>
+                <textarea id="verifyInput" rows="8" placeholder="예시:
+강명봉,1234
+김해영,2083
+한상호,4572" style="width:100%;border:1px solid #d8dfec;border-radius:14px;padding:10px;font-family:inherit;line-height:1.45;resize:vertical"></textarea>
+              </div>
+              <div class="vote-actions" style="grid-template-columns:1fr 1fr">
+                <button class="btn green" id="verifyRosterBtn" type="button">명단 검증</button>
+                <button class="btn ghost" id="exportVerifyCsvBtn" type="button">검증 CSV</button>
+              </div>
+              <div class="admin-report" id="verifyReport"></div>
+            </div>
+          </details>
           <div class="admin-report" id="adminReport"></div>
         </div>
       </section>
@@ -847,7 +865,7 @@ const ROSTER = [
     "org": "한국농어촌공사",
     "gender": "여",
     "title": "차장",
-    "pinHash": "19ab3c66a40e9e1424cd42102b9c8a6333128e13a95c34e427c57b94136ef1ca",
+    "pinHash": "bbdd8d4643eac0410c5b07e277bead344ce1cd1f471f4a6c70708db9a9ea69a4",
     "admin": false
   },
   {
@@ -1817,7 +1835,7 @@ function storeUnavailableMessage(){
   if (!hasFirebaseConfig()) return "Firebase 설정값이 index.html에 입력되지 않았습니다. GitHub Pages에서는 원격 저장이 되지 않습니다.";
   return storeError || "Firebase 원격 저장소가 아직 연결되지 않았습니다.";
 }
-const normalizeName = v => String(v || '').replace(/\s+/g,'').trim();
+const normalizeName = v => String(v || '').normalize('NFC').replace(/\s+/g,'').trim();
 const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const parseMs = v => v ? new Date(v).getTime() : null;
 function formatDateTime(v){
@@ -2182,6 +2200,60 @@ function renderDestinations(){
   }).join('');
 }
 
+let lastVerifyRows = [];
+function parseVerifyLines(raw){
+  return String(raw||'').split(/\r?\n/).map((line,idx)=>{
+    const original=line.trim();
+    if(!original) return null;
+    let parts=original.split(/[,\t]/).map(v=>v.trim()).filter(Boolean);
+    if(parts.length<2) parts=original.split(/\s+/).map(v=>v.trim()).filter(Boolean);
+    const name=normalizeName(parts[0]||'');
+    const digits=(parts.slice(1).join('').match(/\d/g)||[]).join('');
+    const pin=digits.slice(-4);
+    return {lineNo:idx+1, name, pin, original};
+  }).filter(Boolean);
+}
+async function verifyRosterFromInput(){
+  if(!currentUser?.admin){alert('관리자만 사용할 수 있습니다.');return;}
+  const input=$('verifyInput'); const report=$('verifyReport');
+  if(!input||!report) return;
+  const rows=parseVerifyLines(input.value);
+  if(!rows.length){alert('검증할 명단을 붙여넣어 주세요.');return;}
+  const voters=voterRoster();
+  const seenNames=new Set();
+  const results=[];
+  for(const row of rows){
+    if(!row.name || !/^\d{4}$/.test(row.pin)){
+      results.push({...row,status:'형식 오류',detail:'이름과 전화번호 뒤 4자리 숫자를 확인하세요.'});
+      continue;
+    }
+    seenNames.add(row.name);
+    const candidates=voters.filter(u=>normalizeName(u.name)===row.name);
+    if(!candidates.length){
+      results.push({...row,status:'이름 없음',detail:'index.html 원우 명단에 같은 이름이 없습니다.'});
+      continue;
+    }
+    let matched=false;
+    for(const u of candidates){
+      const hp=await hashPin(u.name,row.pin);
+      if(hp===u.pinHash || (Array.isArray(u.altPinHashes)&&u.altPinHashes.includes(hp))){matched=true;break;}
+    }
+    results.push({...row,status:matched?'일치':'해시 불일치',detail:matched?'로그인 가능':'이름은 있으나 전화번호 뒤 4자리 또는 해시가 다릅니다.'});
+  }
+  const htmlOnly=voters.filter(u=>!seenNames.has(normalizeName(u.name))).map(u=>({lineNo:'-',name:u.name,pin:'',status:'원본 미입력',detail:'붙여넣은 원본 명단에 이 이름이 없습니다.'}));
+  lastVerifyRows=[...results,...htmlOnly];
+  const ok=results.filter(r=>r.status==='일치').length;
+  const mismatch=results.filter(r=>r.status!=='일치').length;
+  const missing=htmlOnly.length;
+  const body=lastVerifyRows.map(r=>`<tr><td>${escapeHtml(r.lineNo)}</td><td>${escapeHtml(r.name)}</td><td>${r.pin?'****':'-'}</td><td><strong>${escapeHtml(r.status)}</strong></td><td>${escapeHtml(r.detail)}</td></tr>`).join('');
+  report.innerHTML=`<div class="notice">검증 ${results.length}건 · 일치 ${ok}건 · 확인 필요 ${mismatch}건 · 원본 미입력 ${missing}명</div><table class="report-table"><thead><tr><th>줄</th><th>이름</th><th>뒤4자리</th><th>상태</th><th>내용</th></tr></thead><tbody>${body}</tbody></table>`;
+}
+function exportVerifyCsv(){
+  if(!currentUser?.admin) return;
+  if(!lastVerifyRows.length){alert('먼저 명단 검증을 실행해 주세요.');return;}
+  const rows=[['line','name','pin_masked','status','detail'],...lastVerifyRows.map(r=>[r.lineNo,r.name,r.pin?'****':'',r.status,r.detail])];
+  downloadBlob(toCsv(rows),`login_verify_${new Date().toISOString().slice(0,10)}.csv`,'text/csv;charset=utf-8');
+}
 function renderAdmin(){
   if(!currentUser?.admin)return;
   $('adminStart').value=settings.startAt||'';$('adminEnd').value=settings.endAt||'';
@@ -2338,6 +2410,7 @@ $('closeModal').addEventListener('click',()=>$('detailModal').classList.remove('
 $('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')$('detailModal').classList.remove('show');});
 $('saveSettingsBtn').addEventListener('click',async()=>{if(!currentUser?.admin){alert('관리자만 설정할 수 있습니다.');return;}const ok=await saveSettings({startAt:$('adminStart').value,endAt:$('adminEnd').value,voteOpen:$('adminVoteOpen').checked,showRanking:$('adminShowRanking').checked,showVoterNames:true,showPendingNames:true});if(ok)toast('설정 저장 완료');});
 $('exportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportCsv();});$('exportJsonBtn').addEventListener('click',()=>{if(currentUser?.admin)exportJson();});$('exportReportBtn').addEventListener('click',()=>{if(currentUser?.admin)renderAdminReport(true);});$('exportReportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportReportCsv();});$('exportFeedbackCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportFeedbackCsv();});$('resetVotesBtn').addEventListener('click',async()=>{if(!currentUser?.admin)return;if(confirm('모든 투표를 초기화할까요?')){const ok=await resetVotes();if(ok)toast('투표를 초기화했습니다.');}});
+$('verifyRosterBtn')?.addEventListener('click',verifyRosterFromInput);$('exportVerifyCsvBtn')?.addEventListener('click',exportVerifyCsv);
 function restoreSession(){
   const saved=sessionStorage.getItem('tripVoteCurrentUserIdV3');
   if(saved){

@@ -59,7 +59,7 @@
     <div>
       <section class="card rank-card" id="rankSection">
         <div class="section-title">
-          <div><h2>실시간 집계</h2><p>모든 후보지의 실시간 통계가 표시됩니다. 상세 선택자는 관리자에게만 보입니다.</p></div>
+          <div><h2>실시간 집계</h2><p>후보지별 점수와 지망별 인원을 확인합니다.</p></div>
           <button class="btn ghost" id="refreshBtn" type="button">갱신</button>
         </div>
         <div class="rank-list" id="ranking"></div>
@@ -104,7 +104,7 @@
             <button class="btn ghost" id="exportJsonBtn" type="button">JSON</button>
             <button class="btn danger" id="resetVotesBtn" type="button">투표 초기화</button>
           </div>
-          <div class="notice">선택자 상세 및 미응답자 명단은 관리자에게만 표시됩니다. 일반 사용자는 후보지별 통계만 볼 수 있습니다.</div>
+          
         </div>
       </section>
 
@@ -1649,10 +1649,7 @@ const ROSTER = [
     "gender": "남",
     "title": "부장",
     "pinHash": "38875f82d7293aed5e02b2bbc4686d958536aa827291eb7d2ba588e6a8965c88",
-    "admin": true,
-    "altPinHashes": [
-      "b09d408ca7adec7bba669e39bc924e779b45bb21ddc13558f30885d863e7fbb1"
-    ]
+    "admin": true
   },
   {
     "id": "u108",
@@ -1968,11 +1965,18 @@ function renderRanking(){
   const box=$('ranking');
   if(!canSeeRanking()){box.innerHTML='<div class="empty">관리자가 순위 공개 전으로 설정했습니다.</div>';return;}
   const ranks=computeRanking(); const max=Math.max(1,...ranks.map(r=>r.score));
-  const rows=ranks.map((r,i)=>`<button class="rank-row" type="button" data-option="${r.id}">
-    <span class="rank-bg" style="width:${Math.max(3,r.score/max*100)}%"></span>
-    <span class="rank-content"><span class="rank-num">${i+1}</span><span class="rank-title"><strong>${r.num}. ${escapeHtml(r.title)}</strong><span>1지망 ${r.rankCounts[0]}명 · 2지망 ${r.rankCounts[1]}명 · 3지망 ${r.rankCounts[2]}명</span></span><span class="score">${r.score}<small>점</small></span></span>
-  </button>`).join('');
-  box.innerHTML=rows || '<div class="empty">아직 저장된 투표가 없습니다.</div>';
+  const visibleRanks = rankingExpanded ? ranks : ranks.slice(0,5);
+  const canOpen = !!currentUser?.admin;
+  const rows=visibleRanks.map((r,i)=>{
+    const tag = canOpen ? 'button' : 'div';
+    const attr = canOpen ? ` type="button" data-option="${r.id}"` : ' aria-label="통계 행" style="cursor:default"';
+    return `<${tag} class="rank-row"${attr}>
+      <span class="rank-bg" style="width:${Math.max(3,r.score/max*100)}%"></span>
+      <span class="rank-content"><span class="rank-num">${i+1}</span><span class="rank-title"><strong>${r.num}. ${escapeHtml(r.title)}</strong><span>1지망 ${r.rankCounts[0]}명 · 2지망 ${r.rankCounts[1]}명 · 3지망 ${r.rankCounts[2]}명</span></span><span class="score">${r.score}<small>점</small></span></span>
+    </${tag}>`;
+  }).join('');
+  const toggle = ranks.length>5 ? `<button class="btn ghost rank-more" id="rankToggleBtn" type="button">${rankingExpanded?'접기':'전체 후보지 펼치기'}</button>` : '';
+  box.innerHTML=(rows || '<div class="empty">아직 저장된 투표가 없습니다.</div>') + toggle;
 }
 function optionHtml(selected, rank){
   return `<option value="">${rank}지망 선택</option>`+DESTINATIONS.map(d=>`<option value="${d.id}" ${selected===d.id?'selected':''}>${d.num}. ${escapeHtml(d.title)} ${d.subtitle?'- '+escapeHtml(d.subtitle):''}</option>`).join('');
@@ -2003,9 +2007,9 @@ function renderJump(){ $('jumpNav').innerHTML=''; }
 function renderDestinations(){
   $('destList').innerHTML=DESTINATIONS.map(d=>{
     const visual=d.image?`<a class="dest-img-link" href="${d.image}" target="_blank" rel="noopener"><img class="dest-img" src="${d.image}" alt="${escapeHtml(d.num+'. '+d.title)} 대표 이미지" loading="lazy" onerror="this.closest('.dest-img-link').outerHTML='<div class=&quot;text-hero&quot;><div><strong>이미지 준비중</strong><span>${escapeHtml(d.title)}</span></div></div>'"></a>`:`<div class="text-hero"><div><strong>텍스트 소개</strong><span>${escapeHtml(d.title)}</span></div></div>`;
-    const imgBtn=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">이미지 보기</a>`:'';
-    const pdfBtn=d.pdf?`<a class="btn" href="${d.pdf}" target="_blank" rel="noopener">PDF 보기</a>`:'';
-    return `<article class="card dest-card" id="dest-${d.id}"><div class="dest-body"><h3>${d.num}. ${escapeHtml(d.title)}</h3><div class="sub">${escapeHtml(d.subtitle)}</div>${visual}<p class="brief">${escapeHtml(d.brief)}</p><div class="action-row"><button class="btn gold" type="button" data-open="${d.id}">상세보기</button>${imgBtn}${pdfBtn}</div></div><details class="detail"><summary>간략 일정</summary><div class="timeline">${d.days.map((x,i)=>`<div class="day"><b>Day ${i+1}</b><span>${escapeHtml(x)}</span></div>`).join('')}</div></details></article>`;
+    const imgBtn=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">1장요약보기</a>`:'';
+    const pdfBtn=d.pdf?`<a class="btn" href="${d.pdf}" target="_blank" rel="noopener">상세일정보기</a>`:'';
+    return `<article class="card dest-card" id="dest-${d.id}"><div class="dest-body"><h3>${d.num}. ${escapeHtml(d.title)}</h3><div class="sub">${escapeHtml(d.subtitle)}</div>${visual}<p class="brief">${escapeHtml(d.brief)}</p><div class="action-row"><button class="btn gold" type="button" data-open="${d.id}">간략일정</button>${imgBtn}${pdfBtn}</div></div><details class="detail"><summary>간략 일정</summary><div class="timeline">${d.days.map((x,i)=>`<div class="day"><b>Day ${i+1}</b><span>${escapeHtml(x)}</span></div>`).join('')}</div></details></article>`;
   }).join('');
 }
 function renderAdmin(){
@@ -2016,7 +2020,7 @@ function renderPeople(){
   const complete=voterRoster().filter(u=>validChoices(votes[u.id]));
   const pending=voterRoster().filter(u=>!validChoices(votes[u.id]));
   if(!currentUser?.admin){
-    $('peopleStatus').innerHTML=`<div class="notice">관리자에게만 선택 완료자와 미응답자 명단이 표시됩니다. 일반 사용자는 통계만 확인할 수 있습니다.</div><details class="listbox" open><summary>응답 통계</summary><div class="people"><div class="person"><strong>선택 완료 ${complete.length}명</strong><small>미응답 ${pending.length}명 · 전체 ${voterRoster().length}명</small></div></div></details>`;
+    $('peopleStatus').innerHTML=`<details class="listbox" open><summary>응답 통계</summary><div class="people"><div class="person"><strong>선택 완료 ${complete.length}명</strong><small>미응답 ${pending.length}명 · 전체 ${voterRoster().length}명</small></div></div></details>`;
     return;
   }
   const completeHtml=complete.map(u=>{
@@ -2052,10 +2056,11 @@ function showMemberVote(memberId){
   $('detailModal').classList.add('show');
 }
 function showVoteDetail(optionId){
+  if(!currentUser?.admin) return;
   const d=destById(optionId);if(!d)return;const ranks=computeRanking();const row=ranks.find(r=>r.id===optionId)||d;
   $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=`총 ${row.score||0}점 · 1지망 ${row.rankCounts?.[0]||0}명 · 2지망 ${row.rankCounts?.[1]||0}명 · 3지망 ${row.rankCounts?.[2]||0}명`;
   const show=canSeeVoterNames();
-  const groups=[1,2,3].map(rank=>{const voters=(row.voters?.[rank-1]||[]).sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));return `<details class="listbox" open><summary>${rank}지망 ${voters.length}명</summary><div class="people">${show?(voters.map(v=>`<div class="person"><strong>${escapeHtml(v.name)}</strong><small>${escapeHtml(v.org||'')} · 투표 ${formatShortTime(v.updatedAt)}</small></div>`).join('')||'<div class="empty">없음</div>'):'<div class="notice">선택자 상세정보는 관리자에게만 표시됩니다. 일반 사용자는 통계만 확인할 수 있습니다.</div>'}</div></details>`;}).join('');
+  const groups=[1,2,3].map(rank=>{const voters=(row.voters?.[rank-1]||[]).sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));return `<details class="listbox" open><summary>${rank}지망 ${voters.length}명</summary><div class="people">${voters.map(v=>`<div class="person"><strong>${escapeHtml(v.name)}</strong><small>${escapeHtml(v.org||'')} · 투표 ${formatShortTime(v.updatedAt)}</small></div>`).join('')||'<div class="empty">없음</div>'}</div></details>`;}).join('');
   $('modalBody').innerHTML=`<div class="people-wrap">${groups}</div>`;
   $('detailModal').classList.add('show');
 }
@@ -2063,8 +2068,8 @@ function showDestinationDetail(id){
   const d=destById(id); if(!d)return;
   $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=d.subtitle;
   const visual=d.image?`<img class="dest-img" src="${d.image}" alt="${escapeHtml(d.title)}" style="border-radius:16px;aspect-ratio:16/9;margin-bottom:10px" />`:`<div class="text-hero" style="border-radius:16px;margin-bottom:10px"><div><strong>${escapeHtml(d.title)}</strong><span>${escapeHtml(d.subtitle)}</span></div></div>`;
-  const imgBtns=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">이미지 보기</a>`:'';
-  const pdfBtns=d.pdf?`<a class="btn" href="${d.pdf}" target="_blank" rel="noopener">PDF 보기</a>`:'';
+  const imgBtns=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">1장요약보기</a>`:'';
+  const pdfBtns=d.pdf?`<a class="btn" href="${d.pdf}" target="_blank" rel="noopener">상세일정보기</a>`:'';
   const iframe=d.pdf?`<iframe class="pdf-frame desktop-only" src="${d.pdf}" title="${escapeHtml(d.title)} PDF 미리보기"></iframe>`:'';
   $('modalBody').innerHTML=`${visual}<div class="badges"><span class="badge">${d.duration}</span><span class="badge muted">${escapeHtml(d.route)}</span></div><p class="brief">${escapeHtml(d.brief)}</p><div class="meta"><div class="meta-line"><b>연수목적</b> ${escapeHtml(d.objective)}</div><div class="meta-line"><b>계절·포인트</b> ${escapeHtml(d.season)}</div></div><div class="action-row">${pdfBtns}${imgBtns}</div><div class="timeline">${d.days.map((x,i)=>`<div class="day"><b>Day ${i+1}</b><span>${escapeHtml(x)}</span></div>`).join('')}</div>${iframe}`;
   $('detailModal').classList.add('show');
@@ -2081,7 +2086,7 @@ $('loginForm').addEventListener('submit',async e=>{e.preventDefault();const name
 $('logoutBtn').addEventListener('click',()=>{currentUser=null;selectedChoices=[null,null,null];sessionStorage.removeItem('tripVoteCurrentUserIdV3');renderAll();});
 $('rankSelectors').addEventListener('change',e=>{const s=e.target.closest('[data-rankselect]');if(!s)return;const i=Number(s.dataset.rankselect)-1,v=s.value||null;if(v&&selectedChoices.some((x,idx)=>idx!==i&&x===v)){alert('이미 다른 지망에 선택한 후보입니다.');renderVotePanel();return;}selectedChoices[i]=v;renderVotePanel();});
 $('saveVoteBtn').addEventListener('click',saveMyVote);$('clearVoteBtn').addEventListener('click',clearMySelection);$('myVoteBtn').addEventListener('click',showMyVote);
-$('ranking').addEventListener('click',e=>{if(e.target.closest('#rankToggleBtn')){rankingExpanded=!rankingExpanded;renderRanking();return;}const row=e.target.closest('[data-option]');if(row)showVoteDetail(row.dataset.option);});
+$('ranking').addEventListener('click',e=>{if(e.target.closest('#rankToggleBtn')){rankingExpanded=!rankingExpanded;renderRanking();return;}const row=e.target.closest('[data-option]');if(row && currentUser?.admin)showVoteDetail(row.dataset.option);});
 $('jumpNav').addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;document.getElementById('dest-'+b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});});
 $('destList').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)showDestinationDetail(b.dataset.open);});
 $('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면을 갱신했습니다.');});

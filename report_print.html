@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>국외연수 선호도 설문 결과 보고서</title>
+  <style>
+    :root{
+      --bg:#f3f5f8; --paper:#ffffff; --ink:#1d2433; --muted:#667085; --line:#d9e0ea;
+      --gold:#c8941d; --gold2:#fff4d8; --silver:#73839a; --silver2:#eef3f8;
+      --bronze:#9a6947; --bronze2:#f8efe8; --blue:#1f4c8f; --blue2:#eef4ff;
+      --shadow:0 10px 24px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Noto Sans KR",system-ui,-apple-system,sans-serif;line-height:1.45}
+    .screen-bar{position:sticky;top:0;z-index:10;background:rgba(243,245,248,.95);backdrop-filter:blur(8px);border-bottom:1px solid #e5eaf1;padding:12px 16px}
+    .screen-bar .inner{max-width:980px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .btns{display:flex;gap:8px;flex-wrap:wrap}
+    button{border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;cursor:pointer}
+    .btn-primary{background:#0f172a;color:#fff}
+    .btn-secondary{background:#fff;color:#0f172a;border:1px solid #d7dfe9}
+    .status{font-size:13px;color:var(--muted);font-weight:700}
+
+    .page{width:210mm;min-height:297mm;background:var(--paper);margin:18px auto;padding:12mm 12mm 10mm;box-shadow:var(--shadow)}
+    .report-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:2px solid #dbe4f0;padding-bottom:10px;margin-bottom:12px}
+    .title-wrap h1{margin:0;font-size:25px;line-height:1.15}
+    .title-wrap p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .meta-box{min-width:210px;text-align:right;font-size:12px;color:#344054}
+    .meta-box .stamp{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef4ff;color:#0f4aa3;font-weight:900;margin-bottom:6px}
+
+    .summary-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:10px;margin:12px 0 14px}
+    .summary-card{border:1px solid var(--line);border-radius:16px;padding:12px 13px;background:#fbfcfe}
+    .summary-card strong{display:block;font-size:13px;color:#475467;margin-bottom:6px}
+    .summary-card .value{font-size:26px;font-weight:900;line-height:1;color:#101828}
+    .summary-card .sub{font-size:12px;color:var(--muted);margin-top:6px}
+    .summary-card.primary{background:linear-gradient(135deg,#eef5ff,#ffffff);border-color:#cfe0ff}
+
+    .section-title{display:flex;justify-content:space-between;gap:8px;align-items:end;margin:14px 0 8px}
+    .section-title h2{margin:0;font-size:18px}
+    .section-title span{color:var(--muted);font-size:12px}
+
+    .podium{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+    .podium-card{border-radius:18px;padding:14px;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden;min-height:150px}
+    .podium-card .rank-badge{position:absolute;right:12px;top:12px;font-size:30px;font-weight:1000;opacity:.16}
+    .podium-card .rank-label{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:900;margin-bottom:8px}
+    .podium-card h3{margin:0;font-size:20px;line-height:1.2}
+    .podium-card .sub{font-size:13px;color:#475467;margin-top:4px;font-weight:700}
+    .podium-card .score{margin-top:10px;font-size:31px;font-weight:1000;line-height:1}
+    .podium-card .score small{font-size:13px;font-weight:800;color:#475467;margin-left:4px}
+    .mini-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+    .mini-stats div{border-radius:12px;padding:8px 6px;text-align:center;background:rgba(255,255,255,.65);border:1px solid rgba(0,0,0,.06)}
+    .mini-stats b{display:block;font-size:16px;line-height:1.05}
+    .mini-stats span{display:block;font-size:11px;color:#475467;font-weight:800;margin-top:4px}
+    .top1{background:linear-gradient(135deg,var(--gold2),#fffdf7);border-color:#edd7a3}.top1 .rank-label{background:#b67c00;color:#fff}.top1 .score{color:#8a5800}
+    .top2{background:linear-gradient(135deg,var(--silver2),#fff);border-color:#d7e0ea}.top2 .rank-label{background:#5c708d;color:#fff}.top2 .score{color:#41546e}
+    .top3{background:linear-gradient(135deg,var(--bronze2),#fff);border-color:#ead7ca}.top3 .rank-label{background:#8d5e40;color:#fff}.top3 .score{color:#70452a}
+    .top4{background:linear-gradient(135deg,var(--blue2),#fff);border-color:#d4e3ff}.top4 .rank-label{background:#1f4c8f;color:#fff}.top4 .score{color:#1f4c8f}
+
+    table{width:100%;border-collapse:collapse}
+    .rank-table th,.rank-table td{border:1px solid #dbe2ec;padding:7px 8px;text-align:center;font-size:12px}
+    .rank-table th{background:#f5f7fb;font-weight:900}
+    .rank-table td.title{text-align:left;font-weight:800}
+    .rank-table tbody tr:nth-child(even){background:#fbfcfe}
+    .rank-table tbody tr.top-row-1{background:#fff8e7}
+    .rank-table tbody tr.top-row-2{background:#f3f7fb}
+    .rank-table tbody tr.top-row-3{background:#fbf2ea}
+    .rank-table tbody tr.top-row-4{background:#eff5ff}
+
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .pill{padding:5px 10px;border-radius:999px;font-size:11px;font-weight:900;border:1px solid #d7dde8;background:#fff}
+    .footnote{margin-top:10px;font-size:11px;color:#667085;line-height:1.5}
+    .loading,.error{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff;margin:20px 0;text-align:center;font-weight:800}
+    .error{color:#b42318;background:#fff7f6;border-color:#f0c8c4}
+
+    @media print{
+      body{background:#fff}
+      .screen-bar{display:none!important}
+      .page{margin:0 auto;box-shadow:none;width:auto;min-height:auto;padding:0}
+      button{display:none!important}
+      .summary-card,.podium-card,.rank-table th,.rank-table td{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      a{color:inherit;text-decoration:none}
+    }
+    @page{size:A4 portrait;margin:10mm}
+  </style>
+</head>
+<body>
+  <div class="screen-bar">
+    <div class="inner">
+      <div>
+        <strong>국외연수 설문 결과 보고서</strong>
+        <div class="status" id="statusText">Firebase 연결 및 결과 집계 중…</div>
+      </div>
+      <div class="btns">
+        <button class="btn-secondary" type="button" id="refreshBtn">새로고침</button>
+        <button class="btn-primary" type="button" id="printBtn">인쇄 / PDF 저장</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="page" id="reportPage">
+    <div class="report-header">
+      <div class="title-wrap">
+        <h1>2026년 하반기 국외연수 선호도 설문 결과</h1>
+        <p>서울대학교 행정대학원 공공리더십과정 17기 · 최종 집계 리포트</p>
+      </div>
+      <div class="meta-box">
+        <div class="stamp">PRINT REPORT</div>
+        <div id="generatedAt">생성 시각: -</div>
+        <div id="sourceInfo">집계 기준: Firebase 실시간 데이터</div>
+      </div>
+    </div>
+
+    <div id="loadingBox" class="loading">결과 데이터를 불러오고 있습니다…</div>
+    <div id="errorBox" class="error" style="display:none"></div>
+
+    <section id="reportContent" style="display:none">
+      <div class="summary-grid">
+        <div class="summary-card primary">
+          <strong>총 응답 현황</strong>
+          <div class="value" id="summaryResponded">- / 111</div>
+          <div class="sub" id="summaryRate">응답률 -</div>
+        </div>
+        <div class="summary-card">
+          <strong>집계 대상 후보지</strong>
+          <div class="value">13</div>
+          <div class="sub">1위 ~ 13위 전체 순위</div>
+        </div>
+        <div class="summary-card">
+          <strong>점수 체계</strong>
+          <div class="value">10·7·5·2</div>
+          <div class="sub">1~4지망 순차 배점</div>
+        </div>
+        <div class="summary-card">
+          <strong>총 투표 조합</strong>
+          <div class="value" id="summaryBallots">-</div>
+          <div class="sub">응답자 × 4개 선택</div>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <h2>가장 사랑받은 곳 TOP 4</h2>
+        <span>1위~4위는 별도 강조 표시</span>
+      </div>
+      <section class="podium" id="podiumSection"></section>
+
+      <div class="section-title">
+        <h2>전체 순위 (1위 ~ 13위)</h2>
+        <span>후보지별 총점 및 1~4지망 통계</span>
+      </div>
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th style="width:52px">순위</th>
+            <th style="width:58px">번호</th>
+            <th>후보지</th>
+            <th style="width:78px">총점</th>
+            <th style="width:62px">1지망</th>
+            <th style="width:62px">2지망</th>
+            <th style="width:62px">3지망</th>
+            <th style="width:62px">4지망</th>
+          </tr>
+        </thead>
+        <tbody id="rankTableBody"></tbody>
+      </table>
+
+      <div class="legend">
+        <span class="pill">1지망 10점</span>
+        <span class="pill">2지망 7점</span>
+        <span class="pill">3지망 5점</span>
+        <span class="pill">4지망 2점</span>
+      </div>
+      <div class="footnote">
+        · 본 보고서는 Firebase 실시간 데이터 기준으로 자동 집계됩니다.<br>
+        · 유효 응답은 1·2·3·4지망이 모두 저장된 응답만 반영했습니다.<br>
+        · 브라우저의 인쇄 기능을 이용하면 A4 인쇄 또는 PDF 저장이 가능합니다.
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
+      authDomain: "snu17-trip-vote.firebaseapp.com",
+      databaseURL: "https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "snu17-trip-vote",
+      storageBucket: "snu17-trip-vote.firebasestorage.app",
+      messagingSenderId: "1043680927852",
+      appId: "1:1043680927852:web:98b6916873cda945d63849",
+      measurementId: "G-MTF99DNV7M"
+    };
+    const APP_PATH = 'snu17_trip_vote_2026_v3_11dest';
+    const TOTAL_VOTERS = 111;
+    const DESTINATIONS = [
+      {id:'canada',num:1,title:'북미 동부',subtitle:'메이플 로드'},
+      {id:'newzealand',num:2,title:'뉴질랜드 남섬',subtitle:'퀸스타운 + 마운트쿡'},
+      {id:'croatia',num:3,title:'크로아티아',subtitle:'아드리아해 + 두브로브니크'},
+      {id:'spain_south',num:4,title:'스페인 남부',subtitle:'안달루시아'},
+      {id:'iceland',num:5,title:'아이슬란드',subtitle:'골든서클 + 남부해안'},
+      {id:'france_south',num:6,title:'남프랑스',subtitle:'지중해 + 프로방스'},
+      {id:'egypt',num:7,title:'이집트',subtitle:'나일 크루즈 + 홍해'},
+      {id:'london_paris',num:8,title:'영국·프랑스',subtitle:'런던 + 파리'},
+      {id:'usa_west',num:9,title:'미국 서부',subtitle:'LA + 요세미티 + 샌프란시스코'},
+      {id:'spain_north',num:10,title:'스페인 북부',subtitle:'100km 순례길 도보'},
+      {id:'italy_north',num:11,title:'이탈리아 북부',subtitle:'베네치아 + 돌로미티 + 밀라노'},
+      {id:'turkiye',num:12,title:'튀르키예',subtitle:'동서양 공존 문화탐방'},
+      {id:'japan_architecture',num:13,title:'일본',subtitle:'건축기행'}
+    ];
+
+    const $ = id => document.getElementById(id);
+    const statusText = $('statusText');
+    const loadingBox = $('loadingBox');
+    const errorBox = $('errorBox');
+    const reportContent = $('reportContent');
+
+    function validChoices(rec){
+      return rec && Array.isArray(rec.choices) && rec.choices.length===4 && rec.choices.every(c=>c && c.optionId);
+    }
+    function formatDateTime(v){
+      const d = new Date(v || Date.now());
+      if (isNaN(d)) return '-';
+      const p = n => String(n).padStart(2,'0');
+      return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+    function computeRanking(votes){
+      const map = Object.fromEntries(DESTINATIONS.map(d => [d.id, {
+        ...d, total:0, counts:[0,0,0,0], ballotCount:0
+      }]));
+      let responded = 0;
+      Object.values(votes || {}).forEach(rec => {
+        if(!validChoices(rec)) return;
+        responded += 1;
+        rec.choices.forEach(ch => {
+          const item = map[ch.optionId];
+          if(!item) return;
+          const rank = Number(ch.rank || 0);
+          const points = Number(ch.points || 0);
+          item.total += points;
+          if(rank>=1 && rank<=4) item.counts[rank-1] += 1;
+          item.ballotCount += 1;
+        });
+      });
+      const rows = Object.values(map).sort((a,b) => b.total - a.total || b.counts[0]-a.counts[0] || a.num-b.num);
+      rows.forEach((r,i)=>r.rank = i+1);
+      return {rows, responded};
+    }
+    function renderReport(votes){
+      const {rows, responded} = computeRanking(votes);
+      $('generatedAt').textContent = `생성 시각: ${formatDateTime(Date.now())}`;
+      $('summaryResponded').textContent = `${responded} / ${TOTAL_VOTERS}`;
+      $('summaryRate').textContent = `응답률 ${TOTAL_VOTERS ? ((responded / TOTAL_VOTERS) * 100).toFixed(1) : '0.0'}%`;
+      $('summaryBallots').textContent = `${responded * 4}`;
+
+      const podium = rows.slice(0,4).map(row => `
+        <article class="podium-card top${row.rank}">
+          <div class="rank-badge">#${row.rank}</div>
+          <div class="rank-label">${row.rank}위</div>
+          <h3>${row.num}. ${row.title}</h3>
+          <div class="sub">${row.subtitle}</div>
+          <div class="score">${row.total}<small>점</small></div>
+          <div class="mini-stats">
+            <div><b>${row.counts[0]}</b><span>1지망</span></div>
+            <div><b>${row.counts[1]}</b><span>2지망</span></div>
+            <div><b>${row.counts[2]}</b><span>3지망</span></div>
+            <div><b>${row.counts[3]}</b><span>4지망</span></div>
+          </div>
+        </article>
+      `).join('');
+      $('podiumSection').innerHTML = podium;
+
+      $('rankTableBody').innerHTML = rows.map(row => `
+        <tr class="top-row-${row.rank <= 4 ? row.rank : ''}">
+          <td><strong>${row.rank}</strong></td>
+          <td>${row.num}</td>
+          <td class="title">${row.title}<br><span style="font-size:11px;color:#667085;font-weight:700">${row.subtitle}</span></td>
+          <td><strong>${row.total}</strong></td>
+          <td>${row.counts[0]}</td>
+          <td>${row.counts[1]}</td>
+          <td>${row.counts[2]}</td>
+          <td>${row.counts[3]}</td>
+        </tr>
+      `).join('');
+
+      loadingBox.style.display = 'none';
+      errorBox.style.display = 'none';
+      reportContent.style.display = 'block';
+      statusText.textContent = '집계 완료';
+    }
+    function showError(msg){
+      loadingBox.style.display = 'none';
+      reportContent.style.display = 'none';
+      errorBox.style.display = 'block';
+      errorBox.textContent = msg;
+      statusText.textContent = '오류';
+    }
+
+    let dbRef = null;
+    function start(){
+      statusText.textContent = 'Firebase 연결 중…';
+      try{
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().signInAnonymously()
+          .then(() => {
+            statusText.textContent = '데이터 불러오는 중…';
+            dbRef = firebase.database().ref(`${APP_PATH}/votes`);
+            dbRef.on('value', snap => {
+              renderReport(snap.val() || {});
+            }, err => showError('Firebase 데이터를 읽지 못했습니다. 보안 규칙 또는 익명 인증 설정을 확인해 주세요.'));
+          })
+          .catch(err => showError('Firebase 익명 로그인에 실패했습니다. Authentication > Anonymous 설정을 확인해 주세요.'));
+      }catch(err){
+        showError('페이지 초기화 중 오류가 발생했습니다.');
+      }
+    }
+
+    $('refreshBtn').addEventListener('click', () => {
+      loadingBox.style.display = 'block';
+      loadingBox.textContent = '결과 데이터를 다시 불러오고 있습니다…';
+      reportContent.style.display = 'none';
+      if(dbRef){ dbRef.once('value').then(snap => renderReport(snap.val() || {})).catch(()=>showError('새로고침에 실패했습니다.')); }
+      else start();
+    });
+    $('printBtn').addEventListener('click', () => window.print());
+    start();
+  </script>
+</body>
+</html>

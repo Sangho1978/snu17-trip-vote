@@ -1,0 +1,2366 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>2026 하반기 국외연수 장소 투표</title>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <style>
+    :root{
+      --navy:#071f55;--navy2:#133b83;--gold:#b67720;--gold2:#dca340;--red:#be271d;
+      --ink:#172033;--muted:#687386;--line:#e6d8c3;--soft:#fff8ec;--bg:#f6efe4;--card:#fff;
+      --ok:#087443;--warn:#b54708;--danger:#b42318;--shadow:0 12px 34px rgba(19,31,58,.11);--r:18px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;line-height:1.42}.wrap{width:min(1120px,calc(100% - 28px));margin:auto}.hide{display:none!important}.desktop-only{display:none}.mobile-only{display:inline-flex}.hero{background:radial-gradient(circle at 92% 0%,rgba(255,255,255,.12),transparent 32%),linear-gradient(135deg,#061944,#0b2f74 58%,#0f4e9a);color:#fff;border-bottom:4px solid var(--gold);padding:18px 0 12px}.hero-grid{display:grid;gap:12px}.eyebrow{font-size:12px;color:#f5d89d;font-weight:950;letter-spacing:.08em}.hero h1{margin:4px 0 5px;font-size:clamp(24px,7.3vw,46px);letter-spacing:-.06em;line-height:1.12}.hero p{margin:0;color:#e7eeff;font-size:13px}.login-card,.user-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:18px;padding:12px;backdrop-filter:blur(8px)}.login-card h2{font-size:15px;margin:0 0 8px}.login-grid{display:grid;grid-template-columns:1fr 112px;gap:8px}.login-grid input{border:0;border-radius:12px;min-height:46px;padding:11px 12px;background:#fff;color:#111827;font-weight:800}.login-grid button{grid-column:1/-1}.small{font-size:12px;color:#dbe6ff;margin:8px 0 0}.btn{border:0;border-radius:13px;background:var(--navy);color:#fff;text-decoration:none;font-weight:950;min-height:44px;padding:10px 14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 8px 20px rgba(8,31,85,.16);white-space:nowrap}.btn.gold{background:linear-gradient(135deg,var(--gold),#df9d31)}.btn.ghost{background:#fff;color:var(--navy);border:1px solid #dfe5ef;box-shadow:none}.btn.soft{background:#fff8e8;color:#744900;border:1px solid #ead1a5;box-shadow:none}.btn.green{background:var(--ok)}.btn.danger{background:#a11a16}.btn:disabled,.btn.disabled{opacity:.48;cursor:not-allowed;box-shadow:none}.btn.full{width:100%}.user-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.user-row strong{font-size:16px}.user-row small{display:block;color:#e2eaff}.statusbar{position:sticky;top:0;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);z-index:30;backdrop-filter:blur(10px)}.statusbar .wrap{display:flex;gap:6px;overflow-x:auto;padding:7px 0}.pill{display:inline-flex;align-items:center;gap:4px;border:1px solid #e0e6f0;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:950;white-space:nowrap;color:#40506d}.pill.ok{background:#ecfdf3;border-color:#abefc6;color:#067647}.pill.warn{background:#fffaeb;border-color:#fedf89;color:#b54708}.pill.danger{background:#fef3f2;border-color:#fecdca;color:#b42318}.section{padding:14px 0}.section-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-bottom:9px}.section-title h2{margin:0;color:var(--navy);font-size:clamp(21px,5.5vw,32px);letter-spacing:-.045em}.section-title p{margin:3px 0 0;color:var(--muted);font-size:12px}.card{background:var(--card);border:1px solid rgba(180,119,32,.24);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}.grid-main{display:grid;gap:14px}.side{display:grid;gap:12px}.rank-card{padding:12px}.response-hero{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 12px;padding:12px;border:1px solid #ead2a5;border-radius:18px;background:linear-gradient(135deg,#fff7e6,#eef4ff);box-shadow:0 8px 20px rgba(80,52,15,.06)}.response-main{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}.response-label{font-size:12px;font-weight:950;color:#8b5200}.response-number{font-size:34px;line-height:1;font-weight:1000;color:var(--navy);letter-spacing:-.05em}.response-number small{font-size:16px;color:#667085}.response-sub{font-size:13px;color:#4c5870;font-weight:900}.response-bar{height:14px;background:#fff;border:1px solid #e8ddcb;border-radius:999px;overflow:hidden}.response-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--navy2));border-radius:999px;transition:width .35s ease}.response-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.response-stat{background:#fff;border:1px solid #e8ddcb;border-radius:14px;padding:8px;text-align:center}.response-stat b{display:block;font-size:20px;color:var(--navy);line-height:1.1}.response-stat span{font-size:11px;color:#667085;font-weight:950}.response-stat.pending b{color:#b54708}.response-stat.rate b{color:#087443}@media(min-width:760px){.response-hero{grid-template-columns:1.1fr 1fr;align-items:center}.response-bar{grid-column:1/-1}.response-number{font-size:40px}}.rank-list{display:grid;gap:8px}.rank-row{position:relative;overflow:hidden;border:1px solid #e8ddcb;border-radius:15px;background:#fff;cursor:pointer}.rank-bg{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,rgba(220,163,64,.24),rgba(220,163,64,.04));z-index:0}.rank-content{position:relative;z-index:1;display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;padding:10px}.rank-num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:14px;font-weight:950}.rank-title strong{display:block;font-size:14px;color:#102356}.rank-title span{display:block;font-size:12px;color:#667085}.score{text-align:right;color:#a96300;font-size:18px;font-weight:950}.score small{display:block;font-size:11px;color:#7b8495}.empty{padding:18px;border:1px dashed #d8c8ab;background:#fffaf1;border-radius:14px;color:#705a38;text-align:center;font-weight:850}.vote-card{padding:13px}.choice-grid{display:grid;grid-template-columns:1fr;gap:8px}.select-row{display:grid;grid-template-columns:58px 1fr;gap:8px;align-items:center}.select-row label{font-weight:950;color:#8b5200;font-size:13px}.select-row select{width:100%;min-height:48px;border:1px solid #d8dfec;border-radius:13px;background:#fff;padding:10px 11px;font-weight:850;color:#172033;font-size:15px}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.vote-actions .primary{grid-column:1/-1}.last-save{margin-top:8px;font-size:12px;color:#596579;font-weight:850}.quick-jump{display:flex;gap:7px;overflow-x:auto;padding:7px;background:#fff;border:1px solid #eadbc4;border-radius:16px;box-shadow:0 8px 20px rgba(80,52,15,.05);scroll-snap-type:x mandatory}.jump{scroll-snap-align:start;min-width:max-content;border:0;border-radius:12px;padding:9px 11px;background:#f8f1e5;color:#744900;font-weight:950;cursor:pointer}.jump.active{background:var(--navy);color:#fff}.dest-list{display:grid;gap:10px}.rank-more{margin-top:10px;width:100%}.dest-card{overflow:hidden}.dest-summary{list-style:none;cursor:pointer;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}.dest-summary::-webkit-details-marker{display:none}.dest-summary-title strong{display:block;color:var(--navy);font-size:22px;letter-spacing:-.05em}.dest-summary-title span{display:block;color:#a74318;font-weight:950;margin-top:2px}.dest-summary:after{content:"펼치기";font-size:12px;font-weight:950;color:#8b5200;background:#fff5e1;border:1px solid #ead2a5;border-radius:999px;padding:4px 9px;white-space:nowrap}.dest-card[open] .dest-summary{border-bottom:1px solid #f1e4cf}.dest-card[open] .dest-summary:after{content:"접기"}.dest-img-link{display:block;background:#eee;position:relative}.dest-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#eee}.text-hero{min-height:172px;background:linear-gradient(135deg,#fff7e6,#eef4ff);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;border-bottom:1px solid #eadcc6}.text-hero strong{display:block;color:var(--navy);font-size:24px;letter-spacing:-.05em}.text-hero span{display:block;color:#8b5200;margin-top:5px;font-weight:950}.dest-body{padding:13px}.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.badge{display:inline-flex;align-items:center;border:1px solid #ead2a5;background:#fff8e8;color:#875500;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:950}.badge.muted{border-color:#d8dce5;background:#f6f7fa;color:#667085}.badge.red{border-color:#f4c1bd;background:#fff3f1;color:#a43125}.dest-body h3{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.05em}.dest-card .dest-img-link{margin:10px 0;border-radius:15px;overflow:hidden}.dest-card .text-hero{margin:10px 0;border-radius:15px}.dest-body .sub{color:#a74318;font-weight:950;margin-top:2px}.brief{margin:9px 0;color:#39465e;font-size:14px;font-weight:760}.meta{display:grid;gap:6px;margin:10px 0}.meta-line{border:1px solid #e9dfcf;background:#fffaf3;border-radius:12px;padding:8px 10px;font-size:13px}.meta-line b{color:#825000}.action-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.detail{border-top:1px solid #f0e3d0;padding:0 13px 13px}.detail summary{cursor:pointer;list-style:none;font-weight:950;color:var(--navy);padding:12px 0;display:flex;justify-content:space-between}.detail summary::-webkit-details-marker{display:none}.detail summary:after{content:"보기";font-size:12px;color:#8b5200;background:#fff5e1;border:1px solid #ead2a5;border-radius:999px;padding:3px 8px}.detail[open] summary:after{content:"닫기"}.timeline{display:grid;gap:6px;margin:8px 0}.day{display:grid;grid-template-columns:52px 1fr;gap:8px;border:1px solid #e8edf5;border-radius:12px;padding:8px;background:#fff}.day b{color:#9a5800}.admin{display:none}.admin.visible{display:block}.admin-card{padding:13px}.admin-grid{display:grid;gap:9px}.field label{display:block;font-weight:950;color:#3d465c;font-size:13px;margin-bottom:4px}.field input{width:100%;min-height:44px;border:1px solid #d8dfec;border-radius:12px;padding:10px;background:#fff}.check{display:flex;gap:8px;align-items:center;margin:8px 0;font-weight:900}.check input{width:18px;height:18px}.people-wrap{display:grid;gap:10px}.listbox{background:#fff;border:1px solid #e4e9f2;border-radius:16px;overflow:hidden}.listbox summary{list-style:none;cursor:pointer;padding:12px 14px;background:#f8f5ef;color:var(--navy);font-weight:950}.listbox summary::-webkit-details-marker{display:none}.people{padding:8px;max-height:380px;overflow:auto}.person{padding:8px 9px;border:1px solid #edf0f5;border-radius:12px;margin:6px 0;background:#fff}.person strong{color:#172850}.person small{display:block;color:#667085}.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.tag{border-radius:999px;padding:3px 7px;font-size:11px;font-weight:900;background:#eef2ff;color:#283b7a}.tag.r1{background:#fff4e5;color:#9a4b00}.tag.r2{background:#ecfdf3;color:#067647}.tag.r3{background:#f3f4f6;color:#475467}.notice{font-size:12px;color:#6f5a38;background:#fff8e8;border:1px solid #f0d9ab;border-radius:14px;padding:10px;margin-top:10px;font-weight:800}.modal-back{position:fixed;inset:0;background:rgba(3,12,32,.62);display:none;align-items:flex-end;justify-content:center;padding:10px;z-index:80}.modal-back.show{display:flex}.modal{width:min(760px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.32)}.modal-head{position:sticky;top:0;background:#fff;z-index:1;border-bottom:1px solid #edf0f4;padding:14px;display:flex;justify-content:space-between;gap:10px}.modal-head h2{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.04em}.modal-head p{margin:3px 0 0;color:#667085;font-size:13px}.x{border:0;background:#f2f4f7;border-radius:50%;width:38px;height:38px;font-weight:950;cursor:pointer}.modal-body{padding:14px}.footer{padding:24px 0 38px;text-align:center;color:#667085;font-size:12px}.pdf-frame{width:100%;height:70vh;border:1px solid #d8dfec;border-radius:14px;background:#f8f9fb;margin-top:10px}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#172033;color:#fff;padding:10px 13px;border-radius:999px;box-shadow:0 10px 25px rgba(0,0,0,.25);display:none;z-index:100;font-size:13px;font-weight:850}.toast.show{display:block}
+    @media(max-width:719px){.hero{padding:14px 0 10px}.hero h1{font-size:28px}.login-grid{grid-template-columns:1fr 102px}.section{padding:10px 0}.rank-card,.vote-card,.admin-card{padding:10px}.section-title h2{font-size:20px}.section-title p{font-size:11px}.dest-body h3{font-size:20px}.brief{font-size:13px}.action-row{grid-template-columns:1fr 1fr}.quick-jump{display:none}.rank-content{grid-template-columns:28px 1fr auto;padding:9px}.rank-num{width:28px;height:28px}.score{font-size:16px}.dest-img{aspect-ratio:16/10}.side{gap:10px}.people-wrap{display:grid}}
+    @media(min-width:720px){.choice-grid{grid-template-columns:repeat(3,1fr)}.select-row{grid-template-columns:1fr}.select-row label{font-size:14px}.vote-actions{grid-template-columns:1fr auto auto}.vote-actions .primary{grid-column:auto}.dest-list{grid-template-columns:repeat(2,1fr)}.action-row{grid-template-columns:repeat(3,1fr)}.people-wrap{grid-template-columns:1fr 1fr}.admin-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:980px){.wrap{width:min(1160px,calc(100% - 48px))}.hero{padding:30px 0 22px}.hero-grid{grid-template-columns:1.15fr .85fr;align-items:end}.login-grid{grid-template-columns:1fr 140px auto}.login-grid button{grid-column:auto}.hero p{font-size:15px}.grid-main{grid-template-columns:minmax(0,1fr) 380px;align-items:start}.side{position:sticky;top:58px}.dest-list{grid-template-columns:repeat(2,minmax(0,1fr))}.dest-img{aspect-ratio:16/9}.desktop-only{display:inline-flex}.mobile-only{display:none}.modal-back{align-items:center}.rank-list{grid-template-columns:1fr}.text-hero{min-height:190px}}
+  
+    .rank-row.top1{border-color:#dca340;background:linear-gradient(135deg,#fff8e8,#fff)}.rank-row.top1 .rank-num{background:linear-gradient(135deg,#dca340,#9a5800)}.rank-row.top2 .rank-num{background:#4b5f82}.rank-row.top3 .rank-num{background:#8b5d3a}.rank-row.inactive-dest{opacity:.58}.rank-meter{height:8px;border-radius:999px;background:#edf0f5;overflow:hidden;margin-top:6px}.rank-meter span{display:block;height:100%;background:linear-gradient(90deg,#dca340,#b67720);border-radius:999px}.flight-box{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.flight-item{border:1px solid #d9e3f2;background:#f6f9ff;border-radius:13px;padding:9px 10px}.flight-item b{display:block;color:#071f55;font-size:12px}.flight-item span{display:block;color:#172033;font-size:14px;font-weight:950;margin-top:2px}.feedback-box{margin-top:12px;border-top:1px solid #edf0f4;padding-top:10px}.feedback-box label{display:flex;justify-content:space-between;gap:8px;font-weight:950;color:#3d465c;font-size:13px;margin-bottom:5px}.feedback-box textarea{width:100%;min-height:94px;resize:vertical;border:1px solid #d8dfec;border-radius:14px;padding:10px 11px;font-family:inherit;font-size:14px;line-height:1.45;background:#fff}.feedback-count{font-size:12px;color:#667085}.admin-dest-list{display:grid;gap:6px;max-height:300px;overflow:auto;border:1px solid #e7edf6;border-radius:14px;padding:8px;background:#fff}.admin-dest-list label{display:flex;align-items:flex-start;gap:8px;padding:8px;border-radius:10px;background:#fafafa;font-weight:850}.admin-dest-list input{margin-top:2px}.admin-report{margin-top:12px;display:grid;gap:8px}.report-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}.report-table th{text-align:left;color:#667085;font-weight:950}.report-table td,.report-table th{padding:6px}.report-table tbody tr{background:#fff;border:1px solid #e7edf6}.report-table td:first-child{border-radius:10px 0 0 10px}.report-table td:last-child{border-radius:0 10px 10px 0}.vote-blocked{border:1px solid #fecdca;background:#fff5f4;color:#b42318;border-radius:14px;padding:9px 10px;margin-top:9px;font-size:13px;font-weight:900;cursor:pointer}.tag.r4{background:#fff1f3;color:#9f1239}
+    @media(max-width:719px){.flight-box{grid-template-columns:1fr}.report-table{font-size:11px}.report-table td,.report-table th{padding:5px}}
+
+    body.logged-out .statusbar, body.logged-out main, body.logged-out footer{display:none!important}
+    body.logged-out .hero{min-height:100vh;display:flex;align-items:center}
+    body.logged-out .hero .wrap{width:min(560px,calc(100% - 28px))}
+    body.logged-out .hero-grid{grid-template-columns:1fr!important;align-items:center}
+    body.logged-out .login-card{display:block!important;background:rgba(255,255,255,.18)}
+    body.logged-out .user-card{display:none!important}
+    body.logged-out .hero h1{font-size:clamp(30px,8vw,48px)}
+    body.logged-in .login-card{display:none!important}
+</style>
+</head>
+<body class="logged-out">
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">2026 글로벌 프리미엄 6박 8일 여행지 설문</div>
+        <h1>하반기 국외연수<br />장소 선호도 투표</h1>
+        <p>1인당 1지망부터 4지망까지 선택합니다. 점수는 10점, 7점, 5점, 2점으로 실시간 집계됩니다.</p>
+      </div>
+      <section class="login-card" id="loginCard">
+        <h2>로그인</h2>
+        <form id="loginForm" class="login-grid">
+          <input id="loginName" autocomplete="name" placeholder="이름" />
+          <input id="loginPin" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="전화번호 뒤 4자리" />
+          <button class="btn gold" type="submit">로그인</button>
+        </form>
+        <p class="small">예: 본인 이름 + 휴대전화번호 뒤 4자리. 설문 기간 안에는 언제든 수정 가능합니다.</p>
+      </section>
+      <section class="user-card hide" id="userCard">
+        <div class="user-row">
+          <div><strong id="userName">-</strong><small id="userOrg">-</small></div>
+          <button class="btn ghost" id="logoutBtn" type="button">로그아웃</button>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <nav class="statusbar">
+    <div class="wrap">
+      <span class="pill warn" id="storeStatus">저장소 확인 중</span>
+      <span class="pill" id="surveyStatus">설문 상태 확인 중</span>
+      <span class="pill" id="countStatus">응답 0 / 111</span>
+      <span class="pill" id="timeStatus">마지막 갱신 -</span>
+    </div>
+  </nav>
+
+  <main class="wrap section grid-main">
+    <div>
+      <section class="card rank-card" id="rankSection">
+        <div class="section-title">
+          <div><h2>실시간 집계</h2><p>후보지별 점수와 지망별 인원을 확인합니다.</p></div>
+          <button class="btn ghost" id="refreshBtn" type="button">갱신</button>
+        </div>
+        <div class="response-hero" id="responseHero">
+          <div>
+            <div class="response-label">전체 응답 현황</div>
+            <div class="response-main">
+              <div class="response-number" id="responseMainNumber">0<small>/111명</small></div>
+              <div class="response-sub" id="responseMainText">아직 응답이 없습니다.</div>
+            </div>
+          </div>
+          <div class="response-stats">
+            <div class="response-stat"><b id="responseDoneCount">0</b><span>응답</span></div>
+            <div class="response-stat pending"><b id="responsePendingCount">111</b><span>미응답</span></div>
+            <div class="response-stat rate"><b id="responseRateCount">0%</b><span>응답률</span></div>
+          </div>
+          <div class="response-bar"><div class="response-fill" id="responseFill"></div></div>
+        </div>
+        <div class="rank-list" id="ranking"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div><h2>후보지 보기</h2><p>각 후보지의 이미지를 확인한 뒤 상세 내용을 볼 수 있습니다.</p></div>
+        </div>
+        <div class="quick-jump" id="jumpNav"></div>
+        <div class="dest-list" id="destList"></div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card vote-card" id="voteCard">
+        <div class="section-title">
+          <div><h2>내 투표</h2><p>서로 다른 4개 후보를 선택하세요.</p></div>
+        </div>
+        <div class="choice-grid" id="rankSelectors"></div>
+        <div class="feedback-box">
+          <label for="feedbackText"><span>상반기 국외연수 피드백</span><span class="feedback-count" id="feedbackCount">0 / 200자</span></label>
+          <textarea id="feedbackText" maxlength="200" placeholder="상반기 국외연수에 대한 의견을 200자 내외로 적어주세요."></textarea>
+        </div>
+        <div class="vote-blocked hide" id="voteBlockedReason">투표 가능 여부 확인 중</div>
+        <div class="vote-actions">
+          <button class="btn gold primary" id="saveVoteBtn" type="button">내 선택 저장</button>
+          <button class="btn ghost" id="clearVoteBtn" type="button">초기화</button>
+          <button class="btn soft" id="myVoteBtn" type="button">내 투표 확인</button>
+        </div>
+        <div class="last-save" id="myLastSave">로그인 후 투표할 수 있습니다.</div>
+      </section>
+
+      <section class="admin card" id="adminPanel">
+        <div class="admin-card">
+          <div class="section-title"><div><h2>관리자</h2><p>한상호 로그인 시 표시됩니다.</p></div></div>
+          <div class="admin-grid">
+            <div class="field"><label for="adminStart">시작일시</label><input type="datetime-local" id="adminStart" /></div>
+            <div class="field"><label for="adminEnd">종료일시</label><input type="datetime-local" id="adminEnd" /></div>
+          </div>
+          <label class="check"><input type="checkbox" id="adminVoteOpen" /> 투표 개시 상태로 전환</label>
+          <!-- 후보지 선택 게시 기능 주석 처리: 모든 후보지를 투표 대상으로 공개합니다.
+          <div class="field"><label>게시할 여행 후보지 선택</label><div class="admin-dest-list" id="adminDestList"></div></div>
+          -->
+          <label class="check"><input type="checkbox" id="adminShowRanking" /> 일반 사용자에게도 통계 공개</label>
+          <input type="checkbox" id="adminShowVoters" class="hide" />
+          <input type="checkbox" id="adminShowPending" class="hide" />
+          <div class="vote-actions">
+            <button class="btn green primary" id="saveSettingsBtn" type="button">설정 저장</button>
+            <button class="btn ghost" id="exportCsvBtn" type="button">CSV</button>
+            <button class="btn ghost" id="exportJsonBtn" type="button">JSON</button>
+            <button class="btn ghost" id="exportReportBtn" type="button">통계 리포트</button>
+            <button class="btn ghost" id="exportReportCsvBtn" type="button">통계 CSV</button>
+            <button class="btn ghost" id="exportFeedbackCsvBtn" type="button">피드백 CSV</button>
+            <button class="btn danger" id="resetVotesBtn" type="button">투표 초기화</button>
+          </div>
+          <div class="admin-report" id="adminReport"></div>
+        </div>
+      </section>
+
+      <section class="card vote-card" id="peoplePanel">
+        <div class="section-title"><div><h2>응답 현황</h2><p>선택 완료자와 미응답자 현황을 확인합니다.</p></div></div>
+        <div class="people-wrap" id="peopleStatus"></div>
+      </section>
+    </aside>
+  </main>
+
+  <div class="modal-back" id="detailModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div><h2 id="modalTitle">상세</h2><p id="modalSub">-</p></div>
+        <button class="x" id="closeModal" type="button" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <footer class="footer"><div class="wrap">2026 하반기 국외연수 장소 선호도 설문</div></footer>
+
+<script>
+/* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
+  authDomain: "snu17-trip-vote.firebaseapp.com",
+  databaseURL: "https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "snu17-trip-vote",
+  storageBucket: "snu17-trip-vote.firebasestorage.app",
+  messagingSenderId: "1043680927852",
+  appId: "1:1043680927852:web:98b6916873cda945d63849",
+  measurementId: "G-MTF99DNV7M"
+};
+const APP_PATH = "snu17_trip_vote_2026_v3_11dest"; // 기존 Firebase 데이터와 보안규칙을 유지하기 위해 경로명은 그대로 사용합니다.
+const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
+const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
+const POINTS = [10, 7, 5, 2];
+const DESTINATIONS = [
+  {
+    "id": "canada",
+    "num": 1,
+    "title": "북미 동부",
+    "subtitle": "메이플 로드",
+    "shortTitle": "북미 동부",
+    "tab": "1 북미",
+    "image": "assets/images/display/01_canada_maple_road.jpg",
+    "imageDownload": "assets/images/original/01_canada_maple_road.png",
+    "pdf": "assets/pdfs/01_canada_maple_road.pdf",
+    "route": "토론토 IN - 보스턴 OUT",
+    "price": "220만~290만원",
+    "duration": "6박 8일",
+    "season": "10월 단풍, 나이아가라와 퀘벡 올드타운 중심",
+    "objective": "대자연, 역사도시, 대학도시를 연결하는 북미 동부 가을형 연수 코스",
+    "brief": "나이아가라 폭포, 퀘벡 올드타운, 화이트마운틴, 보스턴을 연결하는 메이플로드 일정입니다.",
+    "days": [
+      "토론토 입국, 나이아가라 이동",
+      "나이아가라 크루즈, 테이블 락",
+      "천섬 유람선, 몬트리올",
+      "올드 퀘벡 투어",
+      "화이트마운틴 단풍 드라이브, 보스턴",
+      "하버드, MIT, 프리덤 트레일",
+      "퀸시마켓, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "단풍",
+      "나이아가라",
+      "퀘벡",
+      "보스턴"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "newzealand",
+    "num": 2,
+    "title": "뉴질랜드 남섬",
+    "subtitle": "퀸스타운 + 마운트쿡",
+    "shortTitle": "뉴질랜드",
+    "tab": "2 뉴질랜드",
+    "image": "assets/images/display/02_newzealand_south.jpg",
+    "imageDownload": "assets/images/original/02_newzealand_south.png",
+    "pdf": "assets/pdfs/02_newzealand_south.pdf",
+    "route": "크라이스트처치 IN - 퀸스타운 OUT",
+    "price": "190만~260만원",
+    "duration": "6박 8일",
+    "season": "남반구 봄, 호수와 빙하·산악 풍경 중심",
+    "objective": "자연환경 보전, 관광 인프라, 산악·호수 도시의 지속가능 관광을 체험하는 코스",
+    "brief": "테카포, 마운트쿡, 와나카, 밀포드사운드, 퀸스타운을 중심으로 남섬의 핵심 경관을 압축했습니다.",
+    "days": [
+      "크라이스트처치 도착",
+      "테카포, 선한목자의 교회",
+      "마운트쿡, 후커밸리",
+      "퀸스타운, 와카티푸호수",
+      "밀포드사운드 크루즈",
+      "와나카, 애로우타운",
+      "퀸스타운 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "대자연",
+      "마운트쿡",
+      "밀포드사운드",
+      "호수"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "croatia",
+    "num": 3,
+    "title": "크로아티아",
+    "subtitle": "아드리아해 + 두브로브니크",
+    "shortTitle": "크로아티아",
+    "tab": "3 크로아티아",
+    "image": "assets/images/display/03_croatia.jpg",
+    "imageDownload": "assets/images/original/03_croatia.png",
+    "pdf": "assets/pdfs/03_croatia.pdf",
+    "route": "자그레브 IN - 두브로브니크 OUT",
+    "price": "170만~230만원",
+    "duration": "6박 8일",
+    "season": "10월 온화한 지중해 기후, 국립공원과 해안도시 조합",
+    "objective": "도시 보존, 유네스코 문화유산, 관광도시 관리와 해안 교통을 비교하는 코스",
+    "brief": "자그레브, 플리트비체, 스플리트, 흐바르, 두브로브니크를 잇는 아드리아해 대표 일정입니다.",
+    "days": [
+      "자그레브 도착",
+      "플리트비체 국립공원",
+      "스플리트, 디오클레티아누스 궁전",
+      "흐바르, 아드리아 해변",
+      "두브로브니크 이동",
+      "성벽 투어, 아드리아 휴양",
+      "쇼핑, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "아드리아해",
+      "두브로브니크",
+      "플리트비체",
+      "유네스코"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "spain_south",
+    "num": 4,
+    "title": "스페인 남부",
+    "subtitle": "안달루시아",
+    "shortTitle": "스페인 남부",
+    "tab": "4 스페인남부",
+    "image": "assets/images/display/04_spain_south.jpg",
+    "imageDownload": "assets/images/original/04_spain_south.png",
+    "pdf": "assets/pdfs/04_spain_south.pdf",
+    "route": "마드리드 IN/OUT 순환",
+    "price": "160만~220만원",
+    "duration": "6박 8일",
+    "season": "마드리드 20/9도, 안달루시아 25/14도 수준의 가을 일정",
+    "objective": "마드리드와 안달루시아 도시의 역사문화, 관광, 교통 동선을 비교하는 코스",
+    "brief": "마드리드, 톨레도, 그라나다, 말라가, 론다, 세비야, 코르도바를 순환하는 일정입니다.",
+    "days": [
+      "마드리드 도착",
+      "톨레도 투어, 그라나다 이동",
+      "알함브라 궁전, 말라가",
+      "론다, 세비야 이동",
+      "세비야 전일 투어, 플라멩코",
+      "코르도바, 마드리드 복귀",
+      "마드리드 관광, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "안달루시아",
+      "알함브라",
+      "세비야",
+      "코르도바"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "iceland",
+    "num": 5,
+    "title": "아이슬란드",
+    "subtitle": "골든서클 + 남부해안",
+    "shortTitle": "아이슬란드",
+    "tab": "5 아이슬란드",
+    "image": "assets/images/display/05_iceland.jpg",
+    "imageDownload": "assets/images/original/05_iceland.png",
+    "pdf": "assets/pdfs/05_iceland.pdf",
+    "route": "레이캬비크 중심 이동",
+    "price": "180만~240만원",
+    "duration": "6박 8일",
+    "season": "10월 초겨울 감성, 오로라 가능성과 온천 중심",
+    "objective": "자연환경 보전, 온천·관광 인프라, 극지형 기후 대응을 체험하는 코스",
+    "brief": "골든서클, 빙하호수, 남부해안, 블루라군과 레이캬비크 시내를 연결합니다.",
+    "days": [
+      "레이캬비크 도착",
+      "씽벨리르, 게이시르, 굴포스",
+      "셀랴란드스포스, 스코가포스, 비크",
+      "레이니스피아라, 요쿨살론",
+      "빙하 절경, 남부해안 복귀",
+      "블루라군, 레이캬비크",
+      "시내관광, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "오로라",
+      "골든서클",
+      "빙하",
+      "온천"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "france_south",
+    "num": 6,
+    "title": "남프랑스",
+    "subtitle": "지중해 + 프로방스",
+    "shortTitle": "남프랑스",
+    "tab": "6 남프랑스",
+    "image": "assets/images/display/06_france_south.jpg",
+    "imageDownload": "assets/images/original/06_france_south.png",
+    "pdf": "assets/pdfs/06_france_south.pdf",
+    "route": "니스 4박 + 아비뇽 2박",
+    "price": "160만~200만원",
+    "duration": "6박 8일",
+    "season": "10월 남프랑스, 해안과 프로방스 내륙을 함께 보는 일정",
+    "objective": "지중해 해안 관광, 예술도시, 역사유산, 지역 이동 전략을 비교하는 코스",
+    "brief": "니스, 에즈, 모나코, 생폴드방스, 아비뇽, 아를, 고르드, 레보드프로방스를 연결합니다.",
+    "days": [
+      "니스 도착, 휴식",
+      "에즈, 모나코",
+      "생폴드방스, 칸",
+      "엑상프로방스, 아비뇽 이동",
+      "아비뇽, 아를, 고르드",
+      "레보드프로방스, 니스 복귀",
+      "니스 해변, 구시가지, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "니스",
+      "프로방스",
+      "예술",
+      "지중해"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "egypt",
+    "num": 7,
+    "title": "이집트",
+    "subtitle": "나일 크루즈 + 홍해",
+    "shortTitle": "이집트",
+    "tab": "7 이집트",
+    "image": "assets/images/display/07_egypt.jpg",
+    "imageDownload": "assets/images/original/07_egypt.png",
+    "pdf": "assets/pdfs/07_egypt.pdf",
+    "route": "카이로 - 룩소르 - 후르가다",
+    "price": "150만~190만원",
+    "duration": "6박 8일",
+    "season": "카이로·후르가다 모두 따뜻한 사막 기후, 일교차 대비 필요",
+    "objective": "고대문명, 관광도시 운영, 나일 크루즈와 홍해 휴양을 결합한 코스",
+    "brief": "피라미드, 스핑크스, 이집트 박물관, 나일강 크루즈, 왕가의 계곡, 홍해 휴양을 포함합니다.",
+    "days": [
+      "카이로 도착",
+      "기자 피라미드, 스핑크스, 이집트 박물관",
+      "카이로-룩소르 국내선, 카르나크·룩소르 신전",
+      "왕가의 계곡, 나일강 크루즈",
+      "후르가다 이동, 휴양",
+      "후르가다 리조트, 카이로 복귀",
+      "칸 엘 칼릴리, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "피라미드",
+      "나일강",
+      "홍해",
+      "문명"
+    ],
+    "pdfStatus": "ready"
+  },
+  {
+    "id": "london_paris",
+    "num": 8,
+    "title": "영국·프랑스",
+    "subtitle": "런던 + 파리 선진도시 벤치마킹",
+    "shortTitle": "런던·파리",
+    "tab": "8 런던파리",
+    "image": "assets/images/display/08_london_paris.jpg",
+    "imageDownload": "assets/images/original/08_london_paris.jpeg",
+    "pdf": "",
+    "route": "영국 런던 - 프랑스 파리",
+    "price": "미정",
+    "duration": "6박 8일",
+    "season": "도시재생, 문화시설, 공원·교통·유산 보존 벤치마킹",
+    "objective": "문화시설 운영 및 접근성, 공공공간과 도시계획, 인프라와 유산 보존 사례를 학습하는 코스",
+    "brief": "대영박물관, 테이트모던, 코벤트가든, 하이드파크, 유로스타, 루브르, 튈르리, 에펠탑, 베르사유 등을 연결합니다.",
+    "days": [
+      "인천 출국, 런던 도착",
+      "대영박물관, 코벤트가든, 테이트모던",
+      "런던 조별 활동",
+      "하이드파크, 유로스타, 파리 이동",
+      "루브르, 튈르리, 오르세, 센강",
+      "베르사유, 정원",
+      "파리 도시정책 탐방, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "런던",
+      "파리",
+      "도시재생",
+      "문화시설"
+    ],
+    "pdfStatus": "imageOnly"
+  },
+  {
+    "id": "usa_west",
+    "num": 9,
+    "title": "미국 서부",
+    "subtitle": "LA + 요세미티 + 샌프란시스코",
+    "shortTitle": "미국 서부",
+    "tab": "9 미국서부",
+    "image": "assets/images/display/09_usa_west.jpg",
+    "imageDownload": "assets/images/original/09_usa_west.jpeg",
+    "pdf": "",
+    "route": "LA IN - SFO OUT",
+    "price": "미정",
+    "duration": "7박 8일",
+    "season": "도시재생, 대중교통, 자연환경 보전, 스마트시티 탐방",
+    "objective": "LA와 샌프란시스코의 도시계획·교통·스마트시티 사례, 요세미티 자연환경 보전을 비교하는 코스",
+    "brief": "LA 3박, 요세미티 경유, 샌프란시스코 3박으로 도시의 진화 과정을 순차적으로 체험합니다.",
+    "days": [
+      "LA 도착, 오리엔테이션",
+      "그랜드파크, Metro Rail",
+      "LA River, 자율탐방",
+      "CA-99 북상, 요세미티 진입",
+      "글레이셔 포인트, SF 이동",
+      "Transbay Hub, Market St.",
+      "Golden Gate 공원, 자율탐방",
+      "SFO 출국"
+    ],
+    "tags": [
+      "LA",
+      "요세미티",
+      "샌프란시스코",
+      "스마트시티"
+    ],
+    "pdfStatus": "imageOnly"
+  },
+  {
+    "id": "spain_north",
+    "num": 10,
+    "title": "스페인 북부",
+    "subtitle": "100km 순례길 도보",
+    "shortTitle": "스페인 북부",
+    "tab": "10 스페인북부",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "마드리드 - 사리아 - 산티아고데콤포스텔라 - 마드리드",
+    "price": "미정",
+    "duration": "6박 8일",
+    "season": "도보 순례길과 북부 도시재생 사례를 함께 보는 일정",
+    "objective": "마드리드와 산티아고데콤포스텔라의 도시재생, 교통 및 에너지 기후계획 사례 연수",
+    "brief": "마드리드 1박, 사리아 2박, 산티아고데콤포스텔라 2박, 마드리드 1박으로 구성된 북부 순례길 중심 코스입니다.",
+    "days": [
+      "마드리드 도착, 1박",
+      "사리아 이동, 순례길 준비",
+      "100km 순례길 도보 1",
+      "100km 순례길 도보 2",
+      "산티아고데콤포스텔라 도시재생 탐방",
+      "산티아고 및 교통·에너지 계획 탐방",
+      "마드리드 복귀, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "순례길",
+      "도시재생",
+      "교통",
+      "기후계획"
+    ],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "italy_north",
+    "num": 11,
+    "title": "이탈리아 북부",
+    "subtitle": "베네치아 + 돌로미티 + 밀라노",
+    "shortTitle": "이탈리아 북부",
+    "tab": "11 이탈리아",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "베네치아 - 코르티나담페초 - 오르티세이 - 밀라노",
+    "price": "미정",
+    "duration": "6박 8일",
+    "season": "알프스 산악도시와 북부 대도시의 기후위기 대응 비교",
+    "objective": "밀라노와 베네치아의 도시재생, 교통 및 기후위기 대응 사례 연수",
+    "brief": "베네치아 1박, 코르티나담페초 2박, 오르티세이 2박, 밀라노 1박으로 북부이탈리아 핵심 동선을 구성합니다.",
+    "days": [
+      "베네치아 도착, 1박",
+      "코르티나담페초 이동",
+      "돌로미티 산악도시 탐방",
+      "오르티세이 이동",
+      "기후위기 대응·관광인프라 탐방",
+      "밀라노 이동, 도시재생 탐방",
+      "밀라노 교통·도시정책 탐방, 출국",
+      "인천 도착"
+    ],
+    "tags": [
+      "베네치아",
+      "돌로미티",
+      "밀라노",
+      "기후위기"
+    ],
+    "pdfStatus": "textOnly"
+  }
+  ,
+  {
+    "id": "turkiye",
+    "num": 12,
+    "title": "튀르키예",
+    "subtitle": "동서양 공존 문화탐방",
+    "shortTitle": "튀르키예",
+    "tab": "12 튀르키예",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "이스탄불 - 삼순 - 아마시아 - 카파도키아 - 안탈리아 - 파묵칼레 - 에페소 - 이스탄불",
+    "price": "미정",
+    "duration": "6박 8일",
+    "season": "동서양 문화가 공존하는 역사도시와 자연·유적지를 연결하는 일정",
+    "objective": "튀르키예 동서양 공존 문화탐방을 통해 미래 통합형 리더십을 함양하는 연수",
+    "brief": "이스탄불, 아마시아, 카파도키아, 데린구유, 안탈리아, 파묵칼레, 에페소를 연결하는 문화탐방형 코스입니다.",
+    "days": [
+      "인천 출발, 이스탄불 도착 후 휴식",
+      "삼순 국내선 항공 이동, 아마시아 관광",
+      "카파도키아 이동, 4시간 자유 일정",
+      "데린구유 관람, 안탈리아 이동",
+      "안탈리아 유람, 파묵칼레 이동",
+      "파묵칼레 온천, 에페소 유적지",
+      "이스탄불 국내선 항공 귀환, 4시간 자유 일정",
+      "인천 국제공항 도착 및 해산"
+    ],
+    "tags": [
+      "이스탄불",
+      "카파도키아",
+      "파묵칼레",
+      "동서양문화"
+    ],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "japan_architecture",
+    "num": 13,
+    "title": "일본",
+    "subtitle": "안도타다오·구마켄고·아오키 준 건축기행",
+    "shortTitle": "일본 건축",
+    "tab": "13 일본",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "도쿄 - 오사카 및 기타 소도시",
+    "price": "미정",
+    "duration": "7박 8일",
+    "season": "일본 현대건축과 도시공간을 집중적으로 살펴보는 건축기행형 일정",
+    "objective": "일본 건축거장 안도타다오, 구마켄고, 아오키 준의 건축기행을 통한 도시·공간 리더십 탐방",
+    "brief": "도쿄 3박과 오사카 및 기타 소도시 4박으로 구성해 일본 현대건축과 도시공간을 살펴보는 코스입니다.",
+    "days": [
+      "도쿄 도착, 오리엔테이션",
+      "도쿄 건축기행 1: 현대건축 및 도시공간 탐방",
+      "도쿄 건축기행 2: 공공건축·문화시설 탐방",
+      "오사카 및 기타 소도시 이동",
+      "안도타다오 관련 건축 탐방",
+      "구마켄고 관련 건축 및 지역공간 탐방",
+      "아오키 준 관련 건축 및 자유 탐방",
+      "인천 도착"
+    ],
+    "tags": [
+      "안도타다오",
+      "구마켄고",
+      "아오키 준",
+      "건축기행"
+    ],
+    "pdfStatus": "textOnly"
+  }
+
+];
+const ROSTER = [
+  {
+    "id": "u001",
+    "serial": 1,
+    "name": "강명봉",
+    "org": "한국중부발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "a57bcba600dee5c47d21dd66782daa55dbb8676687c69b5ad3557a3df68a6561",
+    "admin": false
+  },
+  {
+    "id": "u002",
+    "serial": 2,
+    "name": "고재성",
+    "org": "한국고용정보원",
+    "gender": "남",
+    "title": "선임연구위원",
+    "pinHash": "273de2077092474990647eb043c5d238c5d7cbb0514de88a4c8cddbd341c5b88",
+    "admin": false
+  },
+  {
+    "id": "u003",
+    "serial": 3,
+    "name": "곽영은",
+    "org": "한국부동산원",
+    "gender": "여",
+    "title": "지사장",
+    "pinHash": "04806aebd8e8523cdc765424caaf33a8b557204d595c903f0c3732950d942841",
+    "admin": false
+  },
+  {
+    "id": "u004",
+    "serial": 4,
+    "name": "권혁만",
+    "org": "한국국토정보공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "7da869c3b86f9b34ded487017a161f16ff15c71dac1cfe360655cb58f63da5f1",
+    "admin": false
+  },
+  {
+    "id": "u005",
+    "serial": 5,
+    "name": "김남구",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "8cd5224e76533ac453919f17d5b11f0b4b37fd6b65a2d45ca10aebd8b9503da0",
+    "admin": false
+  },
+  {
+    "id": "u006",
+    "serial": 6,
+    "name": "김동욱",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "10791501a7a31022b1c31d2b684527d31322ca73bbf97e75528d7171e749d47e",
+    "admin": false
+  },
+  {
+    "id": "u007",
+    "serial": 7,
+    "name": "김미나",
+    "org": "한국환경산업기술원",
+    "gender": "여",
+    "title": "센터장",
+    "pinHash": "855864ed28c8ec0cf407923e2a79845f7c905160d7e2333eb6615a3d1020fa51",
+    "admin": false
+  },
+  {
+    "id": "u008",
+    "serial": 8,
+    "name": "김병현",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "fc76c0e42550a550c0ad96607283f91b821a2dcae93bcd69bfb86c44554936e8",
+    "admin": false
+  },
+  {
+    "id": "u009",
+    "serial": 9,
+    "name": "김수연",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "차장",
+    "pinHash": "3a377315cd96babe02719cc06908bbd3a5d2169dd4ec3087ba67ec219c8ac454",
+    "admin": false
+  },
+  {
+    "id": "u010",
+    "serial": 10,
+    "name": "김수정",
+    "org": "한국소비자원",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "12e4638223ddf47e845f04ae5a72b413ffbf67dcc79493acdfbd7373c42c5dbf",
+    "admin": false
+  },
+  {
+    "id": "u011",
+    "serial": 11,
+    "name": "김영상",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "2d17d62cf5907d35b44659f270646cf758d9cfc8ac195de5f0d19b4a7b08277a",
+    "admin": false
+  },
+  {
+    "id": "u012",
+    "serial": 12,
+    "name": "김용식",
+    "org": "건설기술교육원",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "35500ba7560e5c73f9366e55c30a1d06887598d668c8276050b47dc7e5673e61",
+    "admin": false
+  },
+  {
+    "id": "u013",
+    "serial": 13,
+    "name": "김용현",
+    "org": "에스알",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "c1ba490d54637c1422b829969847b84fdef70cc9571269962daf2fee589247cf",
+    "admin": false
+  },
+  {
+    "id": "u014",
+    "serial": 14,
+    "name": "김윤정",
+    "org": "한국수자원공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "d0aa5bc1369dc24ab120bf0012dd29ecd211c8f736982426411601ba2b7c3b18",
+    "admin": false
+  },
+  {
+    "id": "u015",
+    "serial": 15,
+    "name": "김인규",
+    "org": "한국자산관리공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "03df5328ae870083d955b5a6ea911b41962fee822b183336835effc89493ab56",
+    "admin": false
+  },
+  {
+    "id": "u016",
+    "serial": 16,
+    "name": "김정도",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "7ac2120cdaee9c81f367eb6037e88eb27984392a5428af6df1323bd0157ed6e6",
+    "admin": false
+  },
+  {
+    "id": "u017",
+    "serial": 17,
+    "name": "김준용",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "31d120832a776a453dcedf1e18afe816aa5cd5109608508518268c2882315ab5",
+    "admin": false
+  },
+  {
+    "id": "u018",
+    "serial": 18,
+    "name": "김지미",
+    "org": "한국전력공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "401c3d6022fb9a64d5dd426af94972c39616fa5c8d49a21623e043c895e95263",
+    "admin": false
+  },
+  {
+    "id": "u019",
+    "serial": 19,
+    "name": "김진아",
+    "org": "한국공항공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "46a8c1f881b1803610c913f4b061f0da2807c7c8631d08c1c42767138522e0a5",
+    "admin": false
+  },
+  {
+    "id": "u020",
+    "serial": 20,
+    "name": "김진웅",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "41bf3acc02aa5e2fbaecc9caee7327eb65bc063195034d3b95ae29422b28876e",
+    "admin": false
+  },
+  {
+    "id": "u021",
+    "serial": 21,
+    "name": "김태균",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "a5acf915dc2d6359b6204a05ab7142d19e625d7ec44e096e9a6f7b8fe1ac337a",
+    "admin": false
+  },
+  {
+    "id": "u022",
+    "serial": 22,
+    "name": "김혜영",
+    "org": "한국농어촌공사",
+    "gender": "여",
+    "title": "차장",
+    "pinHash": "19ab3c66a40e9e1424cd42102b9c8a6333128e13a95c34e427c57b94136ef1ca",
+    "admin": false
+  },
+  {
+    "id": "u023",
+    "serial": 23,
+    "name": "김현교",
+    "org": "국립공원공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "e9bf3d8d7328eb126a8834fb7a0c88706c5c6af44adf858399d5443a413bc471",
+    "admin": false
+  },
+  {
+    "id": "u024",
+    "serial": 24,
+    "name": "김호영",
+    "org": "국민체육진흥공단",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "2455ea4cbaa742b5de9549c9e7385f56ff9dc1ed590c904f49fbd72c569ecb91",
+    "admin": false
+  },
+  {
+    "id": "u025",
+    "serial": 25,
+    "name": "김희웅",
+    "org": "한국수자원공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "91bc9b71fa7aa85a74af7f2ea94dbcd89b8f1ba3085df7e3f8fc6d6f1afa9520",
+    "admin": false
+  },
+  {
+    "id": "u026",
+    "serial": 26,
+    "name": "남상모",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "331ff478df2c2225f1a1decb445e0a2e09db9f1f9ad556cb1051277618ee05dd",
+    "admin": false
+  },
+  {
+    "id": "u027",
+    "serial": 27,
+    "name": "노지석",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "24ca6f493dc412b475cd1e8066381cfd236d8969f4f86f1162879b1675924c0e",
+    "admin": false
+  },
+  {
+    "id": "u028",
+    "serial": 28,
+    "name": "류준호",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "76ae97d326105f2184b5e0204b9b0f04e6442f061b74a7fd5b2bbb5a03654d73",
+    "admin": false
+  },
+  {
+    "id": "u029",
+    "serial": 29,
+    "name": "문미영",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "f50cc1001be529283f03b1a5f20fdc61ee2cb66eef2feb9afc73d05092d0d09c",
+    "admin": false
+  },
+  {
+    "id": "u030",
+    "serial": 30,
+    "name": "문철웅",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "f93d78828f071b71aed2d32c7c4aca6dd5e8f963d3829298508f2bffea5eee70",
+    "admin": false
+  },
+  {
+    "id": "u031",
+    "serial": 31,
+    "name": "문현정",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "41bfa6f6abd8ae7fc6efe90453d38573e9f3784ffc3335bcbb783aaa66f2db5d",
+    "admin": false
+  },
+  {
+    "id": "u032",
+    "serial": 32,
+    "name": "박덕배",
+    "org": "한국남동발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "25b9c0a2e356cdf9e5e6277983b86dba4c1c29d75e6d38ef7c35e2379811282b",
+    "admin": false
+  },
+  {
+    "id": "u033",
+    "serial": 33,
+    "name": "박상환",
+    "org": "한국인터넷진흥원",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "cdc62b6700b0784cff767b558778b791fadc0609d0b1dd34f881fac628244790",
+    "admin": false
+  },
+  {
+    "id": "u034",
+    "serial": 34,
+    "name": "박정휘",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "44df030cca05bebd7e616ac18ea5e53fb81d9353f21e1e41bf85345943568542",
+    "admin": false
+  },
+  {
+    "id": "u035",
+    "serial": 35,
+    "name": "박종현",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "e75a46aa599621af0b15eeb3814f5aebedcbc0cb80b40d9adba691169815db38",
+    "admin": false
+  },
+  {
+    "id": "u036",
+    "serial": 36,
+    "name": "박준덕",
+    "org": "한국석유관리원",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ce1542e5c9bcb919edbffd073dc2d22eb175acc95508ec97dbd0b97418d37b18",
+    "admin": false
+  },
+  {
+    "id": "u037",
+    "serial": 37,
+    "name": "박창수",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ff6e4459d01eb7bdbbbe27979f021c8916c36bc9811baa640fd385fd277da599",
+    "admin": false
+  },
+  {
+    "id": "u038",
+    "serial": 38,
+    "name": "박현종",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "b69e19b9e69701e72bc34dc3df7eab3bc0fa713639939fc4574180fea54d0ebc",
+    "admin": false
+  },
+  {
+    "id": "u039",
+    "serial": 39,
+    "name": "박현준",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "a5859f822ce299d93cbe6e0481ea0ddaf7deede91dec2cb29e89a3bf9a893dfd",
+    "admin": false
+  },
+  {
+    "id": "u040",
+    "serial": 40,
+    "name": "박형수",
+    "org": "공영홈쇼핑",
+    "gender": "남",
+    "title": "부장(실장)",
+    "pinHash": "1a205a8fb25321bfbfb1a4e8d26dbf5db28ccc70bfe3b68bada675556893cc2d",
+    "admin": false
+  },
+  {
+    "id": "u041",
+    "serial": 41,
+    "name": "배황철",
+    "org": "한국남동발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "ed893d09c2057ae34a5a482f9cfac80e406ba08486788d134782ae5c1c8b887e",
+    "admin": false
+  },
+  {
+    "id": "u042",
+    "serial": 42,
+    "name": "변규섭",
+    "org": "인천항만공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "323b4e26cfe798ad894ad3bcca1fba8ee78c71188f11380e4ca2927c94dc2560",
+    "admin": false
+  },
+  {
+    "id": "u043",
+    "serial": 43,
+    "name": "변영웅",
+    "org": "제주국제자유도시개발센터",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "cbe03aa9f99768abd0e48189c5d3a7a7687645408e307de30a14f867df46b756",
+    "admin": false
+  },
+  {
+    "id": "u044",
+    "serial": 44,
+    "name": "변태윤",
+    "org": "국가철도공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "ca196b7bb0cd424cbda8b3216e0379886be42bbba5298fd81b4e1e9fcb1363df",
+    "admin": false
+  },
+  {
+    "id": "u045",
+    "serial": 45,
+    "name": "선우영식",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "4028ccd2cf8a3afe3084ea3c20e0ec56364f361a420d1211fc8ae2cb80b768c4",
+    "admin": false
+  },
+  {
+    "id": "u046",
+    "serial": 46,
+    "name": "신명진",
+    "org": "한국서부발전",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "a310606a54d1f6fb92db06c5ee422e3a492ee61e96b5f055e31bfe012e524343",
+    "admin": false
+  },
+  {
+    "id": "u047",
+    "serial": 47,
+    "name": "신상철",
+    "org": "강원개발공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "96dd5f70c9b909740aa36be89b4a55e9603748fd607d563241b986a45cdf8aad",
+    "admin": false
+  },
+  {
+    "id": "u048",
+    "serial": 48,
+    "name": "안상희",
+    "org": "한국남부발전",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "e3ff88075b4745b8a3c32c44be6e51d606aa88bff51cb6c00b9b5b96e6f76189",
+    "admin": false
+  },
+  {
+    "id": "u049",
+    "serial": 49,
+    "name": "안치영",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "d4aa24ce3d1a78d825ddf503a6eeaaaef60781b0665b654b4195ce122f3d115f",
+    "admin": false
+  },
+  {
+    "id": "u050",
+    "serial": 50,
+    "name": "양광남",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "43ce4d8681ef3706d12ae07832f0f6e63048a0842ed71e2f3ae8f260785dc7d8",
+    "admin": false
+  },
+  {
+    "id": "u051",
+    "serial": 51,
+    "name": "양대원",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "2016b8e6bf90143de8c8286ddf019e266ae4cff7e6c50bdd23b57c5eab95539d",
+    "admin": false
+  },
+  {
+    "id": "u052",
+    "serial": 52,
+    "name": "양명식",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "adec6c0b8a9ae83f245a617df1a041d6f85967181f52847dc5cac7415699dbb4",
+    "admin": false
+  },
+  {
+    "id": "u053",
+    "serial": 53,
+    "name": "양정미",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "ddd8b5c6b392705e05faa7876f1a25603c2cbab1461ef0317d155dfa40bfc646",
+    "admin": false
+  },
+  {
+    "id": "u054",
+    "serial": 54,
+    "name": "양종철",
+    "org": "한국소비자원",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "1b20198b4be0e4ad7399d35ea8ec52a53d2d78fc4ef511c49fff879528b2e527",
+    "admin": false
+  },
+  {
+    "id": "u055",
+    "serial": 55,
+    "name": "양지민",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "c345d86ced3dcce328ccf58a088b7532d65430436ce14ee068284cf60785e255",
+    "admin": false
+  },
+  {
+    "id": "u056",
+    "serial": 56,
+    "name": "오시창",
+    "org": "축산물품질평가원",
+    "gender": "남",
+    "title": "본부장",
+    "pinHash": "1d867a5d373d554d2e06297f0a9a92a4936b23b09c14148068262e3f7979c897",
+    "admin": false
+  },
+  {
+    "id": "u057",
+    "serial": 57,
+    "name": "오유상",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "22912ea7a601e50fc4f9d03dbaffc549dca89be52c9529f437a6851641690ad7",
+    "admin": false
+  },
+  {
+    "id": "u058",
+    "serial": 58,
+    "name": "위재복",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "60eba97e4da4263346d71ed32f3d5cfef4171921dfe0aaf20016e95f4b8fa9eb",
+    "admin": false
+  },
+  {
+    "id": "u059",
+    "serial": 59,
+    "name": "유복현",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9b933b33fa50e19e7ea43ea49ff87d1835a94d08dd099ed4954deb14ad1c79ad",
+    "admin": false
+  },
+  {
+    "id": "u060",
+    "serial": 60,
+    "name": "유조환",
+    "org": "한전원자력연료",
+    "gender": "남",
+    "title": "부처장",
+    "pinHash": "169f4058eb92be9e9ccdfd86b080bd0ee31ce733cf4e4423fc7f897eaa553904",
+    "admin": false
+  },
+  {
+    "id": "u061",
+    "serial": 61,
+    "name": "유종훈",
+    "org": "한국교직원공제회",
+    "gender": "남",
+    "title": "실장",
+    "pinHash": "adfb8b6a5c6245a8a1f1e7a349bea916ee3c97f1114880b804e1c7af09277e76",
+    "admin": false
+  },
+  {
+    "id": "u062",
+    "serial": 62,
+    "name": "유지연",
+    "org": "한국폴리텍대학",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "9b80fdde98030574231a4dbf17183f02665170c55dfa4cf4d10dc1dce1f783ef",
+    "admin": false
+  },
+  {
+    "id": "u063",
+    "serial": 63,
+    "name": "윤선아",
+    "org": "강원랜드",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "51348150fe18d160bc5d1ba1b335cfb7e30293c792cf3572bbc2c987063d1478",
+    "admin": false
+  },
+  {
+    "id": "u064",
+    "serial": 64,
+    "name": "윤세형",
+    "org": "인천도시공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "d3a2b14280c5cce31cd011f65cced5613c284e0c874cfe038ee60df533ef5238",
+    "admin": false
+  },
+  {
+    "id": "u065",
+    "serial": 65,
+    "name": "윤소연",
+    "org": "한국전력공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "989a265527b9507313fe5811564e9b36bf26493177c03d8d99dc4ef9646a79ed",
+    "admin": false
+  },
+  {
+    "id": "u066",
+    "serial": 66,
+    "name": "윤주길",
+    "org": "서울교통공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "9cee85012ca286ff53921c93c8e2c993f6abc708de1095d668468bfa756e5fa7",
+    "admin": false
+  },
+  {
+    "id": "u067",
+    "serial": 67,
+    "name": "이근호",
+    "org": "한국사회보장정보원",
+    "gender": "남",
+    "title": "본부장",
+    "pinHash": "2359ee294a612d79be8a8d4b57833377538af6d6ae6afe6e6b7e939aa9944960",
+    "admin": false
+  },
+  {
+    "id": "u068",
+    "serial": 68,
+    "name": "이동훈",
+    "org": "한국교직원공제회",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "4ab627481f544db93ab6bd2e2fb9b2b74a589ba5abc2790b22fef0bdcdc2f4c9",
+    "admin": false
+  },
+  {
+    "id": "u069",
+    "serial": 69,
+    "name": "이상미",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "76ad96fdbf358670c853479937673d7321214da1e062c2207e0d8aaf0c4b46cb",
+    "admin": false
+  },
+  {
+    "id": "u070",
+    "serial": 70,
+    "name": "이수진",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "523c19378c9ed98c00064527d68812a1a7ba6ff687cd213d744e2cce8e56c83f",
+    "admin": false
+  },
+  {
+    "id": "u071",
+    "serial": 71,
+    "name": "이승민",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "12d54b5194debe3145a00d75adf6d8d0c6e616f11d310a63bb6bb7a65b4f7f4b",
+    "admin": false
+  },
+  {
+    "id": "u072",
+    "serial": 72,
+    "name": "이승훈",
+    "org": "한국장학재단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "d391709fb2511ada10c0430fc5f406c37e0ab6d210c7c71d1bb5c7cf8f2bb3df",
+    "admin": false
+  },
+  {
+    "id": "u073",
+    "serial": 73,
+    "name": "이은경",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "be0568a17fdefa00071f813888089d34bf825bff167499206caa751bfec24bb3",
+    "admin": false
+  },
+  {
+    "id": "u074",
+    "serial": 74,
+    "name": "이재학",
+    "org": "한국원자력환경공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "8148d6acf93068d980b362822de56f1bda7c05a24775e4f45789bf78d0848262",
+    "admin": false
+  },
+  {
+    "id": "u075",
+    "serial": 75,
+    "name": "이정원",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "19c87f5756f044554af4ea9681e9616ff85640b3c572be16febef51dcc94daed",
+    "admin": false
+  },
+  {
+    "id": "u076",
+    "serial": 76,
+    "name": "이주훈",
+    "org": "한국산업기술기획평가원",
+    "gender": "남",
+    "title": "연구위원",
+    "pinHash": "5c3858c3f1eaf903ccddbec086fddc790413ae44bde6dad6ee6315e36a82ce9b",
+    "admin": false
+  },
+  {
+    "id": "u077",
+    "serial": 77,
+    "name": "이준영",
+    "org": "인천국제공항공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9213a1184a11db0284bf295d86c3d99c3cf3fe848c3b393f743ebfe722ddc53a",
+    "admin": false
+  },
+  {
+    "id": "u078",
+    "serial": 78,
+    "name": "이진형",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "dfbc8f54448e9d63512fed2ac7a351f75e0085ca513149b7e40a5821af154466",
+    "admin": false
+  },
+  {
+    "id": "u079",
+    "serial": 79,
+    "name": "이태열",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "f0bf1cc2c1e3362ad783098a990477e8c86efeb692e2449040a3cb60af3176a7",
+    "admin": false
+  },
+  {
+    "id": "u080",
+    "serial": 80,
+    "name": "이태영",
+    "org": "인천국제공항공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "4785a8f7a925d2f879cde29e43ac0c440db295eae09d77146540b6f858ae1a15",
+    "admin": false
+  },
+  {
+    "id": "u081",
+    "serial": 81,
+    "name": "이호형",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "892691bae032745623962735c3ebe7992ce6eda7bf3c916d6492d9a0d8450fa9",
+    "admin": false
+  },
+  {
+    "id": "u082",
+    "serial": 82,
+    "name": "이홍규",
+    "org": "국민연금공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "18eb65c98df8f28d3a9c6076a217d94ae6108c4c6dcff0dbabfaf294524eac33",
+    "admin": false
+  },
+  {
+    "id": "u083",
+    "serial": 83,
+    "name": "임재철",
+    "org": "한국수자원공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "2046a26655a083fd223bfed5c8ce79912f1cfca8b45ec272ddc66eda02367456",
+    "admin": false
+  },
+  {
+    "id": "u084",
+    "serial": 84,
+    "name": "장준성",
+    "org": "농협생명",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "e709cac8221a198b06fb72398cfe35a64a5a63062ace5eb5acc06035fdd67a35",
+    "admin": false
+  },
+  {
+    "id": "u085",
+    "serial": 85,
+    "name": "장현웅",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "20893d7036e7999d92396aa3545d0e01beed79d3153d69c735a1ab616d0aa193",
+    "admin": false
+  },
+  {
+    "id": "u086",
+    "serial": 86,
+    "name": "전상욱",
+    "org": "한국폴리텍대학",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9d62ec26f0abcace1aecb73b0b0cceb67f82cd0c0f8bbccb82fb08f0350cab3b",
+    "admin": false
+  },
+  {
+    "id": "u087",
+    "serial": 87,
+    "name": "전희영",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "24b443109a4cc9677f3e545de6ad1f93232953d6fc08a7b1ef43c03492ce2553",
+    "admin": false
+  },
+  {
+    "id": "u089",
+    "serial": 89,
+    "name": "정장식",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "45f9cd036d61ce434c77554a81644d1eaa28b458207fd3bc853cf9c47deed0ec",
+    "admin": false
+  },
+  {
+    "id": "u090",
+    "serial": 90,
+    "name": "정재훈",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "cacde0fdba072970af29d40949fb56dcbbb62da728ea8f1b233306f7fe789a51",
+    "admin": false
+  },
+  {
+    "id": "u091",
+    "serial": 91,
+    "name": "정창석",
+    "org": "한국화학융합시험연구원",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "5f2d72630bec206a2bb59764257dff835c7e1565b4be5ec4488bf583b2e49bf8",
+    "admin": false
+  },
+  {
+    "id": "u092",
+    "serial": 92,
+    "name": "정현정",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "8c02188322186b5ef3b17c578d48c5b8c320d624e3a79dcb72cd35d17a6dad2c",
+    "admin": false
+  },
+  {
+    "id": "u093",
+    "serial": 93,
+    "name": "정형모",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "7384118ca494a406a8e6e3fd5b7db6abdb36c6ed2813f6427fde459c30841ab1",
+    "admin": false
+  },
+  {
+    "id": "u094",
+    "serial": 94,
+    "name": "조봉준",
+    "org": "농협경제지주",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "f2b297bfa3241e7108d167e9e37d08cdfabf19e57b7ba3ab9ede9487689ef3b2",
+    "admin": false
+  },
+  {
+    "id": "u095",
+    "serial": 95,
+    "name": "주상화",
+    "org": "한국철도공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ff66aa290b4a1ae6cf27d2e3fb1df3e66047c492e7338efe8facba846c4a646a",
+    "admin": false
+  },
+  {
+    "id": "u096",
+    "serial": 96,
+    "name": "차덕권",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "1873e7922e9c908d9ce217c74b77f10adc8325e64231cfd8c5287df865b41a9e",
+    "admin": false
+  },
+  {
+    "id": "u097",
+    "serial": 97,
+    "name": "차두표",
+    "org": "국가철도공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "834a60d6f2b8d41783e30fb38c7268dfe8995d5c14649060635af0753bc65909",
+    "admin": false
+  },
+  {
+    "id": "u098",
+    "serial": 98,
+    "name": "채수진",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "d3443f6ec3c06ee55475301d0c66c195bcdbb34bd3361d76f100005d82572d63",
+    "admin": false
+  },
+  {
+    "id": "u099",
+    "serial": 99,
+    "name": "최동원",
+    "org": "한국산업안전보건공단",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "8f8abdcc035963e21f9404e1b4e8cf96ea574fda046aae6f598b0dc9c2c8d61f",
+    "admin": false
+  },
+  {
+    "id": "u100",
+    "serial": 100,
+    "name": "최미숙",
+    "org": "한국철도공사",
+    "gender": "여",
+    "title": "처장",
+    "pinHash": "7a164bb66b32055dbfd4ba06f2e4530ad20b6ff5670f134cd72dee389678f0bf",
+    "admin": false
+  },
+  {
+    "id": "u101",
+    "serial": 101,
+    "name": "최성호",
+    "org": "인천관광공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "831fb109b1387221e25df8b9e22e8078e1ec8690f198f72d71ae5dd98868afac",
+    "admin": false
+  },
+  {
+    "id": "u102",
+    "serial": 102,
+    "name": "최성호",
+    "org": "한국지역난방공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "771292184ee64aba19717c131df2addf67d17e36287a88a61a1b303c1a9fa7c4",
+    "admin": false
+  },
+  {
+    "id": "u103",
+    "serial": 103,
+    "name": "최원욱",
+    "org": "국립공원공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "f8b6b985c54ec8d66e21d32fc0fdcb21b3f83b411d529dc600908b99c04e29a1",
+    "admin": false
+  },
+  {
+    "id": "u104",
+    "serial": 104,
+    "name": "최재영",
+    "org": "금융결제원",
+    "gender": "남",
+    "title": "실장",
+    "pinHash": "681fe0a294b2bf16aa1bfd02bbed74d5e7dffc371532d9bed4a9a2b4de3d9236",
+    "admin": false
+  },
+  {
+    "id": "u105",
+    "serial": 105,
+    "name": "최진홍",
+    "org": "한국장학재단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "24c82d0220d8deca49ba5adb20bc6adad1d0c27683fdf7e7a8e662408bfc0d7c",
+    "admin": false
+  },
+  {
+    "id": "u106",
+    "serial": 106,
+    "name": "최하영",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "33e8e69136c39b27b36c884af0dc305718aaab794205301e533d281b9ae64f3b",
+    "admin": false
+  },
+  {
+    "id": "u107",
+    "serial": 107,
+    "name": "한상호",
+    "org": "한전KDN",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "38875f82d7293aed5e02b2bbc4686d958536aa827291eb7d2ba588e6a8965c88",
+    "admin": true
+  },
+  {
+    "id": "u108",
+    "serial": 108,
+    "name": "한성룡",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "cde3899b822c343f11e10ea387ad44533029561364e7aa53afb47e9e6290e9a2",
+    "admin": false
+  },
+  {
+    "id": "u109",
+    "serial": 109,
+    "name": "한성일",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "491524cbea6dc5731bf8ca4f59d0b859c220ee0b6b7faae2a0520d8532f16937",
+    "admin": false
+  },
+  {
+    "id": "u110",
+    "serial": 110,
+    "name": "홍준희",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "d526df2ac4d3c45aeecbe13301e59f34a8f84dd92f5e5a0fc171baf8f7c2b036",
+    "admin": false
+  },
+  {
+    "id": "u111",
+    "serial": 111,
+    "name": "황인환",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "74df36a907c274670d7f5031a3f82a81cd73bb6bffdeb81f3635dd279c9c26f1",
+    "admin": false
+  },
+  {
+    "id": "u112",
+    "serial": 112,
+    "name": "황종욱",
+    "org": "국민체육진흥공단",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "f2928853a279554e938c9a52958a8d5bf7d8c283326d892a74f3b2bc2c2e0655",
+    "admin": false
+  },
+  {
+    "id": "viewer_kimeunhye",
+    "serial": 999,
+    "name": "김은혜",
+    "org": "조회전용",
+    "gender": "",
+    "title": "조회전용",
+    "pinHash": "a14ebb77202ede4a66a99d9600e92129d04ab1c8843583ff37bc12780b30da99",
+    "admin": false,
+    "viewerOnly": true
+  }
+];
+const DEFAULT_SETTINGS = {
+  startAt:"",
+  endAt:"",
+  showRanking:true,
+  showVoterNames:true,
+  showPendingNames:false,
+  voteOpen:false,
+  activeDestinations:null
+};
+
+const FLIGHT_INFO = {
+  canada:{type:"직항+경유 혼합", time:"ICN→토론토 직항 약 13시간대, 보스턴→ICN은 경유 포함 약 17~22시간", airlines:"대한항공·에어캐나다, 미국/캐나다 환승 항공사", note:"토론토는 직항 가능, 보스턴 귀국은 직항편 확인이 제한적이라 토론토·뉴욕·디트로이트 등 경유 가능성이 큽니다."},
+  newzealand:{type:"경유", time:"크라이스트처치/퀸스타운 기준 약 15~22시간", airlines:"에어뉴질랜드, 싱가포르항공, 콴타스, 대한항공 연계", note:"인천-남섬 직항은 일반적으로 제한적이며 오클랜드·싱가포르·호주 경유를 전제로 보는 편이 안전합니다."},
+  croatia:{type:"직항 제한/경유 중심", time:"자그레브 기준 약 16~23시간", airlines:"대한항공 시즌성/전세 가능성, 터키항공, 카타르항공, 루프트한자 등", note:"자그레브 직항은 정기 상시편으로 보기 어렵고, 계절·전세·경유편 확인이 필요합니다."},
+  spain_south:{type:"직항 가능/경유 가능", time:"마드리드 기준 직항 약 14~15시간, 경유 약 17~23시간", airlines:"대한항공, 카타르항공, 에미레이트, 터키항공, 유럽계 항공사", note:"마드리드 직항 가능성이 있으나 운항일과 단체좌석은 별도 확인이 필요합니다."},
+  iceland:{type:"경유", time:"레이캬비크 기준 약 18~26시간", airlines:"핀에어, 루프트한자, KLM, 에어프랑스, 아이슬란드항공 연계", note:"인천-아이슬란드 직항은 일반적이지 않아 유럽 주요 도시 환승이 필요합니다."},
+  france_south:{type:"경유", time:"니스 기준 약 16~23시간", airlines:"에어프랑스, KLM, 루프트한자, 터키항공, 에미레이트 등", note:"니스 직항은 제한적이며 파리·암스테르담·프랑크푸르트·이스탄불 경유가 일반적입니다."},
+  egypt:{type:"직항 가능/경유 가능", time:"카이로 기준 직항 약 11~12시간, 경유 약 15~22시간", airlines:"아시아나항공, 카타르항공, 에티하드, 에미레이트, 터키항공 등", note:"카이로 직항 여부는 시즌·운항사 일정 확인이 필요합니다."},
+  london_paris:{type:"직항 가능", time:"ICN→런던 약 14~15시간, 파리→ICN 약 12~13시간대", airlines:"대한항공, 아시아나항공, 에어프랑스, 영국항공 등", note:"런던·파리는 직항 선택지가 비교적 많은 편이나 단체좌석과 요일별 운항 확인이 필요합니다."},
+  usa_west:{type:"직항 가능", time:"ICN→LA 약 11~12시간, 샌프란시스코→ICN 약 12~13시간", airlines:"대한항공, 아시아나항공, 에어프레미아, 유나이티드, 델타 등", note:"미국 서부는 직항 선택지가 비교적 많지만 도시별 귀국편 요일 확인이 필요합니다."},
+  spain_north:{type:"직항 가능/경유 가능", time:"마드리드 왕복 기준 직항 약 14~15시간, 경유 약 17~23시간", airlines:"대한항공, 카타르항공, 에미레이트, 터키항공, 유럽계 항공사", note:"마드리드 도착 후 사리아·산티아고 구간은 국내선/철도/버스 연계가 필요합니다."},
+  italy_north:{type:"직항/경유 혼합", time:"베네치아 IN·밀라노 OUT 기준 약 15~22시간", airlines:"대한항공·아시아나/이탈리아 노선 연계, 루프트한자, 에미레이트, 카타르항공, 터키항공 등", note:"밀라노는 직항 가능성이 있으나 베네치아는 경유가 일반적입니다. 오픈조 단체좌석 확인이 필요합니다."},
+  turkiye:{type:"직항", time:"인천↔이스탄불 직항 기준 약 11시간 40분~12시간 20분", airlines:"터키항공(Turkish Airlines), 대한항공 등", note:"인천-이스탄불 직항 이용이 가능하며, 실제 소요시간·운항일·단체좌석 여부는 항공사 스케줄에 따라 달라집니다. 일정 중 삼순 이동과 이스탄불 복귀 국내선은 별도 발권/연계 여부를 확인해야 합니다."},
+  turkey:{type:"직항", time:"인천↔이스탄불 직항 기준 약 11시간 40분~12시간 20분", airlines:"터키항공(Turkish Airlines), 대한항공 등", note:"인천-이스탄불 직항 이용이 가능하며, 실제 소요시간·운항일·단체좌석 여부는 항공사 스케줄에 따라 달라집니다. 일정 중 삼순 이동과 이스탄불 복귀 국내선은 별도 발권/연계 여부를 확인해야 합니다."},
+  japan_architecture:{type:"직항", time:"도쿄 기준 약 2시간 10분~2시간 40분", airlines:"대한항공, 아시아나항공, 제주항공, 진에어, 티웨이항공, 에어프레미아, ZIPAIR 등", note:"도쿄 직항편은 많지만 도쿄-오사카 이동과 건축 답사 동선은 별도 조율이 필요합니다."}
+};
+function flightInfo(d){ return FLIGHT_INFO[d.id] || {type:"확인 필요", time:"항공 일정 확정 후 안내", note:""}; }
+let currentUser = null;
+let settings = {...DEFAULT_SETTINGS};
+let votes = {};
+let selectedChoices = [null,null,null,null];
+let feedbackText = "";
+let usingFirebase = false;
+let db = null;
+let dataReady = false;
+let remoteReady = false;
+let storeError = "";
+let rankingExpanded = false;
+
+const $ = id => document.getElementById(id);
+const destById = id => DESTINATIONS.find(d => d.id === id);
+const voterRoster = () => ROSTER.filter(u => !u.viewerOnly);
+function defaultActiveDestinations(){ return DESTINATIONS.map(d=>d.id); }
+// 후보지 선택 게시 기능 주석 처리: 관리자가 후보지를 선별 게시하지 않고 모든 후보지를 항상 표시/선택 가능하게 합니다.
+function activeDestinationIds(){ return defaultActiveDestinations(); }
+function isDestinationActive(id){ return true; }
+function publicDestinations(){ return DESTINATIONS; }
+function selectableDestinations(){ return DESTINATIONS; }
+function voteBlockReason(){
+  if(!currentUser) return '먼저 로그인해 주세요.';
+  if(isViewerOnly()) return '조회 전용 계정은 투표할 수 없습니다.';
+  if(!storeAvailable()) return 'Firebase 원격 저장소가 연결되지 않아 투표할 수 없습니다.';
+  if(!settings.voteOpen) return '아직 투표가 개시되지 않았습니다.';
+  if(!hasSurveyPeriod()) return '관리자가 설문 기간을 설정하지 않았습니다.';
+  const now=Date.now(), s=parseMs(settings.startAt), e=parseMs(settings.endAt);
+  if(s && now<s) return '투표기간이 아직 시작되지 않았습니다.';
+  if(e && now>e) return '투표기간이 종료되었습니다.';
+  if(selectableDestinations().length<4) return '투표 가능한 후보지가 4개 미만이라 투표할 수 없습니다.';
+  return '';
+}
+function isViewerOnly(){ return !!currentUser?.viewerOnly; }
+function storeAvailable(){ return usingFirebase && remoteReady && db; }
+function storeUnavailableMessage(){
+  if (!hasFirebaseConfig()) return "Firebase 설정값이 index.html에 입력되지 않았습니다. GitHub Pages에서는 원격 저장이 되지 않습니다.";
+  return storeError || "Firebase 원격 저장소가 아직 연결되지 않았습니다.";
+}
+const normalizeName = v => String(v || '').replace(/\s+/g,'').trim();
+const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const parseMs = v => v ? new Date(v).getTime() : null;
+function formatDateTime(v){
+  if(!v) return '-';
+  const d = new Date(v);
+  if(Number.isNaN(d.getTime())) return '-';
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function formatShortTime(v){
+  if(!v) return '-';
+  const d = new Date(v); if(Number.isNaN(d.getTime())) return '-';
+  const today = new Date();
+  const sameDay = d.getFullYear()===today.getFullYear() && d.getMonth()===today.getMonth() && d.getDate()===today.getDate();
+  const hm = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  return sameDay ? `오늘 ${hm}` : `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${hm}`;
+}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1800);}
+function hasSurveyPeriod(){return !!(settings.startAt && settings.endAt && parseMs(settings.startAt) && parseMs(settings.endAt));}
+function periodText(){return hasSurveyPeriod()?`${formatDateTime(settings.startAt)} ~ ${formatDateTime(settings.endAt)}`:'설문 기간 미설정';}
+function isSurveyOpen(){if(!hasSurveyPeriod())return false;const now=Date.now();const s=parseMs(settings.startAt),e=parseMs(settings.endAt);return now>=s&&now<=e;}
+function isSurveyEnded(){const e=parseMs(settings.endAt);return !!(hasSurveyPeriod()&&e&&Date.now()>e);}
+function surveyLabel(){if(!settings.voteOpen)return '개시 전';if(!hasSurveyPeriod())return '기간 미설정';const s=parseMs(settings.startAt),e=parseMs(settings.endAt);if(s&&Date.now()<s)return '시작 전';if(e&&Date.now()>e)return '종료';return '진행 중';}
+function canVote(){return !voteBlockReason();}
+function canSeeRanking(){return currentUser?.admin || settings.showRanking || isSurveyEnded();}
+function canSeeVoterNames(){return !!currentUser?.admin;}
+function canSeePendingNames(){return !!currentUser?.admin;}
+function validChoices(r){return r && Array.isArray(r.choices) && r.choices.length===4 && r.choices.every(c=>c && destById(c.optionId));}
+function hasFirebaseConfig(){return !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.projectId);}
+function withTimeout(promise, ms, message){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error(message)), ms))
+  ]);
+}
+
+function sha256Fallback(ascii) {
+  function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+  const mathPow = Math.pow, maxWord = mathPow(2, 32);
+  let result = '', words = [], asciiBitLength = ascii.length * 8;
+  const hash = [], k = [];
+  let primeCounter = 0, candidate = 2;
+  function isPrime(n){ for(let i=2;i*i<=n;i++) if(n%i===0) return false; return true; }
+  while (primeCounter < 64) {
+    if (isPrime(candidate)) {
+      if (primeCounter < 8) hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter] = (mathPow(candidate, 1/3) * maxWord) | 0;
+      primeCounter++;
+    }
+    candidate++;
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    if (j >> 8) throw new Error('ASCII only');
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = ((asciiBitLength / maxWord) | 0);
+  words[words.length] = (asciiBitLength);
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = hash.slice(0);
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = hash[0], e = hash[4];
+      const temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash[7] = hash[6]; hash[6] = hash[5]; hash[5] = hash[4]; hash[4] = (hash[3] + temp1) | 0;
+      hash[3] = hash[2]; hash[2] = hash[1]; hash[1] = hash[0]; hash[0] = (temp1 + temp2) | 0;
+    }
+    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+  }
+  for (let i = 0; i < 8; i++) {
+    for (let j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+async function sha256Hex(text){
+  if (window.crypto && crypto.subtle && window.isSecureContext) {
+    const data=new TextEncoder().encode(text);
+    const digest=await crypto.subtle.digest('SHA-256',data);
+    return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  return sha256Fallback(unescape(encodeURIComponent(text)));
+}
+async function hashPin(name,pin){return sha256Hex(`${AUTH_SALT}|${normalizeName(name)}|${pin}`);}
+function downloadBlob(content,filename,type='text/plain;charset=utf-8'){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);}
+function writeLocal(){
+  // 운영 안정성을 위해 더 이상 localStorage를 원격 저장소처럼 사용하지 않습니다.
+  // Firebase가 연결되지 않은 경우 설정/투표 저장은 차단됩니다.
+}
+function setStorePill(cls, msg){
+  const el = $('storeStatus');
+  if (!el) return;
+  el.className = `pill ${cls || ''}`;
+  el.textContent = msg;
+}
+function firebaseHelpText(){
+  return 'Firebase Console에서 Realtime Database와 Authentication > Anonymous를 활성화하고, index.html의 FIREBASE_CONFIG 값을 채워 주세요.';
+}
+async function initStore(){
+  usingFirebase = false;
+  remoteReady = false;
+  storeError = '';
+  settings = {...DEFAULT_SETTINGS};
+  votes = {};
+  dataReady = true;
+  setStorePill('warn', '저장소 확인 중');
+
+  if(!hasFirebaseConfig()){
+    storeError = 'Firebase 설정 필요';
+    setStorePill('danger', 'Firebase 미연결');
+    renderAll();
+    return;
+  }
+
+  const waitForFirebaseSdk = async () => {
+    const started = Date.now();
+    while(!window.firebase && Date.now() - started < 8000){
+      await new Promise(r=>setTimeout(r,120));
+    }
+    return !!window.firebase;
+  };
+
+  if(!window.firebase){
+    const loaded = await waitForFirebaseSdk();
+    if(!loaded){
+      storeError = 'Firebase SDK 로딩 실패';
+      setStorePill('danger', 'Firebase SDK 실패');
+      renderAll();
+      return;
+    }
+  }
+
+  let slowTimer = null;
+  try{
+    setStorePill('warn', 'Firebase 연결 중');
+    if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    if(firebase.auth){
+      await withTimeout(firebase.auth().signInAnonymously(), 10000, 'Firebase 익명 로그인 시간 초과');
+    }
+    db = firebase.database();
+    usingFirebase = true;
+
+    let seenSettings=false, seenVotes=false;
+    slowTimer = setTimeout(()=>{
+      if(!remoteReady){
+        storeError = 'Firebase 응답 지연: Realtime Database 규칙, databaseURL, Anonymous 인증 설정을 확인하세요.';
+        setStorePill('danger','Firebase 연결 지연');
+        renderAll();
+      }
+    }, 10000);
+
+    function markReady(){
+      if(seenSettings && seenVotes){
+        remoteReady = true;
+        storeError = '';
+        if(slowTimer) clearTimeout(slowTimer);
+        setStorePill('ok', 'Firebase 실시간 저장');
+      }
+      renderAll();
+    }
+    db.ref(`${APP_PATH}/settings`).on('value',s=>{
+      settings={...DEFAULT_SETTINGS,...(s.val()||{})};
+      seenSettings=true;
+      markReady();
+    }, err=>{
+      console.error(err);
+      storeError = '설정 읽기 실패: ' + (err.message || err.code || err);
+      setStorePill('danger','Firebase 읽기 실패');
+      renderAll();
+    });
+    db.ref(`${APP_PATH}/votes`).on('value',s=>{
+      votes=s.val()||{};
+      seenVotes=true;
+      markReady();
+    }, err=>{
+      console.error(err);
+      storeError = '투표 읽기 실패: ' + (err.message || err.code || err);
+      setStorePill('danger','Firebase 읽기 실패');
+      renderAll();
+    });
+  }catch(err){
+    if(slowTimer) clearTimeout(slowTimer);
+    console.error(err);
+    usingFirebase = false;
+    remoteReady = false;
+    storeError = (err && (err.message || err.code)) ? (err.message || err.code) : String(err);
+    setStorePill('danger','Firebase 연결 실패');
+    renderAll();
+  }
+}
+async function saveSettings(next){
+  if(!currentUser?.admin){ alert('관리자만 설정할 수 있습니다.'); return false; }
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 설정을 저장할 수 없습니다.\n\n' + storeUnavailableMessage() + '\n\n' + firebaseHelpText()); return false; }
+  const nextSettings={...settings,...next,updatedAt:new Date().toISOString(),updatedBy:currentUser.id};
+  try{
+    await db.ref(`${APP_PATH}/settings`).set(nextSettings);
+    settings = nextSettings;
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('설정 저장 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
+async function saveVoteRecord(id,record){
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 투표를 저장할 수 없습니다.\n\n' + storeUnavailableMessage() + '\n\n' + firebaseHelpText()); return false; }
+  try{
+    await db.ref(`${APP_PATH}/votes/${id}`).set(record);
+    votes[id]=record;
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('투표 저장 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
+async function resetVotes(){
+  if(!currentUser?.admin){ return false; }
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 초기화할 수 없습니다.\n\n' + storeUnavailableMessage()); return false; }
+  try{
+    await db.ref(`${APP_PATH}/votes`).set(null);
+    votes={};
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('초기화 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
+
+function computeRanking(){
+  const active = activeDestinationIds();
+  const base = DESTINATIONS.filter(d=>currentUser?.admin || active.includes(d.id));
+  const map={}; base.forEach(d=>map[d.id]={...d,active:isDestinationActive(d.id),score:0,rankCounts:[0,0,0,0],voters:[[],[],[],[]]});
+  Object.values(votes).forEach(rec=>{
+    if(!validChoices(rec))return;
+    const ru=ROSTER.find(u=>u.id===rec.memberId); if(ru?.viewerOnly)return;
+    rec.choices.forEach(ch=>{
+      const entry=map[ch.optionId]; if(!entry || !entry.active)return;
+      const idx=Number(ch.rank)-1; const points=POINTS[idx]||0;
+      entry.score+=points; entry.rankCounts[idx]+=1;
+      entry.voters[idx].push({name:rec.name||rec.memberName||'',org:rec.org||'',updatedAt:rec.updatedAt||rec.updatedAtIso||'',memberId:rec.memberId});
+    });
+  });
+  return Object.values(map).sort((a,b)=>b.score-a.score || b.rankCounts[0]-a.rankCounts[0] || b.rankCounts[1]-a.rankCounts[1] || b.rankCounts[2]-a.rankCounts[2] || a.num-b.num);
+}
+
+function renderStatus(){
+  const total=voterRoster().length;
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id])).length;
+  const pending=Math.max(0,total-complete);
+  const rate=total?Math.round(complete/total*100):0;
+  $('countStatus').textContent=`응답 ${complete} / ${total}`;
+  const mainNumber=$('responseMainNumber');
+  if(mainNumber) mainNumber.innerHTML=`${complete}<small>/${total}명</small>`;
+  const mainText=$('responseMainText');
+  if(mainText) mainText.textContent=`${pending}명 미응답 · 응답률 ${rate}%`;
+  const doneEl=$('responseDoneCount'); if(doneEl) doneEl.textContent=complete;
+  const pendingEl=$('responsePendingCount'); if(pendingEl) pendingEl.textContent=pending;
+  const rateEl=$('responseRateCount'); if(rateEl) rateEl.textContent=`${rate}%`;
+  const fillEl=$('responseFill'); if(fillEl) fillEl.style.width=`${rate}%`;
+  $('surveyStatus').textContent=`설문 ${surveyLabel()} · ${periodText()}`;
+  $('surveyStatus').className=`pill ${surveyLabel()==='진행 중'?'ok':surveyLabel()==='종료'?'danger':'warn'}`;
+  $('timeStatus').textContent=`갱신 ${formatShortTime(Date.now())}`;
+}
+function renderLogin(){
+  const loggedIn = !!currentUser;
+  document.body.classList.toggle('logged-in', loggedIn);
+  document.body.classList.toggle('logged-out', !loggedIn);
+  $('loginCard').classList.toggle('hide', loggedIn);
+  $('userCard').classList.toggle('hide', !loggedIn);
+  if(currentUser){
+    $('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':(currentUser.viewerOnly?' 조회전용':'')}`;
+    $('userOrg').textContent=`${currentUser.org} · ${currentUser.title||''}`;
+  }
+  $('adminPanel').classList.toggle('visible',!!currentUser?.admin);
+}
+
+function renderRanking(){
+  const box=$('ranking');
+  if(!canSeeRanking()){box.innerHTML='<div class="empty">관리자가 순위 공개 전으로 설정했습니다.</div>';return;}
+  const ranks=computeRanking(); const max=Math.max(1,...ranks.map(r=>r.score));
+  const visibleRanks = rankingExpanded ? ranks : ranks.slice(0,5);
+  const canOpen = !!currentUser?.admin;
+  const rows=visibleRanks.map((r,i)=>{
+    const tag = canOpen ? 'button' : 'div';
+    const attr = canOpen ? ` type="button" data-option="${r.id}"` : ' aria-label="통계 행" style="cursor:default"';
+    const pct = Math.max(3,r.score/max*100);
+    return `<${tag} class="rank-row ${i===0?'top1':i===1?'top2':i===2?'top3':''} ${!r.active?'inactive-dest':''}"${attr}>
+      <span class="rank-bg" style="width:${pct}%"></span>
+      <span class="rank-content"><span class="rank-num">${i+1}</span><span class="rank-title"><strong>${r.num}. ${escapeHtml(r.title)}</strong><span>1위 ${r.rankCounts[0]}명 · 2위 ${r.rankCounts[1]}명 · 3위 ${r.rankCounts[2]}명 · 4위 ${r.rankCounts[3]}명</span><span class="rank-meter"><span style="width:${pct}%"></span></span></span><span class="score">${r.score}<small>점</small></span></span>
+    </${tag}>`;
+  }).join('');
+  const toggle = ranks.length>5 ? `<button class="btn ghost rank-more" id="rankToggleBtn" type="button">${rankingExpanded?'접기':'전체 후보지 펼치기'}</button>` : '';
+  box.innerHTML=(rows || '<div class="empty">아직 저장된 투표가 없습니다.</div>') + toggle;
+}
+
+
+function optionHtml(selected, rank){
+  const opts = selectableDestinations();
+  return `<option value="">${rank}지망 선택</option>`+opts.map(d=>`<option value="${d.id}" ${selected===d.id?'selected':''}>${d.num}. ${escapeHtml(d.title)} ${d.subtitle?'- '+escapeHtml(d.subtitle):''}</option>`).join('');
+}
+
+
+function renderVotePanel(){
+  const labels=['1지망 10점','2지망 7점','3지망 5점','4지망 2점'];
+  const viewer = isViewerOnly();
+  const blockReason = voteBlockReason();
+  $('rankSelectors').innerHTML=labels.map((label,i)=>`<div class="select-row"><label for="rankSel${i+1}">${label}</label><select id="rankSel${i+1}" data-rankselect="${i+1}" ${viewer||!!blockReason?'disabled':''}>${optionHtml(selectedChoices[i],i+1)}</select></div>`).join('');
+  const rec=currentUser?votes[currentUser.id]:null;
+  const canInteract=!!currentUser && !viewer;
+  $('saveVoteBtn').disabled=!canInteract;
+  const showExtraVoteButtons = !!currentUser?.admin;
+  $('clearVoteBtn').classList.toggle('hide', !showExtraVoteButtons);
+  $('myVoteBtn').classList.toggle('hide', !showExtraVoteButtons);
+  $('clearVoteBtn').disabled=!canInteract;
+  $('myVoteBtn').disabled=!currentUser;
+  const fb=$('feedbackText');
+  if(fb){
+    fb.disabled=!canInteract || !!blockReason;
+    const saved=validChoices(rec)?(rec.feedback||''):feedbackText;
+    if(fb.value!==saved) fb.value=saved;
+    $('feedbackCount').textContent=`${fb.value.length} / 200자`;
+  }
+  const reasonBox=$('voteBlockedReason');
+  if(reasonBox){
+    reasonBox.classList.toggle('hide',!currentUser || !blockReason || viewer);
+    reasonBox.textContent=blockReason || '';
+  }
+  if(!currentUser){
+    $('myLastSave').textContent='로그인 후 투표할 수 있습니다.';
+  }else if(viewer){
+    $('myLastSave').textContent='조회 전용 계정입니다. 투표와 통계 집계에는 포함되지 않습니다.';
+  }else if(blockReason){
+    $('myLastSave').textContent=blockReason;
+  }else if(validChoices(rec)){
+    $('myLastSave').textContent=`마지막 저장: ${formatDateTime(rec.updatedAt)}`;
+  }else{
+    $('myLastSave').textContent='아직 저장된 내 투표가 없습니다.';
+  }
+}
+
+function destBadge(d){if(d.pdfStatus==='ready')return '<span class="badge">PDF 상세자료</span>';if(d.pdfStatus==='imageOnly')return '<span class="badge muted">이미지 소개자료</span>';return '<span class="badge red">간략 텍스트</span>';}
+function renderJump(){ $('jumpNav').innerHTML=''; }
+
+function renderDestinations(){
+  $('destList').innerHTML=publicDestinations().map(d=>{
+    const f=flightInfo(d);
+    const visual=d.image?`<a class="dest-img-link" href="${d.image}" target="_blank" rel="noopener"><img class="dest-img" src="${d.image}" alt="${escapeHtml(d.num+'. '+d.title)} 대표 이미지" loading="lazy" onerror="this.closest('.dest-img-link').outerHTML='<div class=&quot;text-hero&quot;><div><strong>이미지 준비중</strong><span>${escapeHtml(d.title)}</span></div></div>'"></a>`:`<div class="text-hero"><div><strong>텍스트 소개</strong><span>${escapeHtml(d.title)}</span></div></div>`;
+    const imgBtn=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">1장요약보기</a>`:'';
+    const pdfBtn=d.pdf?`<button class="btn" type="button" data-pdf-download="${d.id}">브로셔다운받기</button>`:'';
+    const activeMark='';
+    return `<details class="card dest-card" id="dest-${d.id}"><summary class="dest-summary"><span class="dest-summary-title"><strong>${d.num}. ${escapeHtml(d.title)}</strong><span>${escapeHtml(d.subtitle)}</span></span></summary><div class="dest-body">${visual}<div class="flight-box"><div class="flight-item"><b>직항/경유</b><span>${escapeHtml(f.type)}</span></div><div class="flight-item"><b>인천 기준 소요시간</b><span>${escapeHtml(f.time)}</span></div><div class="flight-item" style="grid-column:1/-1"><b>예시 항공</b><span>${escapeHtml(f.airlines||'확인 필요')}</span></div></div><p class="brief">${escapeHtml(d.brief)}</p><div class="badges"><span class="badge">${escapeHtml(d.duration)}</span><span class="badge muted">${escapeHtml(f.note)}</span>${activeMark}</div><div class="action-row"><button class="btn gold" type="button" data-open="${d.id}">간략일정</button>${imgBtn}${pdfBtn}</div></div></details>`;
+  }).join('');
+}
+
+function renderAdmin(){
+  if(!currentUser?.admin)return;
+  $('adminStart').value=settings.startAt||'';$('adminEnd').value=settings.endAt||'';
+  $('adminVoteOpen').checked=!!settings.voteOpen;
+  $('adminShowRanking').checked=!!settings.showRanking;$('adminShowVoters').checked=!!settings.showVoterNames;$('adminShowPending').checked=!!settings.showPendingNames;
+  // 후보지 선택 게시 기능 주석 처리: adminDestList는 더 이상 사용하지 않습니다.
+  renderAdminReport(false);
+}
+
+
+function renderPeople(){
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id]));
+  const pending=voterRoster().filter(u=>!validChoices(votes[u.id]));
+  if(!currentUser?.admin){
+    $('peopleStatus').innerHTML=`<details class="listbox" open><summary>응답 통계</summary><div class="people"><div class="person"><strong>선택 완료 ${complete.length}명</strong><small>미응답 ${pending.length}명 · 전체 ${voterRoster().length}명</small></div></div></details>`;
+    return;
+  }
+  const completeHtml=complete.map(u=>{
+    const rec=votes[u.id];
+    const choices=(rec.choices||[]).slice().sort((a,b)=>a.rank-b.rank);
+    return `<div class="person"><strong>${escapeHtml(u.name)}</strong><small>${escapeHtml(u.org)} · 저장 ${formatShortTime(rec.updatedAt)}</small><div class="tags">${choices.map(c=>`<span class="tag r${c.rank}">${c.rank}지망 ${destById(c.optionId)?.num}. ${escapeHtml(destById(c.optionId)?.shortTitle||destById(c.optionId)?.title||'')}</span>`).join('')}</div>${rec.feedback?`<small>피드백: ${escapeHtml(rec.feedback)}</small>`:''}</div>`;
+  }).join('');
+  const pendingHtml=pending.map(u=>`<div class="person"><strong>${escapeHtml(u.name)}</strong><small>${escapeHtml(u.org)} · ${escapeHtml(u.title||'')}</small></div>`).join('');
+  $('peopleStatus').innerHTML=`<details class="listbox" open><summary>선택 완료 ${complete.length}명</summary><div class="people">${completeHtml||'<div class="empty">아직 없습니다.</div>'}</div></details><details class="listbox" open><summary>미응답 ${pending.length}명</summary><div class="people">${pendingHtml||'<div class="empty">모두 응답했습니다.</div>'}</div></details>`;
+}
+
+
+function renderAdminReport(expanded=false){
+  const el=$('adminReport'); if(!el || !currentUser?.admin) return;
+  if(!expanded){el.innerHTML='';return;}
+  const ranks=computeRanking();
+  const rows=ranks.map((r,i)=>`<tr><td>${i+1}</td><td>${r.num}. ${escapeHtml(r.title)}</td><td><strong>${r.score}</strong></td><td>${r.rankCounts[0]}</td><td>${r.rankCounts[1]}</td><td>${r.rankCounts[2]}</td><td>${r.rankCounts[3]}</td></tr>`).join('');
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id])).length;
+  el.innerHTML=`<div class="notice">응답 ${complete}/${voterRoster().length}명 · 점수 기준: 1위 10점, 2위 7점, 3위 5점, 4위 2점</div><table class="report-table"><thead><tr><th>순위</th><th>후보지</th><th>점수</th><th>1위표</th><th>2위표</th><th>3위표</th><th>4위표</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderAll(){
+  renderLogin();
+  if(!currentUser) return;
+  if(!dataReady && !usingFirebase) return;
+  renderStatus();renderRanking();renderJump();renderDestinations();renderVotePanel();renderAdmin();renderPeople();
+}
+
+async function saveMyVote(){
+  if(!currentUser){alert('먼저 로그인해 주세요.');return;}
+  if(isViewerOnly()){alert('조회 전용 계정은 투표할 수 없습니다.');return;}
+  const reason=voteBlockReason();
+  if(reason){alert(reason);return;}
+  if(selectedChoices.some(v=>!v)){alert('1지망, 2지망, 3지망, 4지망을 모두 선택해 주세요.');return;}
+  if(new Set(selectedChoices).size!==4){alert('서로 다른 4개 후보를 선택해 주세요.');return;}
+  const fb=($('feedbackText')?.value||'').trim().slice(0,200);
+  const now=new Date().toISOString();
+  const choices=selectedChoices.map((id,i)=>({rank:i+1,optionId:id,points:POINTS[i]}));
+  const ok = await saveVoteRecord(currentUser.id,{memberId:currentUser.id,name:currentUser.name,org:currentUser.org,title:currentUser.title||'',choices,feedback:fb,updatedAt:now,updatedAtMs:Date.now()});
+  if(ok) toast(`저장 완료 · ${formatShortTime(now)}`);
+}
+
+
+function clearMySelection(){selectedChoices=[null,null,null,null];feedbackText='';if($('feedbackText'))$('feedbackText').value='';renderVotePanel();}
+
+function showMyVote(){if(!currentUser)return;const rec=votes[currentUser.id];if(!validChoices(rec)){alert('저장된 내 투표가 없습니다.');return;}showMemberVote(currentUser.id);}
+
+function showMemberVote(memberId){
+  const u=ROSTER.find(x=>x.id===memberId); const rec=votes[memberId]; if(!u||!validChoices(rec))return;
+  $('modalTitle').textContent=`${u.name} 님의 선택`;$('modalSub').textContent=`저장 시각 ${formatDateTime(rec.updatedAt)}`;
+  $('modalBody').innerHTML=`<div class="timeline">${rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>{const d=destById(c.optionId);return `<div class="day"><b>${c.rank}지망</b><span>${d?.num}. ${escapeHtml(d?.title)} <strong>${c.points}점</strong></span></div>`}).join('')}</div>${rec.feedback?`<div class="notice"><strong>피드백</strong><br>${escapeHtml(rec.feedback)}</div>`:''}`;
+  $('detailModal').classList.add('show');
+}
+
+
+function showVoteDetail(optionId){
+  if(!currentUser?.admin) return;
+  const d=destById(optionId);if(!d)return;const ranks=computeRanking();const row=ranks.find(r=>r.id===optionId)||d;
+  $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=`총 ${row.score||0}점 · 1위 ${row.rankCounts?.[0]||0}명 · 2위 ${row.rankCounts?.[1]||0}명 · 3위 ${row.rankCounts?.[2]||0}명 · 4위 ${row.rankCounts?.[3]||0}명`;
+  const groups=[1,2,3,4].map(rank=>{const voters=(row.voters?.[rank-1]||[]).sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));return `<details class="listbox" open><summary>${rank}지망 ${voters.length}명</summary><div class="people">${voters.map(v=>`<div class="person"><strong>${escapeHtml(v.name)}</strong><small>${escapeHtml(v.org||'')} · 투표 ${formatShortTime(v.updatedAt)}</small></div>`).join('')||'<div class="empty">없음</div>'}</div></details>`;}).join('');
+  $('modalBody').innerHTML=`<div class="people-wrap">${groups}</div>`;
+  $('detailModal').classList.add('show');
+}
+
+
+function showDestinationDetail(id){
+  const d=destById(id); if(!d)return; const f=flightInfo(d);
+  $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=d.subtitle;
+  const visual=d.image?`<img class="dest-img" src="${d.image}" alt="${escapeHtml(d.title)}" style="border-radius:16px;aspect-ratio:16/9;margin-bottom:10px" />`:`<div class="text-hero" style="border-radius:16px;margin-bottom:10px"><div><strong>${escapeHtml(d.title)}</strong><span>${escapeHtml(d.subtitle)}</span></div></div>`;
+  const imgBtns=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">1장요약보기</a>`:'';
+  const pdfBtns=d.pdf?`<button class="btn" type="button" data-pdf-download="${d.id}">브로셔다운받기</button>`:'';
+  $('modalBody').innerHTML=`${visual}<div class="flight-box"><div class="flight-item"><b>직항/경유</b><span>${escapeHtml(f.type)}</span></div><div class="flight-item"><b>인천 기준 소요시간</b><span>${escapeHtml(f.time)}</span></div><div class="flight-item" style="grid-column:1/-1"><b>예시 항공</b><span>${escapeHtml(f.airlines||'확인 필요')}</span></div></div><div class="badges"><span class="badge">${escapeHtml(d.duration)}</span><span class="badge muted">${escapeHtml(d.route)}</span></div><p class="brief">${escapeHtml(d.brief)}</p><div class="meta"><div class="meta-line"><b>연수목적</b> ${escapeHtml(d.objective)}</div><div class="meta-line"><b>계절·포인트</b> ${escapeHtml(d.season)}</div><div class="meta-line"><b>항공 참고</b> ${escapeHtml(f.note)}</div></div><div class="timeline">${d.days.map((x,i)=>`<div class="day"><b>Day ${i+1}</b><span>${escapeHtml(x)}</span></div>`).join('')}</div><div class="action-row">${imgBtns}${pdfBtns}</div>`;
+  $('detailModal').classList.add('show');
+}
+
+async function downloadBrochure(id){
+  const d=destById(id); if(!d || !d.pdf) return;
+  const filename=`${d.num}_${d.title}_브로셔.pdf`.replace(/[\/:*?"<>|]/g,'_');
+  try{
+    const res=await fetch(d.pdf,{cache:'no-store'});
+    if(!res.ok) throw new Error('PDF 응답 오류');
+    const blob=await res.blob();
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);
+    toast('브로셔 다운로드를 시작했습니다.');
+  }catch(err){
+    const a=document.createElement('a');
+    a.href=d.pdf;
+    a.download=filename;
+    a.target='_blank';
+    a.rel='noopener';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>a.remove(),0);
+    toast('브라우저 설정에 따라 새 창에서 열릴 수 있습니다.');
+  }
+}
+
+function exportCsv(){
+  const header=['연번','이름','소속기관','직위','응답여부','1지망','2지망','3지망','4지망','총점','피드백','저장시각'];
+  const rows=voterRoster().map(u=>{const rec=votes[u.id];const total=validChoices(rec)?rec.choices.reduce((sum,c)=>sum+Number(c.points||0),0):0;const row=[u.serial,u.name,u.org,u.title||'',validChoices(rec)?'완료':'미선택'];[0,1,2,3].forEach(i=>{const ch=validChoices(rec)?rec.choices.slice().sort((a,b)=>a.rank-b.rank)[i]:null;const d=ch?destById(ch.optionId):null;row.push(d?`${d.num}. ${d.title}`:'');});row.push(total,rec?.feedback||'',rec?.updatedAt?formatDateTime(rec.updatedAt):'');return row;});
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');downloadBlob('\ufeff'+csv,'2026_trip_vote_results.csv','text/csv;charset=utf-8');
+}
+
+
+function exportReportCsv(){
+  const ranks=computeRanking();
+  const header=['순위','후보번호','후보지','총점','1위표','2위표','3위표','4위표'];
+  const rows=ranks.map((r,i)=>[i+1,r.num,r.title,r.score,r.rankCounts[0],r.rankCounts[1],r.rankCounts[2],r.rankCounts[3]]);
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob('\ufeff'+csv,'2026_trip_vote_statistics_report.csv','text/csv;charset=utf-8');
+}
+
+function exportFeedbackCsv(){
+  const header=['연번','이름','소속기관','피드백','저장시각'];
+  const rows=voterRoster().map(u=>{const rec=votes[u.id];return [u.serial,u.name,u.org,rec?.feedback||'',rec?.updatedAt?formatDateTime(rec.updatedAt):''];});
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob('\ufeff'+csv,'2026_trip_vote_feedback.csv','text/csv;charset=utf-8');
+}
+
+function exportJson(){downloadBlob(JSON.stringify({settings,votes},null,2),'2026_trip_vote_backup.json','application/json;charset=utf-8');}
+
+// Events
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const name=normalizeName($('loginName').value),pin=$('loginPin').value.trim();if(!name||!/^[0-9]{4}$/.test(pin)){alert('이름과 휴대전화 뒤 4자리 숫자를 입력해 주세요.');return;}const candidates=ROSTER.filter(u=>normalizeName(u.name)===name);if(!candidates.length){alert('명단에서 이름을 찾지 못했습니다.');return;}let matched=null;for(const u of candidates){const hp=await hashPin(u.name,pin);if(hp===u.pinHash || (Array.isArray(u.altPinHashes)&&u.altPinHashes.includes(hp))){matched=u;break;}}if(!matched){alert('비밀번호가 일치하지 않습니다.');return;}currentUser=matched;sessionStorage.setItem('tripVoteCurrentUserIdV3',currentUser.id);const rec=votes[currentUser.id];selectedChoices=(currentUser.viewerOnly||!validChoices(rec))?[null,null,null,null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);feedbackText=validChoices(rec)?(rec.feedback||''):'';$('loginName').value='';$('loginPin').value='';renderAll();toast(`${currentUser.name}님 로그인`);});
+$('logoutBtn').addEventListener('click',()=>{currentUser=null;selectedChoices=[null,null,null,null];feedbackText='';sessionStorage.removeItem('tripVoteCurrentUserIdV3');renderAll();});
+$('rankSelectors').addEventListener('change',e=>{const s=e.target.closest('[data-rankselect]');if(!s)return;const i=Number(s.dataset.rankselect)-1,v=s.value||null;if(v&&selectedChoices.some((x,idx)=>idx!==i&&x===v)){alert('이미 다른 지망에 선택한 후보입니다.');renderVotePanel();return;}selectedChoices[i]=v;renderVotePanel();});
+$('feedbackText').addEventListener('input',e=>{feedbackText=e.target.value.slice(0,200);if(e.target.value!==feedbackText)e.target.value=feedbackText;$('feedbackCount').textContent=`${feedbackText.length} / 200자`;});
+$('voteBlockedReason').addEventListener('click',()=>{const r=voteBlockReason(); if(r) alert(r);});
+$('saveVoteBtn').addEventListener('click',saveMyVote);$('clearVoteBtn').addEventListener('click',clearMySelection);$('myVoteBtn').addEventListener('click',showMyVote);
+$('ranking').addEventListener('click',e=>{if(e.target.closest('#rankToggleBtn')){rankingExpanded=!rankingExpanded;renderRanking();return;}const row=e.target.closest('[data-option]');if(row && currentUser?.admin)showVoteDetail(row.dataset.option);});
+$('jumpNav').addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;document.getElementById('dest-'+b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});});
+$('destList').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)showDestinationDetail(b.dataset.open);const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
+$('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면을 갱신했습니다.');});
+$('modalBody').addEventListener('click',e=>{const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
+$('closeModal').addEventListener('click',()=>$('detailModal').classList.remove('show'));
+$('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')$('detailModal').classList.remove('show');});
+$('saveSettingsBtn').addEventListener('click',async()=>{if(!currentUser?.admin){alert('관리자만 설정할 수 있습니다.');return;}const ok=await saveSettings({startAt:$('adminStart').value,endAt:$('adminEnd').value,voteOpen:$('adminVoteOpen').checked,showRanking:$('adminShowRanking').checked,showVoterNames:true,showPendingNames:true});if(ok)toast('설정 저장 완료');});
+$('exportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportCsv();});$('exportJsonBtn').addEventListener('click',()=>{if(currentUser?.admin)exportJson();});$('exportReportBtn').addEventListener('click',()=>{if(currentUser?.admin)renderAdminReport(true);});$('exportReportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportReportCsv();});$('exportFeedbackCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportFeedbackCsv();});$('resetVotesBtn').addEventListener('click',async()=>{if(!currentUser?.admin)return;if(confirm('모든 투표를 초기화할까요?')){const ok=await resetVotes();if(ok)toast('투표를 초기화했습니다.');}});
+function restoreSession(){
+  const saved=sessionStorage.getItem('tripVoteCurrentUserIdV3');
+  if(saved){
+    currentUser=ROSTER.find(u=>u.id===saved)||null;
+    const rec=votes[currentUser?.id];
+    selectedChoices=(currentUser?.viewerOnly||!validChoices(rec))?[null,null,null,null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);
+    feedbackText=validChoices(rec)?(rec.feedback||''):'';
+  }
+}
+let booted=false;
+function bootstrap(){
+  if(booted) return;
+  booted=true;
+  restoreSession();
+  renderAll();
+  initStore();
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', bootstrap);
+}else{
+  bootstrap();
+}
+</script>
+</body>
+</html>

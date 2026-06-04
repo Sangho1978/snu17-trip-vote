@@ -15,7 +15,7 @@
   <div id="loginView" class="wrap login-box">
     <div class="card">
       <div class="brand" style="margin-bottom:18px"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="muted small">아이디는 성명, 초기 비밀번호는 모두 0000입니다.</div></div></div>
-      <div id="seedNotice" class="notice hide" style="margin-bottom:14px">Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.</div>
+      <div id="seedNotice" class="notice hide" style="margin-bottom:14px">데이터 연결 중입니다...</div>
       <div class="grid"><div><label for="loginName">아이디 / 성명</label><input id="loginName" autocomplete="username" placeholder="예: 한상호" /></div><div><label for="loginPin">비밀번호 4자리</label><input id="loginPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="0000" /></div><button id="loginBtn">로그인</button><p class="small">최초 로그인 후 새 4자리 비밀번호로 변경하세요.</p></div>
     </div>
   </div>
@@ -47,11 +47,219 @@
     const STOCKS=[['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['009150','삼성전기','KOSPI'],['028260','삼성물산','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['091990','셀트리온헬스케어','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['028300','HLB','KOSDAQ']].map(([code,name,market])=>({code,name,market,symbol:`${code}.KS`}));
 
     const state={user:null,members:{},picks:{},prices:{},settings:{},proofs:{}}; const $=id=>document.getElementById(id); const KRW=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:0}); const NUM=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2,minimumFractionDigits:2}); const paths={members:'moneyPlus/members',picks:'moneyPlus/picks',prices:'moneyPlus/prices',settings:'moneyPlus/settings',proofs:'moneyPlus/proofs'};
-    const sleep = ms => new Promise(r => setTimeout(r, ms)); // 딜레이 유틸리티
+    const sleep = ms => new Promise(r => setTimeout(r, ms)); 
 
     function safeKey(n){return String(n||'').trim().replace(/[.#$\[\]/]/g,'_')} function today(){return new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'})} function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} function isPin(v){return /^\d{4}$/.test(String(v||''))} function fmtDt(v){return v?new Date(v).toLocaleString('ko-KR',{hour12:false}):'-'} function norm(v){return String(v||'').toLowerCase().replace(/\s/g,'')} function normalizeSymbol(v){const s=String(v||'').trim().toUpperCase(); if(/^\d{6}$/.test(s)) return `${s}.KS`; if(/^\d{6}\.KS$/.test(s)) return s; return s} function codeFromSymbol(v){return normalizeSymbol(v).replace('.KS','')}
     function defaultSettings(){return{pickStartDate:today(),pickEndDate:today(),tradeStartDate:today(),tradeEndDate:'2026-08-28',marketOpenTime:'09:00',marketCloseTime:'15:30',locked:false,memo:'Money Plus 국내주식 리그입니다.',fines:{top3:0,r4to6:10000,r7to9:20000,r10to12:30000,r13plus:40000},updatedAt:Date.now()}}
     
     async function seed(){const root=ref(db); for(const m of INITIAL_MEMBERS){const k=safeKey(m.name), snap=await get(child(root,`${paths.members}/${k}`)); if(!snap.exists()) await set(ref(db,`${paths.members}/${k}`),{...m,pin:'0000',mustChangePin:true,active:true,createdAt:Date.now()}); else await update(ref(db,`${paths.members}/${k}`),{name:m.name,org:m.org,role:m.role,active:snap.val().active!==false});} const ss=await get(child(root,paths.settings)); if(!ss.exists()) await set(ref(db,paths.settings),defaultSettings())}
-    async function init(){const ms=await get(ref(db,paths.members)); if(!ms.exists()){$('seedNotice').classList.remove('hide'); await seed();} bindRealtime(); bindEvents(); const saved=localStorage.getItem('moneyPlusLoginName'); if(saved) $('loginName').value=saved}
-    function bindRealtime(){onValue(ref(db,paths.members),s=>{state.members=s.val()||{}; renderAll
+    
+    // 🔥 초기화 시 에러 감지 기능 대폭 강화
+    async function init(){
+      try {
+        $('seedNotice').textContent = '데이터 연결 확인 중...';
+        const ms=await get(ref(db,paths.members)); 
+        if(!ms.exists()){
+          $('seedNotice').textContent = 'Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.';
+          $('seedNotice').classList.remove('hide'); 
+          await seed();
+        } 
+        $('seedNotice').classList.add('hide'); // 정상 연결 시 알림 숨김
+        bindRealtime(); 
+        bindEvents(); 
+        const saved=localStorage.getItem('moneyPlusLoginName'); 
+        if(saved) $('loginName').value=saved;
+      } catch (e) {
+        console.error('Firebase DB Error:', e);
+        // 권한 거부(Permission Denied) 에러 발생 시 확실하게 안내
+        const errorMsg = '데이터베이스 접근 권한이 없습니다.\nFirebase 콘솔에서 [Realtime Database] -> [규칙] 탭을 확인하여 읽기/쓰기 권한(true)을 부여해주세요.\n\n상세 오류: ' + e.message;
+        $('seedNotice').classList.remove('hide');
+        $('seedNotice').classList.replace('notice', 'error');
+        $('seedNotice').textContent = errorMsg;
+        alert(errorMsg);
+      }
+    }
+    
+    function bindRealtime(){onValue(ref(db,paths.members),s=>{state.members=s.val()||{}; renderAll()}); onValue(ref(db,paths.picks),s=>{state.picks=s.val()||{}; renderAll()}); onValue(ref(db,paths.prices),s=>{state.prices=s.val()||{}; renderAll()}); onValue(ref(db,paths.settings),s=>{const val=s.val()||{}; state.settings={...defaultSettings(),...val,fines:{...defaultSettings().fines,...(val.fines||{})}}; renderAll()}); onValue(ref(db,paths.proofs),s=>{state.proofs=s.val()||{}; renderAll()})}
+    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';$('pickName').focus()}; $('pickMemo').oninput=()=>{$('memoCount').textContent=$('pickMemo').value.length}; $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=refreshAllPrices; $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; $('seedBtn').onclick=async()=>{await seed();alert('회원 데이터를 보정했습니다.')}}
+    
+    // 🔥 로그인 함수 안전성 강화
+    async function login(){
+      try {
+        const name=$('loginName').value.trim(), pin=$('loginPin').value.trim(), key=safeKey(name);
+        // 권한이 없어 state.members가 비어있을 경우 예외 처리
+        if (Object.keys(state.members).length === 0) {
+           return alert('데이터를 불러오지 못했습니다. Firebase 규칙이 만료되었는지 확인해주세요.');
+        }
+        
+        const m = state.members[key]; 
+        if(!name||!pin)return alert('성명과 비밀번호를 입력하세요.'); 
+        if(!m||m.active===false)return alert('등록된 회원 이름이 아닙니다.'); 
+        if(String(m.pin)!==pin)return alert('비밀번호가 맞지 않습니다. 초기 비밀번호는 0000입니다.'); 
+        
+        state.user={key,...m}; 
+        localStorage.setItem('moneyPlusLoginName',name); 
+        $('loginView').classList.add('hide'); $('appView').classList.remove('hide'); $('loginPin').value=''; 
+        if(m.mustChangePin)$('passwordChangePanel').classList.remove('hide'); 
+        renderAll();
+
+        if(state.picks[state.user.key]) {
+           fetchSingleStockPrice(state.user.key).catch(e => console.log('백그라운드 갱신 실패:', e));
+        }
+      } catch(e) {
+        alert('로그인 처리 중 에러가 발생했습니다: ' + e.message);
+      }
+    }
+
+    async function saveNewPin(){const p1=$('newPin').value.trim(),p2=$('newPin2').value.trim(); if(!isPin(p1))return alert('숫자 4자리로 입력하세요.'); if(p1!==p2)return alert('확인 비밀번호가 다릅니다.'); await update(ref(db,`${paths.members}/${state.user.key}`),{pin:p1,mustChangePin:false,updatedAt:Date.now()}); $('passwordChangePanel').classList.add('hide'); alert('변경되었습니다.')}
+    function isAdmin(){return state.user&&state.user.role==='admin'} function showTab(t){if(t==='admin'&&!isAdmin())return; document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); ['ranking','pick','proof','admin'].forEach(x=>$(`${x}Tab`).classList.toggle('hide',x!==t))}
+    function status(){const s=state.settings,n=new Date(),ps=new Date(`${s.pickStartDate}T00:00:00+09:00`),pe=new Date(`${s.pickEndDate}T23:59:59+09:00`),ts=new Date(`${s.tradeStartDate}T${s.marketOpenTime||'09:00'}:00+09:00`),te=new Date(`${s.tradeEndDate}T${s.marketCloseTime||'15:30'}:00+09:00`); if(s.locked||n>te)return'종료/고정'; if(n>=ps&&n<=pe)return'선택기간'; if(n<ps)return'선택전'; if(n>=ts&&n<=te)return'경쟁중'; return'대기'} function canPick(){return ['선택기간','선택전'].includes(status())&&!state.settings.locked} function hideOthers(){return ['선택기간','선택전'].includes(status())} function fine(rank){const f=state.settings.fines||defaultSettings().fines; if(rank<=3)return +f.top3||0; if(rank<=6)return +f.r4to6||10000; if(rank<=9)return +f.r7to9||20000; if(rank<=12)return +f.r10to12||30000; return +f.r13plus||40000} function rankIcon(r){return r===1?'👑 1':r===2?'🥈 2':r===3?'🥉 3':'📈 '+r} function mny(v){return v?KRW.format(+v):'-'} function pct(v){return v===null||v===undefined||Number.isNaN(+v)?'-':NUM.format(+v)+'%'}
+    
+    function getRows(){return Object.entries(state.members).filter(([,m])=>m.active!==false).map(([key,m])=>{const p=state.picks[key]||{}, pr=state.prices[key]||{}, base=+pr.startOpen||0, end=+(state.settings.locked&&pr.finalClose?pr.finalClose:(pr.finalClose||pr.currentPrice||0)), ret=base&&end?((end-base)/base*100):null, prev=(+pr.prevClose&&+pr.currentPrice)?((+pr.currentPrice-(+pr.prevClose))/(+pr.prevClose)*100):null; return{key,m,p,pr,ret,prev,end}}).sort((a,b)=>a.ret===null&&b.ret===null?(a.m.name||'').localeCompare(b.m.name||'ko'):a.ret===null?1:b.ret===null?-1:b.ret-a.ret)}
+    
+    function renderAll(){if(!state.user)return; $('currentUserLabel').textContent=state.user.name; $('roleLabel').textContent=isAdmin()?'관리자':'회원'; $('adminTabBtn').classList.toggle('hide',!isAdmin()); $('lastFetchedLabel').textContent=state.settings.lastFetchedAt?fmtDt(state.settings.lastFetchedAt):'-'; renderRanking(); renderPick(); renderProofs(); renderAdmin()}
+    function renderRanking(){const s=state.settings, st=status(); $('pickPeriodLabel').textContent=`${s.pickStartDate}~${s.pickEndDate}`; $('tradePeriodLabel').textContent=`${s.tradeStartDate} ${s.marketOpenTime}~${s.tradeEndDate} ${s.marketCloseTime}`; $('statusLabel').textContent=st; $('memoText').textContent=s.memo||''; $('hiddenPickNotice').classList.toggle('hide',!hideOthers()); $('rankingLockedNotice').classList.toggle('hide',st!=='종료/고정'); renderFines(); const body=$('rankingBody'), mob=$('mobileRanking'), list=getRows(); body.innerHTML=''; mob.innerHTML=''; list.forEach((r,i)=>{const rank=i+1, show=!hideOthers()||isAdmin()||r.key===state.user.key, ff=fine(rank), stock=show&&r.p.name, tr=document.createElement('tr'); tr.className=rank<=3?`rank${rank}`:''; const reason=stock?`<div class="org">${esc(r.p.symbol||'')}</div><div class="reason">${esc(r.p.memo||'-')}</div>`:'<span class="masked muted">비공개/미등록</span>'; tr.innerHTML=`<td><span class="rank">${rankIcon(rank)}</span></td><td><div class="member-name">${esc(r.m.name)}</div><div class="org">${esc(r.m.org||'-')}</div></td><td>${stock?`<b>${esc(r.p.name)}</b>${reason}`:reason}</td><td>${mny(r.pr.startOpen)}</td><td>${mny(r.end)}</td><td class="${r.ret>=0?'good':'bad'}">${pct(r.ret)}</td><td class="${r.prev>=0?'good':'bad'}">${pct(r.prev)}</td><td class="money ${ff?'fine':'fine0'}">${KRW.format(ff)}원</td><td class="small muted">${r.pr.fetchedAt?fmtDt(r.pr.fetchedAt):'-'}</td>`; body.appendChild(tr); const card=document.createElement('div'); card.className='rank-card'; card.innerHTML=`<div class="rank-head"><div><b>${rankIcon(rank)}위 · ${esc(r.m.name)}</b><div class="org">${esc(r.m.org||'-')}</div></div><div class="money ${ff?'fine':'fine0'}">벌금 ${KRW.format(ff)}원</div></div><div class="rank-stock">${stock?`<b>${esc(r.p.name)}</b><div class="org">${esc(r.p.symbol||'')}</div><div class="reason">추천 사유: ${esc(r.p.memo||'-')}</div>`:'<span class="muted">비공개/미등록</span>'}</div><div class="metric-grid"><div class="metric"><div class="label">시초가(시가)</div><div class="value">${mny(r.pr.startOpen)}</div></div><div class="metric"><div class="label">현재가(종가)</div><div class="value">${mny(r.end)}</div></div><div class="metric"><div class="label">수익률</div><div class="value ${r.ret>=0?'good':'bad'}">${pct(r.ret)}</div></div><div class="metric"><div class="label">전일대비</div><div class="value ${r.prev>=0?'good':'bad'}">${pct(r.prev)}</div></div></div><div class="small muted" style="margin-top:8px">수집: ${r.pr.fetchedAt?fmtDt(r.pr.fetchedAt):'-'}</div>`; mob.appendChild(card)})}
+    function renderFines(){const f=state.settings.fines||defaultSettings().fines; $('fineSummary').innerHTML=`<span class="pill">1~3등 <strong>${KRW.format(f.top3)}원</strong></span><span class="pill">4~6등 <strong>${KRW.format(f.r4to6)}원</strong></span><span class="pill">7~9등 <strong>${KRW.format(f.r7to9)}원</strong></span><span class="pill">10~12등 <strong>${KRW.format(f.r10to12)}원</strong></span><span class="pill">13등 이하 <strong>${KRW.format(f.r13plus)}원</strong></span>`}
+    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?'종목 선택/수정이 가능합니다. 추천 사유는 1,000자 이내입니다.':'현재는 종목 선택/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>$(id).disabled=!ok); const p=state.picks[state.user.key]||{}; $('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||''; $('memoCount').textContent=($('pickMemo').value||'').length}
+    function renderProofs(){const box=$('proofList'); box.innerHTML=''; const list=[]; Object.entries(state.proofs||{}).forEach(([mk,items])=>Object.entries(items||{}).forEach(([id,it])=>list.push({memberKey:mk,id,...it}))); list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); if(!list.length){box.innerHTML='<p>아직 인증 이미지가 없습니다.</p>';return} list.forEach(it=>{const m=state.members[it.memberKey]||{}, p=state.picks[it.memberKey]||{}, src=it.dataUrl||it.url||'', div=document.createElement('div'); div.className='proof-card'; div.innerHTML=`<a href="${esc(src)}" target="_blank"><img src="${esc(src)}" alt="인증 이미지"></a><div><b>${esc(m.name||it.memberName||'-')}</b><div class="small muted">${esc(p.name||'-')} ${esc(p.symbol||'')}</div><div class="reason">추천 사유: ${esc(p.memo||'-')}</div><div class="small muted">인증 설명: ${esc(it.memo||'-')}</div><div class="small muted">${fmtDt(it.createdAt)} · ${esc(it.storageMode||'DB image')}</div></div>${isAdmin()||it.memberKey===state.user.key?`<button class="danger small" data-del="${esc(it.memberKey)}|${esc(it.id)}">삭제</button>`:''}`; box.appendChild(div)}); box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('삭제할까요?'))return; const [mk,id]=b.dataset.del.split('|'); await remove(ref(db,`${paths.proofs}/${mk}/${id}`))})}
+    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickStartDate').value=s.pickStartDate||''; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('adminMemo').value=s.memo||''; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
+    async function searchStock(){const q=$('stockKeyword').value.trim(); if(!q)return alert('검색어를 입력하세요.'); const box=$('searchResults'); box.innerHTML='<p>검색 중...</p>'; let results=localSearch(q); results=results.map(x=>({name:x.name||x.stockName||x.korName||'', code:String(x.code||x.symbol||'').replace('.KS','').trim(), market:x.market||x.marketName||''})).filter(x=>/^\d{6}$/.test(x.code)); box.innerHTML=''; if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 6자리 종목코드를 직접 입력하세요.</div>';return} results.slice(0,100).forEach(it=>{const d=document.createElement('div'); d.className='result-item'; d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted">${esc(it.code)} · ${esc(it.market||'KOSPI/KOSDAQ')}</div></div><button>선택</button>`; d.querySelector('button').onclick=()=>{$('pickName').value=it.name;$('pickSymbol').value=normalizeSymbol(it.code)}; box.appendChild(d)})}
+    function localSearch(q){const s=norm(q); return STOCKS.filter(x=>norm(x.name).includes(s)||x.code.includes(s)||norm(x.symbol).includes(s))}
+    
+    async function savePick(){
+      if(!canPick())return alert('현재는 종목 선택 기간이 아닙니다.'); 
+      const name=$('pickName').value.trim(), sym=normalizeSymbol($('pickSymbol').value), memo=$('pickMemo').value.trim(); 
+      if(memo.length>1000)return alert('추천 사유는 1,000자 이내로 입력하세요.'); 
+      if(!name||!/^\d{6}\.KS$/.test(sym))return alert('코스피/코스닥 국내 주식만 등록 가능합니다. 예: 066570 또는 066570.KS'); 
+      
+      const btn = $('savePickBtn');
+      btn.disabled = true;
+      btn.textContent = '저장 및 가격 연동 중...';
+
+      try {
+        await set(ref(db,`${paths.picks}/${state.user.key}`),{memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:'KRX_STOCK',memo,updatedAt:Date.now()}); 
+        await fetchSingleStockPrice(state.user.key);
+        alert('종목 저장 및 가격 연동이 성공적으로 완료되었습니다.');
+      } catch (err) {
+        console.error(err);
+        alert('종목은 저장되었으나 자동 가격 연동에 실패했습니다.\n추후 랭킹 탭에서 [새로고침]을 눌러주세요.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '내 종목 저장';
+        showTab('ranking');
+      }
+    }
+
+    async function saveSettings(){if(!isAdmin())return; await update(ref(db,paths.settings),{pickStartDate:$('pickStartDate').value,pickEndDate:$('pickEndDate').value,tradeStartDate:$('tradeStartDate').value,tradeEndDate:$('tradeEndDate').value,marketOpenTime:$('marketOpenTime').value||'09:00',marketCloseTime:$('marketCloseTime').value||'15:30',memo:$('adminMemo').value.trim(),fines:{top3:+$('fineTop3').value||0,r4to6:+$('fine4to6').value||10000,r7to9:+$('fine7to9').value||20000,r10to12:+$('fine10to12').value||30000,r13plus:+$('fine13plus').value||40000},updatedAt:Date.now()}); alert('저장되었습니다.')}
+    async function setLocked(v){if(!isAdmin())return; await update(ref(db,paths.settings),{locked:v,lockedAt:v?Date.now():null}); alert(v?'고정했습니다.':'고정을 해제했습니다.')} async function resetPins(){if(!isAdmin())return;if(!confirm('전체 비밀번호를 0000으로 초기화할까요?'))return; const u={}; Object.keys(state.members).forEach(k=>{u[`${paths.members}/${k}/pin`]='0000';u[`${paths.members}/${k}/mustChangePin`]=true}); await update(ref(db),u); alert('초기화했습니다.')}
+    
+    async function refreshAllPrices() {
+      const keys = Object.keys(state.picks || {});
+      if(keys.length === 0) return alert('선택된 종목이 없습니다.');
+      
+      let ok = 0, fail = 0;
+      $('refreshBtn').textContent = '동기화 중... 잠시 대기';
+      $('refreshBtn').disabled = true;
+
+      for (const k of keys) {
+        try {
+          await fetchSingleStockPrice(k);
+          ok++;
+        } catch (e) {
+          console.error(`회원키 [${k}] 가격 갱신 에러:`, e);
+          fail++;
+        }
+        await sleep(500); 
+      }
+      
+      await update(ref(db, paths.settings), { lastFetchedAt: Date.now() });
+      $('refreshBtn').textContent = '전체 가격 새로고침';
+      $('refreshBtn').disabled = false;
+      alert(`가격 일괄 동기화 완료!\n✅ 성공: ${ok}건\n❌ 실패: ${fail}건`);
+    }
+
+    async function fetchSingleStockPrice(memberKey, retryCount = 0) {
+      const p = state.picks[memberKey];
+      const s = state.settings;
+      if (!p) return;
+      const code = p.code || codeFromSymbol(p.symbol);
+
+      if (!s.tradeStartDate) throw new Error('관리자: 경쟁 시작일이 설정되지 않았습니다.');
+      if (!s.tradeEndDate) throw new Error('관리자: 경쟁 종료일(8월 28일 등)이 설정되지 않았습니다.');
+
+      const formatYYYYMMDD = (dateObj) => {
+        const offset = dateObj.getTimezoneOffset() * 60000;
+        return new Date(dateObj.getTime() - offset).toISOString().split('T')[0].replace(/-/g, '');
+      };
+
+      const startObj = new Date(s.tradeStartDate);
+      const endObj = new Date(s.tradeEndDate);
+      const todayObj = new Date();
+
+      const startDateStr = formatYYYYMMDD(startObj);
+      const targetEndDateObj = (todayObj > endObj) ? endObj : todayObj;
+      const endDateStr = formatYYYYMMDD(targetEndDateObj);
+
+      const naverUrl = `https://api.finance.naver.com/siseJson.naver?symbol=${code}&requestType=1&startTime=${startDateStr}&endTime=${endDateStr}&timeframe=day&_cb=${Date.now()}`;
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(naverUrl)}`;
+
+      try {
+        const response = await fetch(proxyUrl, { cache: 'no-store' });
+        if (!response.ok) throw new Error('프록시 통신 에러 (상태코드: ' + response.status + ')');
+        
+        const proxyData = await response.json();
+        if (!proxyData || !proxyData.contents) throw new Error('데이터 응답 내용이 비어있습니다.');
+        
+        let dataArray;
+        try {
+          dataArray = new Function("return " + proxyData.contents.trim())();
+        } catch (e) {
+          throw new Error('네이버 데이터 파싱 실패: ' + e.message);
+        }
+
+        if (!Array.isArray(dataArray) || dataArray.length < 2) {
+          throw new Error('해당 기간에 거래된 주식 데이터가 없습니다.');
+        }
+
+        const startData = dataArray[1];
+        const currentData = dataArray[dataArray.length - 1];
+        const prevData = dataArray.length > 2 ? dataArray[dataArray.length - 2] : startData;
+
+        const startOpen = parseInt(startData[1], 10);      
+        const currentPrice = parseInt(currentData[4], 10); 
+        const prevClose = parseInt(prevData[4], 10);       
+
+        if (isNaN(startOpen) || isNaN(currentPrice)) {
+          throw new Error('가격을 숫자로 변환할 수 없습니다.');
+        }
+
+        const isFinished = (todayObj > endObj) || s.locked;
+
+        await set(ref(db, `${paths.prices}/${memberKey}`), {
+          name: p.name,
+          symbol: p.symbol,
+          startOpen: startOpen,
+          currentPrice: currentPrice,
+          prevClose: prevClose,
+          finalClose: isFinished ? currentPrice : null,
+          fetchedAt: new Date().toISOString(),
+          source: 'naver-finance-proxy-v3',
+          basis: '기간 시초가 기준 (네이버 일봉)'
+        });
+      } catch (error) {
+        if (retryCount < 2) {
+          console.warn(`[${p.name}] 가격 연동 실패, 재시도 중... (${retryCount + 1}/2)`);
+          await sleep(1000); 
+          return fetchSingleStockPrice(memberKey, retryCount + 1);
+        }
+        throw error; 
+      }
+    }
+
+    async function uploadProof(){if(!state.user)return; const files=[...($('proofFile').files||[])], memo=$('proofMemo').value.trim(); if(!files.length)return alert('사진을 선택하세요.'); $('uploadProgress').classList.remove('hide'); let ok=0; for(let i=0;i<files.length;i++){const f=files[i]; $('uploadStatus').textContent=`${i+1}/${files.length} 압축/저장 중`; $('uploadProgress').querySelector('span').style.width=`${Math.round(i/files.length*100)}%`; const dataUrl=await compress(f,1280,.72); const item=push(ref(db,`${paths.proofs}/${state.user.key}`)); await set(item,{memberName:state.user.name,memo,dataUrl,createdAt:Date.now(),originalName:f.name,storageMode:'Realtime DB compressed image'}); ok++} $('uploadProgress').querySelector('span').style.width='100%'; $('proofFile').value=''; $('proofMemo').value=''; $('uploadStatus').textContent=`${ok}장 저장 완료`; alert(`${ok}장 저장되었습니다.`)}
+    function compress(file,max=1280,quality=.72){return new Promise((resolve,reject)=>{const reader=new FileReader(), img=new Image(); reader.onerror=reject; img.onerror=reject; reader.onload=()=>{img.onload=()=>{let w=img.width,h=img.height,ratio=Math.min(1,max/Math.max(w,h)); w=Math.round(w*ratio); h=Math.round(h*ratio); const c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); resolve(c.toDataURL('image/jpeg',quality))}; img.src=reader.result}; reader.readAsDataURL(file)})}
+    
+    init().catch(e=>{console.error(e); alert('초기화 오류: Firebase 연결에 실패했습니다. 인터넷 연결이나 규칙 설정을 확인해주세요.')});
+  </script>
+</body>
+</html>

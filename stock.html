@@ -6,34 +6,40 @@
   <title>Money Plus 국내주식 리그</title>
   <style>
     :root{--bg:#08111f;--card:#111827;--card2:#172033;--line:#334155;--text:#f8fafc;--muted:#94a3b8;--accent:#38bdf8;--red:#ef4444;--blue:#3b82f6;--yellow:#f59e0b;--green:#22c55e;--radius:18px;--shadow:0 16px 40px rgba(0,0,0,.32)}
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} body{margin:0;background:linear-gradient(145deg,#020617,#0f172a 55%,#111827);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;font-size:15px} button,input,textarea,select{font:inherit} button{border:0;border-radius:14px;padding:12px 15px;background:var(--accent);color:#082f49;font-weight:900;cursor:pointer;min-height:44px} button.secondary{background:#334155;color:var(--text)} button.danger{background:#ef4444;color:#fff} button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)} button:disabled{opacity:.48;cursor:not-allowed} input,textarea,select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#020617;color:var(--text);outline:none;min-height:46px} textarea{min-height:104px;resize:vertical;line-height:1.45} label{display:block;color:var(--muted);font-size:13px;margin:0 0 7px}.wrap{width:min(1280px,100%);margin:0 auto;padding:18px}.hide{display:none!important}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:16px;background:radial-gradient(circle at 30% 25%,#facc15,#fb923c 36%,#38bdf8 76%);display:grid;place-items:center;color:#020617;font-size:25px;font-weight:1000;box-shadow:var(--shadow)}h1{font-size:22px;margin:0}h2{font-size:18px;margin:0 0 13px}p{color:var(--muted);line-height:1.55}.card{background:rgba(17,24,39,.92);border:1px solid rgba(148,163,184,.18);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}.grid{display:grid;gap:14px}.grid.two{grid-template-columns:1.15fr .85fr}.grid.three{grid-template-columns:repeat(3,1fr)}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#0f172a;border:1px solid var(--line);color:var(--muted);font-size:13px}.pill strong{color:var(--text)}.notice{padding:12px 13px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fde68a;border-radius:14px}.info{padding:12px 13px;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.35);color:#bae6fd;border-radius:14px}.error{padding:12px 13px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fecaca;border-radius:14px}.muted{color:var(--muted)}.small{font-size:12px}.good{color:var(--red)}.bad{color:var(--blue)}.fine0{color:#86efac}.fine{color:#fca5a5}.money{font-weight:1000}.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#0b1220 70%,rgba(11,18,32,0));padding-top:4px}.tabs button{background:#1f2937;color:var(--text);white-space:nowrap;flex:0 0 auto}.tabs button.active{background:var(--accent);color:#082f49}.table-wrap{overflow:auto;max-height:70vh}table{width:100%;border-collapse:collapse}th,td{padding:11px 9px;border-bottom:1px solid rgba(148,163,184,.15);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#111827;color:var(--muted);font-size:12px;z-index:2}.member-name{font-weight:900}.org{color:var(--muted);font-size:12px;margin-top:3px}.reason{white-space:pre-wrap;line-height:1.45;color:#cbd5e1;max-width:280px}.rank{font-size:21px;display:inline-block;min-width:44px}.rank1{background:linear-gradient(90deg,rgba(250,204,21,.20),transparent)}.rank2{background:linear-gradient(90deg,rgba(203,213,225,.16),transparent)}.rank3{background:linear-gradient(90deg,rgba(251,146,60,.16),transparent)}.mobile-list{display:none}.rank-card{background:#020617;border:1px solid var(--line);border-radius:18px;padding:14px}.rank-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.rank-stock{margin-top:10px;padding:11px;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:14px}.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.metric{background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:13px;padding:9px}.metric .label{font-size:11px;color:var(--muted);margin-bottom:3px}.metric .value{font-weight:900}.search-results{display:grid;gap:8px;max-height:430px;overflow:auto}.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;background:#020617;border:1px solid var(--line);border-radius:14px}.proof-list{display:grid;gap:10px}.proof-card{display:grid;grid-template-columns:104px 1fr auto;gap:12px;align-items:start;padding:10px;background:#020617;border:1px solid var(--line);border-radius:16px}.proof-card img{width:104px;height:104px;object-fit:cover;border-radius:13px;background:#111827}.progress{height:8px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress span{display:block;width:0%;height:100%;background:var(--accent)}.login-box{max-width:460px;margin:8vh auto}.charline{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}.divider{height:1px;background:rgba(148,163,184,.18);margin:14px 0}.bottom-safe{padding-bottom:env(safe-area-inset-bottom)}
-    @media(max-width:860px){body{font-size:14px}.wrap{padding:12px 10px 18px}.top{align-items:flex-start;flex-direction:column}.brand{width:100%}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.grid.two,.grid.three{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.card{padding:14px;border-radius:16px}.desktop-table{display:none}.mobile-list{display:grid;gap:10px}.tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}.tabs button{padding:10px 12px;min-height:42px}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.proof-card{grid-template-columns:88px 1fr}.proof-card img{width:88px;height:88px}.proof-card button{grid-column:1/-1}.toolbar button{flex:1 1 auto}.result-item{align-items:flex-start}.result-item button{flex:0 0 auto}.pill{font-size:12px;padding:7px 9px}.login-box{margin:5vh auto}.reason{max-width:none}}
-    @media(max-width:390px){.metric-grid{grid-template-columns:1fr}.proof-card{grid-template-columns:76px 1fr}.proof-card img{width:76px;height:76px}.top .toolbar{width:100%}.top .toolbar button{flex:1}}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} body{margin:0;background:linear-gradient(145deg,#020617,#0f172a 55%,#111827);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;font-size:15px} button,input,textarea,select{font:inherit} button{border:0;border-radius:14px;padding:12px 15px;background:var(--accent);color:#082f49;font-weight:900;cursor:pointer;min-height:44px} button.secondary{background:#334155;color:var(--text)} button.danger{background:#ef4444;color:#fff} button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)} button:disabled{opacity:.48;cursor:not-allowed} input,textarea,select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#020617;color:var(--text);outline:none;min-height:46px} textarea{min-height:104px;resize:vertical;line-height:1.45} label{display:block;color:var(--muted);font-size:13px;margin:0 0 7px}.wrap{width:min(1280px,100%);margin:0 auto;padding:18px}.hide{display:none!important}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:16px;background:radial-gradient(circle at 30% 25%,#facc15,#fb923c 36%,#38bdf8 76%);display:grid;place-items:center;color:#020617;font-size:25px;font-weight:1000;box-shadow:var(--shadow)}h1{font-size:22px;margin:0}h2{font-size:18px;margin:0 0 13px}p{color:var(--muted);line-height:1.55}.card{background:rgba(17,24,39,.92);border:1px solid rgba(148,163,184,.18);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}.grid{display:grid;gap:14px}.grid.two{grid-template-columns:1.15fr .85fr}.grid.three{grid-template-columns:repeat(3,1fr)}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#0f172a;border:1px solid var(--line);color:var(--muted);font-size:13px}.pill strong{color:var(--text)}.notice{padding:12px 13px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fde68a;border-radius:14px}.info{padding:12px 13px;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.35);color:#bae6fd;border-radius:14px}.error{padding:12px 13px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fecaca;border-radius:14px}.muted{color:var(--muted)}.small{font-size:12px}.good{color:var(--red)}.bad{color:var(--blue)}.fine0{color:#86efac}.fine{color:#fca5a5}.money{font-weight:1000}.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#0b1220 70%,rgba(11,18,32,0));padding-top:4px}.tabs button{background:#1f2937;color:var(--text);white-space:nowrap;flex:0 0 auto}.tabs button.active{background:var(--accent);color:#082f49}.table-wrap{overflow:auto;max-height:70vh}table{width:100%;border-collapse:collapse}th,td{padding:11px 9px;border-bottom:1px solid rgba(148,163,184,.15);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#111827;color:var(--muted);font-size:12px;z-index:2}.member-name{font-weight:900}.org{color:var(--muted);font-size:12px;margin-top:3px}.reason{white-space:pre-wrap;line-height:1.45;color:#cbd5e1;max-width:none;width:100%}.stock-cell{min-width:360px}.stock-reason{margin-top:8px;padding:9px 10px;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.14);border-radius:12px}.registered-line{margin-top:6px;color:var(--muted);font-size:11px}.price-basis{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.35}.rank{font-size:21px;display:inline-block;min-width:44px}.rank1{background:linear-gradient(90deg,rgba(250,204,21,.20),transparent)}.rank2{background:linear-gradient(90deg,rgba(203,213,225,.16),transparent)}.rank3{background:linear-gradient(90deg,rgba(251,146,60,.16),transparent)}.mobile-list{display:none}.rank-card{background:#020617;border:1px solid var(--line);border-radius:18px;padding:14px}.rank-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.rank-stock{margin-top:10px;padding:11px;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:14px}.reason-row td{background:rgba(15,23,42,.55);padding-top:8px;padding-bottom:12px}.full-reason{display:block;width:100%;white-space:pre-wrap;line-height:1.45;color:#cbd5e1}.full-reason .meta{display:block;color:var(--muted);font-size:11px;margin-top:5px}.mobile-compact-line{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}.mobile-stock-title{font-size:15px;font-weight:900}.mobile-reason{margin-top:8px;white-space:pre-wrap;line-height:1.4;font-size:13px;color:#cbd5e1;max-height:5.6em;overflow:auto}.basis-chip{display:inline-block;margin-top:5px;color:#94a3b8;font-size:11px}
+    /* 모바일 UI 1줄(4열) 최적화 */
+    .metric-grid{display:flex;justify-content:space-between;gap:4px;margin-top:10px;text-align:center}
+    .metric{flex:1;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:7px 3px;min-width:0}
+    .metric .label{font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:-0.5px}
+    .metric .value{font-weight:900;font-size:12px;letter-spacing:-0.4px;word-break:keep-all}
+    .search-results{display:grid;gap:8px;max-height:430px;overflow:auto}.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;background:#020617;border:1px solid var(--line);border-radius:14px}.proof-list{display:grid;gap:10px}.proof-card{display:grid;grid-template-columns:104px 1fr auto;gap:12px;align-items:start;padding:10px;background:#020617;border:1px solid var(--line);border-radius:16px}.proof-card img{width:104px;height:104px;object-fit:cover;border-radius:13px;background:#111827}.progress{height:8px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress span{display:block;width:0%;height:100%;background:var(--accent)}.login-box{max-width:460px;margin:8vh auto}.charline{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}.divider{height:1px;background:rgba(148,163,184,.18);margin:14px 0}.bottom-safe{padding-bottom:env(safe-area-inset-bottom)}
+    @media(max-width:860px){body{font-size:13px}.wrap{padding:12px 10px 18px}.top{align-items:flex-start;flex-direction:column}.brand{width:100%}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.grid.two,.grid.three{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.card{padding:14px;border-radius:16px}.desktop-table{display:none}.mobile-list{display:grid;gap:10px}.tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}.tabs button{padding:10px 12px;min-height:42px}.proof-card{grid-template-columns:88px 1fr}.proof-card img{width:88px;height:88px}.proof-card button{grid-column:1/-1}.toolbar button{flex:1 1 auto}.result-item{align-items:flex-start}.result-item button{flex:0 0 auto}.pill{font-size:12px;padding:7px 9px}.login-box{margin:5vh auto}.reason{max-width:none}}
+    @media(max-width:390px){.proof-card{grid-template-columns:76px 1fr}.proof-card img{width:76px;height:76px}.top .toolbar{width:100%}.top .toolbar button{flex:1}}
   </style>
 </head>
 <body class="bottom-safe">
   <div id="loginView" class="wrap login-box">
     <div class="card">
       <div class="brand" style="margin-bottom:18px"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="muted small">아이디는 성명, 초기 비밀번호는 모두 0000입니다.</div></div></div>
-      <div id="seedNotice" class="notice hide" style="margin-bottom:14px">Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.</div>
+      <div id="seedNotice" class="notice hide" style="margin-bottom:14px">데이터 연결 중입니다...</div>
       <div class="grid"><div><label for="loginName">아이디 / 성명</label><input id="loginName" autocomplete="username" placeholder="예: 한상호" /></div><div><label for="loginPin">비밀번호 4자리</label><input id="loginPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="0000" /></div><button id="loginBtn">로그인</button><p class="small">최초 로그인 후 새 4자리 비밀번호로 변경하세요.</p></div>
     </div>
   </div>
 
   <div id="appView" class="wrap hide">
-    <div class="top"><div class="brand"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="toolbar" style="margin-top:7px"><span class="pill">접속자 <strong id="currentUserLabel"></strong></span><span class="pill">역할 <strong id="roleLabel"></strong></span><span class="pill">데이터 <strong id="lastFetchedLabel">-</strong></span></div></div></div><div class="toolbar"><button class="secondary" id="changePinBtn">비밀번호 변경</button><button class="ghost" id="logoutBtn">로그아웃</button></div></div>
+    <div class="top"><div class="brand"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="toolbar" style="margin-top:7px"><span class="pill">접속자 <strong id="currentUserLabel"></strong></span><span class="pill">역할 <strong id="roleLabel"></strong></span></div></div></div><div class="toolbar"><button class="secondary" id="changePinBtn">비밀번호 변경</button><button class="ghost" id="logoutBtn">로그아웃</button></div></div>
 
     <div id="passwordChangePanel" class="card hide" style="margin-bottom:14px"><h2>비밀번호 변경</h2><div class="notice" style="margin-bottom:12px">4자리 숫자로 변경해야 계속 사용할 수 있습니다.</div><div class="row"><div><label for="newPin">새 비밀번호 4자리</label><input id="newPin" type="password" inputmode="numeric" maxlength="4" placeholder="예: 1234" /></div><div><label for="newPin2">새 비밀번호 확인</label><input id="newPin2" type="password" inputmode="numeric" maxlength="4" placeholder="한 번 더 입력" /></div><button id="savePinBtn">저장</button></div></div>
 
     <div class="tabs"><button data-tab="ranking" class="active">랭킹</button><button data-tab="pick">종목 선택</button><button data-tab="proof">인증 조회/업로드</button><button data-tab="admin" id="adminTabBtn" class="hide">관리자</button></div>
 
-    <section id="rankingTab"><div class="grid two"><div class="card"><div class="toolbar" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">랭킹 조회</h2><button id="refreshBtn">가격 새로고침</button></div><div class="toolbar" style="margin-bottom:12px"><span class="pill">선택기간 <strong id="pickPeriodLabel">-</strong></span><span class="pill">경쟁기간 <strong id="tradePeriodLabel">-</strong></span><span class="pill">상태 <strong id="statusLabel">-</strong></span></div><div id="hiddenPickNotice" class="info hide" style="margin-bottom:12px">종목 선택 기간에는 다른 회원의 선택 종목과 추천 사유가 보이지 않습니다.</div><div id="rankingLockedNotice" class="notice hide" style="margin-bottom:12px">경쟁 종료 후에는 종료일 장마감 종가 기준으로 순위를 고정하세요.</div><div class="table-wrap desktop-table"><table><thead><tr><th>순위</th><th>회원</th><th>종목/추천 사유</th><th>시초가</th><th>현재/종료가</th><th>수익률</th><th>전일대비</th><th>벌금</th><th>수집시각</th></tr></thead><tbody id="rankingBody"></tbody></table></div><div id="mobileRanking" class="mobile-list"></div></div><div class="card"><h2>벌금 규칙</h2><div id="fineSummary" class="toolbar"></div><div class="divider"></div><h2>운영 메모</h2><p id="memoText"></p><div class="notice">시초가는 “랭킹 경쟁 시작일 정규장 시초가” 기준입니다. HTML 단독으로는 한국거래소 시초가를 직접 가져올 수 없어서 가격 API 연결이 필요합니다.</div></div></div></section>
+    <section id="rankingTab"><div class="grid two"><div class="card"><div class="toolbar" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">랭킹 조회</h2><button id="refreshBtn">전체 가격 새로고침</button></div><div class="toolbar" style="margin-bottom:12px"><span class="pill">선택마감 <strong id="pickPeriodLabel">-</strong></span><span class="pill">경쟁기간 <strong id="tradePeriodLabel">-</strong></span><span class="pill">상태 <strong id="statusLabel">-</strong></span></div><div id="hiddenPickNotice" class="info hide" style="margin-bottom:12px">종목 선택 기간에는 다른 회원의 선택 종목과 선정 사유가 보이지 않습니다.</div><div id="rankingLockedNotice" class="notice hide" style="margin-bottom:12px">경쟁 종료 후에는 종료일 장마감 종가 기준으로 순위가 고정됩니다.</div><div class="table-wrap desktop-table"><table><thead><tr><th>순위</th><th>회원</th><th>종목/선정 사유</th><th>시초가(시가)</th><th>현재가(종가)</th><th>수익률</th><th>전일대비</th><th>벌금</th><th>종목등록일</th></tr></thead><tbody id="rankingBody"></tbody></table></div><div id="mobileRanking" class="mobile-list"></div></div><div class="card"><h2>벌금 규칙</h2><div id="fineSummary" class="toolbar"></div><div class="divider"></div><h2>운영 메모</h2><p id="memoText"></p><div class="notice">화면을 켜두면 30초마다 자동으로 가격이 갱신됩니다.<br/>* <b>종목을 다시 선택하면 새 종목의 선택일 시초가로 바뀝니다.</b><br/>* <b>경쟁 시작 전:</b> 종목 선택일의 시초가 기준<br/>* <b>경쟁 시작 후:</b> 랭킹 시작일 정규장 시초가로 자동 변경/저장</div></div></div></section>
 
-    <section id="pickTab" class="hide"><div class="grid two"><div class="card"><h2>내 종목 선택</h2><div id="pickWindowNotice" class="notice" style="margin-bottom:12px"></div><div class="grid"><div><label for="stockKeyword">코스피/코스닥 주식 검색</label><input id="stockKeyword" placeholder="예: LG, LG전자, 삼성, 현대" /></div><div class="toolbar"><button id="searchStockBtn">검색</button><button class="secondary" id="manualInputBtn">직접 입력</button></div><div id="searchResults" class="search-results"></div></div></div><div class="card"><h2>선택된 종목</h2><div class="grid"><div><label for="pickName">종목명</label><input id="pickName" placeholder="LG전자" /></div><div><label for="pickSymbol">종목코드</label><input id="pickSymbol" placeholder="066570 또는 066570.KS" /></div><div><label for="pickMemo">추천 사유 1,000자 이내</label><textarea id="pickMemo" maxlength="1000" placeholder="추천 이유를 적어주세요. 경쟁 시작 후 종목 밑에 공개됩니다."></textarea><div class="charline"><span id="memoCount">0</span>/1000</div></div><button id="savePickBtn">내 종목 저장</button></div></div></div></section>
+    <section id="pickTab" class="hide"><div class="grid two"><div class="card"><h2>내 종목 선택</h2><div id="pickWindowNotice" class="notice" style="margin-bottom:12px"></div><div class="grid"><div><label for="stockKeyword">코스피/코스닥 주식 검색</label><input id="stockKeyword" placeholder="예: LG, LG전자, 삼성, 현대" /></div><div class="toolbar"><button id="searchStockBtn">검색</button><button class="secondary" id="manualInputBtn">직접 입력</button></div><div id="searchResults" class="search-results"></div></div></div><div class="card"><h2>선택된 종목</h2><div class="grid"><div><label for="pickName">종목명</label><input id="pickName" placeholder="LG전자" /></div><div><label for="pickSymbol">종목코드</label><input id="pickSymbol" placeholder="066570 또는 066570.KS" /></div><div><label for="pickMemo">선정 사유 1,000자 이내</label><textarea id="pickMemo" maxlength="1000" placeholder="선정 이유를 적어주세요. 경쟁 시작 후 종목 밑에 공개됩니다."></textarea><div class="charline"><span id="memoCount">0</span>/1000</div></div><button id="savePickBtn">내 종목 저장</button></div></div></div></section>
 
-    <section id="proofTab" class="hide"><div class="grid two"><div class="card"><h2>실제구매 및 수익률 인증 업로드</h2><div class="info" style="margin-bottom:12px">모바일 사진을 1280px 이하 JPG로 자동 압축해서 저장합니다. Storage가 막혀도 Realtime Database에 압축 이미지로 저장됩니다.</div><div class="grid"><div><label for="proofFile">사진 선택 / 카메라 촬영</label><input id="proofFile" type="file" accept="image/*" multiple /></div><div><label for="proofMemo">설명</label><textarea id="proofMemo" maxlength="1000" placeholder="예: 실제 매수 내역, 보유 화면, 수익률 화면 등"></textarea></div><button id="uploadProofBtn">인증 이미지 저장</button><div id="uploadStatus" class="small muted"></div><div class="progress hide" id="uploadProgress"><span></span></div></div></div><div class="card"><h2>전체 인증 조회</h2><div id="proofList" class="proof-list"></div></div></div></section>
+    <section id="proofTab" class="hide"><div class="grid two"><div class="card"><h2>실제구매 및 수익률 인증 업로드</h2><div class="info" style="margin-bottom:12px">모바일 사진을 1280px 이하 JPG로 자동 압축해서 저장합니다.</div><div class="grid"><div><label for="proofFile">사진 선택 / 카메라 촬영</label><input id="proofFile" type="file" accept="image/*" multiple /></div><div><label for="proofMemo">설명</label><textarea id="proofMemo" maxlength="1000" placeholder="예: 실제 매수 내역, 보유 화면, 수익률 화면 등"></textarea></div><button id="uploadProofBtn">인증 이미지 저장</button><div id="uploadStatus" class="small muted"></div><div class="progress hide" id="uploadProgress"><span></span></div></div></div><div class="card"><h2>전체 인증 조회</h2><div id="proofList" class="proof-list"></div></div></div></section>
 
-    <section id="adminTab" class="hide"><div class="grid two"><div class="card"><h2>관리자 설정</h2><div class="grid"><h2>종목 선택 기간</h2><div class="row"><div><label for="pickStartDate">선택 시작일 00:00</label><input id="pickStartDate" type="date" /></div><div><label for="pickEndDate">선택 종료일 24:00</label><input id="pickEndDate" type="date" /></div></div><h2>랭킹 경쟁 기간</h2><div class="row"><div><label for="tradeStartDate">경쟁 시작일 장시작</label><input id="tradeStartDate" type="date" /></div><div><label for="tradeEndDate">경쟁 종료일 장마감</label><input id="tradeEndDate" type="date" /></div></div><div class="row"><div><label for="marketOpenTime">장시작 시간</label><input id="marketOpenTime" type="time" value="09:00" /></div><div><label for="marketCloseTime">장마감 시간</label><input id="marketCloseTime" type="time" value="15:30" /></div></div><div><label for="apiBaseUrl">국내주식 가격 API 주소</label><input id="apiBaseUrl" placeholder="예: https://asia-northeast3-프로젝트.cloudfunctions.net/stocks" /><p class="small">필수: /quote가 startOpen, currentPrice, prevClose를 반환해야 합니다. 오늘이 경쟁 시작일이면 startOpen은 오늘 정규장 시초가여야 합니다.</p></div><h2>벌금 설정</h2><div class="grid three"><div><label for="fineTop3">1~3등</label><input id="fineTop3" type="number" step="10000" value="0" /></div><div><label for="fine4to6">4~6등</label><input id="fine4to6" type="number" step="10000" value="10000" /></div><div><label for="fine7to9">7~9등</label><input id="fine7to9" type="number" step="10000" value="20000" /></div><div><label for="fine10to12">10~12등</label><input id="fine10to12" type="number" step="10000" value="30000" /></div><div><label for="fine13plus">13등 이하</label><input id="fine13plus" type="number" step="10000" value="40000" /></div></div><div><label for="adminMemo">공지/운영 메모</label><textarea id="adminMemo"></textarea></div><div class="toolbar"><button id="saveSettingsBtn">설정 저장</button><button class="secondary" id="lockRankingBtn">순위 고정</button><button class="secondary" id="unlockRankingBtn">고정 해제</button><button class="danger" id="resetPinsBtn">비번 0000 초기화</button></div></div></div><div class="card"><h2>회원 관리</h2><div class="toolbar" style="margin-bottom:12px"><button id="seedBtn">초기 회원 보정</button></div><div id="memberAdminList" class="proof-list"></div></div></div></section>
+    <section id="adminTab" class="hide"><div class="grid two"><div class="card"><h2>관리자 설정</h2><div class="grid"><h2>랭킹 경쟁 기간 (이 기간 전까지만 종목 등록 가능)</h2><div class="row"><div><label for="pickEndDate">선택 마감일 (기본: 2026-06-11)</label><input id="pickEndDate" type="date" /></div></div><div class="row"><div><label for="tradeStartDate">경쟁 시작일 (기본: 2026-06-12)</label><input id="tradeStartDate" type="date" /></div><div><label for="tradeEndDate">경쟁 종료일 (기본: 2026-08-28)</label><input id="tradeEndDate" type="date" /></div></div><div class="row"><div><label for="marketOpenTime">장시작 시간</label><input id="marketOpenTime" type="time" value="09:00" /></div><div><label for="marketCloseTime">장마감 시간</label><input id="marketCloseTime" type="time" value="15:30" /></div></div><h2>벌금 설정</h2><div class="grid three"><div><label for="fineTop3">1~3등</label><input id="fineTop3" type="number" step="10000" value="0" /></div><div><label for="fine4to6">4~6등</label><input id="fine4to6" type="number" step="10000" value="10000" /></div><div><label for="fine7to9">7~9등</label><input id="fine7to9" type="number" step="10000" value="20000" /></div><div><label for="fine10to12">10~12등</label><input id="fine10to12" type="number" step="10000" value="30000" /></div><div><label for="fine13plus">13등 이하</label><input id="fine13plus" type="number" step="10000" value="40000" /></div></div><div><label for="adminMemo">공지/운영 메모</label><textarea id="adminMemo"></textarea></div><div class="toolbar"><button id="saveSettingsBtn">설정 저장</button><button class="secondary" id="lockRankingBtn">순위 고정</button><button class="secondary" id="unlockRankingBtn">고정 해제</button><button class="danger" id="resetPinsBtn">비번 0000 초기화</button></div></div></div><div class="card"><h2>회원 관리</h2><div class="toolbar" style="margin-bottom:12px"><button id="seedBtn">초기 회원 보정</button></div><div id="memberAdminList" class="proof-list"></div></div></div></section>
   </div>
 
   <script type="module">
@@ -43,43 +49,330 @@
     const FIREBASE_CONFIG = { apiKey:"AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng", authDomain:"snu17-trip-vote.firebaseapp.com", databaseURL:"https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app", projectId:"snu17-trip-vote", storageBucket:"snu17-trip-vote.firebasestorage.app", messagingSenderId:"1043680927852", appId:"1:1043680927852:web:98b6916873cda945d63849", measurementId:"G-MTF99DNV7M" };
     const app = initializeApp(FIREBASE_CONFIG); const db = getDatabase(app);
 
-    const INITIAL_MEMBERS=[{name:'한상호',org:'',role:'admin'},{name:'곽영은',org:'한국부동산원',role:'member'},{name:'김수정',org:'한국소비자원',role:'member'},{name:'김태균',org:'농협중앙회',role:'member'},{name:'김해영',org:'한국농어촌공사',role:'member'},{name:'김현교',org:'국립공원공단',role:'member'},{name:'류준호',org:'한국전력공사',role:'member'},{name:'문철웅',org:'한국전력공사',role:'member'},{name:'박상환',org:'한국인터넷진흥원',role:'member'},{name:'변태윤',org:'국가철도공단',role:'member'},{name:'김윤정',org:'서울대',role:'member'},{name:'신명진',org:'한국서부발전',role:'member'},{name:'윤선아',org:'강원랜드',role:'member'},{name:'이승민',org:'농협중앙회',role:'member'},{name:'이주훈',org:'한국산업기술기획평가원',role:'member'},{name:'정장식',org:'한국환경공단',role:'member'},{name:'정형모',org:'한국농어촌공사',role:'member'},{name:'최미숙',org:'한국철도공사',role:'member'}];
-
-    const STOCKS=[
-      ['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['009150','삼성전기','KOSPI'],['028260','삼성물산','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],
-      ['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['051915','LG화학우','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['003555','LG우','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['051905','LG생활건강우','KOSPI'],['058850','KTcs','KOSPI'],['037560','LG헬로비전','KOSPI'],
-      ['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['009540','HD한국조선해양','KOSPI'],['010620','HD현대미포','KOSPI'],['329180','HD현대중공업','KOSPI'],
-      ['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['091990','셀트리온헬스케어','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['028300','HLB','KOSDAQ'],['035900','JYP Ent.','KOSDAQ'],['041510','에스엠','KOSDAQ'],['122870','와이지엔터테인먼트','KOSDAQ'],['058470','리노공업','KOSDAQ'],['039030','이오테크닉스','KOSDAQ'],['000250','삼천당제약','KOSDAQ'],['214150','클래시스','KOSDAQ'],['145020','휴젤','KOSDAQ']
-    ].map(([code,name,market])=>({code,name,market,symbol:`${code}.KS`}));
+    // 김윤정 회원 기관명(한국수자원공사) 반영 완료
+    const INITIAL_MEMBERS=[{name:'한상호',org:'',role:'admin'},{name:'곽영은',org:'한국부동산원',role:'member'},{name:'김수정',org:'한국소비자원',role:'member'},{name:'김태균',org:'농협중앙회',role:'member'},{name:'김해영',org:'한국농어촌공사',role:'member'},{name:'김현교',org:'국립공원공단',role:'member'},{name:'류준호',org:'한국전력공사',role:'member'},{name:'문철웅',org:'한국전력공사',role:'member'},{name:'박상환',org:'한국인터넷진흥원',role:'member'},{name:'변태윤',org:'국가철도공단',role:'member'},{name:'김윤정',org:'한국수자원공사',role:'member'},{name:'신명진',org:'한국서부발전',role:'member'},{name:'윤선아',org:'강원랜드',role:'member'},{name:'이승민',org:'농협중앙회',role:'member'},{name:'이주훈',org:'한국산업기술기획평가원',role:'member'},{name:'정장식',org:'한국환경공단',role:'member'},{name:'정형모',org:'한국농어촌공사',role:'member'},{name:'최미숙',org:'한국철도공사',role:'member'}];
+    const STOCKS=[['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['009150','삼성전기','KOSPI'],['028260','삼성물산','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['091990','셀트리온헬스케어','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['028300','HLB','KOSDAQ']].map(([code,name,market])=>({code,name,market,symbol:`${code}.KS`}));
 
     const state={user:null,members:{},picks:{},prices:{},settings:{},proofs:{}}; const $=id=>document.getElementById(id); const KRW=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:0}); const NUM=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2,minimumFractionDigits:2}); const paths={members:'moneyPlus/members',picks:'moneyPlus/picks',prices:'moneyPlus/prices',settings:'moneyPlus/settings',proofs:'moneyPlus/proofs'};
+    const sleep = ms => new Promise(r => setTimeout(r, ms)); 
+
+    function kstYMD(value){
+      const d = value ? new Date(value) : new Date();
+      return d.toLocaleDateString('sv-SE', { timeZone:'Asia/Seoul' });
+    }
+    function kstDateObjFromYMD(ymd){
+      return new Date(`${ymd}T00:00:00+09:00`);
+    }
+    function toYYYYMMDD(dateObj){
+      return kstYMD(dateObj).replace(/-/g, '');
+    }
+    function toYMDHyphen(dateObj){
+      return kstYMD(dateObj);
+    }
+    function parseNaverSiseText(text){
+      const cleaned = String(text || '').trim().replace(/^\s*callback\(/, '').replace(/\);?\s*$/, '');
+      const arr = new Function('return ' + cleaned)();
+      if(!Array.isArray(arr) || arr.length < 2) throw new Error('네이버 일봉 데이터가 비어 있습니다.');
+      return arr;
+    }
+    async function fetchTextWithProxy(url){
+      const encoded = encodeURIComponent(url);
+      const candidates = [
+        { kind:'allorigins-raw', url:`https://api.allorigins.win/raw?url=${encoded}` },
+        { kind:'allorigins-get', url:`https://api.allorigins.win/get?url=${encoded}` }
+      ];
+      let lastError;
+      for(const c of candidates){
+        try{
+          const res = await fetch(c.url, { cache:'no-store' });
+          if(!res.ok) throw new Error(`${c.kind} HTTP ${res.status}`);
+          if(c.kind === 'allorigins-get'){
+            const json = await res.json();
+            if(!json || !json.contents) throw new Error(`${c.kind} 빈 응답`);
+            return json.contents;
+          }
+          const text = await res.text();
+          if(!text) throw new Error(`${c.kind} 빈 응답`);
+          return text;
+        }catch(e){
+          lastError = e;
+          console.warn('가격 프록시 실패:', c.kind, e);
+        }
+      }
+      throw lastError || new Error('가격 프록시 전체 실패');
+    }
+    function buildStockPriceBasis(p, s){
+      const now = new Date();
+      const tradeStart = new Date(`${s.tradeStartDate}T00:00:00+09:00`);
+      const tradeEnd = new Date(`${s.tradeEndDate}T23:59:59+09:00`);
+      const beforeStart = now < tradeStart;
+      const selectedAt = p.selectedAt || p.updatedAt || Date.now();
+      const selectedYMD = kstYMD(selectedAt);
+      const startDate = beforeStart ? selectedYMD : s.tradeStartDate;
+      const todayYMD = kstYMD(now);
+      const endDate = now > tradeEnd ? s.tradeEndDate : todayYMD;
+      const startObj = kstDateObjFromYMD(startDate);
+      const endObj = kstDateObjFromYMD(endDate);
+      const basis = beforeStart ? '임시: 종목 등록일 시초가' : '확정: 경쟁 시작일 시초가';
+      return { beforeStart, basis, startObj, endObj, startDate, endDate, selectedYMD, isFinished: now > tradeEnd || !!s.locked };
+    }
+
     function safeKey(n){return String(n||'').trim().replace(/[.#$\[\]/]/g,'_')} function today(){return new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'})} function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} function isPin(v){return /^\d{4}$/.test(String(v||''))} function fmtDt(v){return v?new Date(v).toLocaleString('ko-KR',{hour12:false}):'-'} function norm(v){return String(v||'').toLowerCase().replace(/\s/g,'')} function normalizeSymbol(v){const s=String(v||'').trim().toUpperCase(); if(/^\d{6}$/.test(s)) return `${s}.KS`; if(/^\d{6}\.KS$/.test(s)) return s; return s} function codeFromSymbol(v){return normalizeSymbol(v).replace('.KS','')}
-    function defaultSettings(){return{pickStartDate:today(),pickEndDate:today(),tradeStartDate:today(),tradeEndDate:today(),marketOpenTime:'09:00',marketCloseTime:'15:30',locked:false,apiBaseUrl:'',memo:'Money Plus 국내주식 리그입니다.',fines:{top3:0,r4to6:10000,r7to9:20000,r10to12:30000,r13plus:40000},updatedAt:Date.now()}}
+    
+    // 기본 세팅: 선택마감 6/11, 시작일 6/12, 종료일 8/28
+    function defaultSettings(){return{pickEndDate:'2026-06-11',tradeStartDate:'2026-06-12',tradeEndDate:'2026-08-28',marketOpenTime:'09:00',marketCloseTime:'15:30',locked:false,memo:'Money Plus 국내주식 리그입니다.',fines:{top3:0,r4to6:10000,r7to9:20000,r10to12:30000,r13plus:40000},updatedAt:Date.now()}}
+    
     async function seed(){const root=ref(db); for(const m of INITIAL_MEMBERS){const k=safeKey(m.name), snap=await get(child(root,`${paths.members}/${k}`)); if(!snap.exists()) await set(ref(db,`${paths.members}/${k}`),{...m,pin:'0000',mustChangePin:true,active:true,createdAt:Date.now()}); else await update(ref(db,`${paths.members}/${k}`),{name:m.name,org:m.org,role:m.role,active:snap.val().active!==false});} const ss=await get(child(root,paths.settings)); if(!ss.exists()) await set(ref(db,paths.settings),defaultSettings())}
-    async function init(){const ms=await get(ref(db,paths.members)); if(!ms.exists()){$('seedNotice').classList.remove('hide'); await seed();} bindRealtime(); bindEvents(); const saved=localStorage.getItem('moneyPlusLoginName'); if(saved) $('loginName').value=saved}
+    
+    async function init(){
+      try {
+        $('seedNotice').textContent = '데이터 연결 확인 중...';
+        const ms=await get(ref(db,paths.members)); 
+        if(!ms.exists()){
+          $('seedNotice').textContent = 'Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.';
+          $('seedNotice').classList.remove('hide'); 
+          await seed();
+        } 
+        $('seedNotice').classList.add('hide'); 
+        bindRealtime(); 
+        bindEvents(); 
+        const saved=localStorage.getItem('moneyPlusLoginName'); 
+        if(saved) $('loginName').value=saved;
+
+        // 🔥 30초마다 자동 갱신 (관리자 로그인 시에만 작동하여 네이버 API 차단 방지)
+        setInterval(() => {
+          if (isAdmin() && !state.settings.locked) {
+            refreshAllPrices(true); // silent = true
+          }
+        }, 30000);
+
+      } catch (e) {
+        console.error('Firebase DB Error:', e);
+        const errorMsg = '데이터베이스 접근 권한이 없습니다.\nFirebase 콘솔에서 [Realtime Database] -> [규칙] 탭을 확인하여 읽기/쓰기 권한(true)을 부여해주세요.\n\n상세 오류: ' + e.message;
+        $('seedNotice').classList.remove('hide');
+        $('seedNotice').classList.replace('notice', 'error');
+        $('seedNotice').textContent = errorMsg;
+        alert(errorMsg);
+      }
+    }
+    
     function bindRealtime(){onValue(ref(db,paths.members),s=>{state.members=s.val()||{}; renderAll()}); onValue(ref(db,paths.picks),s=>{state.picks=s.val()||{}; renderAll()}); onValue(ref(db,paths.prices),s=>{state.prices=s.val()||{}; renderAll()}); onValue(ref(db,paths.settings),s=>{const val=s.val()||{}; state.settings={...defaultSettings(),...val,fines:{...defaultSettings().fines,...(val.fines||{})}}; renderAll()}); onValue(ref(db,paths.proofs),s=>{state.proofs=s.val()||{}; renderAll()})}
-    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';$('pickName').focus()}; $('pickMemo').oninput=()=>{$('memoCount').textContent=$('pickMemo').value.length}; $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=refreshAllPrices; $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; $('seedBtn').onclick=async()=>{await seed();alert('회원 데이터를 보정했습니다.')}}
-    async function login(){const name=$('loginName').value.trim(), pin=$('loginPin').value.trim(), key=safeKey(name), m=state.members[key]; if(!name||!pin)return alert('성명과 비밀번호를 입력하세요.'); if(!m||m.active===false)return alert('등록된 회원 이름이 아닙니다.'); if(String(m.pin)!==pin)return alert('비밀번호가 맞지 않습니다. 초기 비밀번호는 0000입니다.'); state.user={key,...m}; localStorage.setItem('moneyPlusLoginName',name); $('loginView').classList.add('hide'); $('appView').classList.remove('hide'); $('loginPin').value=''; if(m.mustChangePin)$('passwordChangePanel').classList.remove('hide'); renderAll()}
+    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';$('pickName').focus()}; $('pickMemo').oninput=()=>{$('memoCount').textContent=$('pickMemo').value.length}; $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=()=>refreshAllPrices(false); $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; $('seedBtn').onclick=async()=>{await seed();alert('회원 데이터를 보정했습니다.')}}
+    
+    async function login(){
+      try {
+        const name=$('loginName').value.trim(), pin=$('loginPin').value.trim(), key=safeKey(name);
+        if (Object.keys(state.members).length === 0) {
+           return alert('데이터를 불러오지 못했습니다. Firebase 규칙이 만료되었는지 확인해주세요.');
+        }
+        const m = state.members[key]; 
+        if(!name||!pin)return alert('성명과 비밀번호를 입력하세요.'); 
+        if(!m||m.active===false)return alert('등록된 회원 이름이 아닙니다.'); 
+        if(String(m.pin)!==pin)return alert('비밀번호가 맞지 않습니다. 초기 비밀번호는 0000입니다.'); 
+        
+        state.user={key,...m}; 
+        localStorage.setItem('moneyPlusLoginName',name); 
+        $('loginView').classList.add('hide'); $('appView').classList.remove('hide'); $('loginPin').value=''; 
+        if(m.mustChangePin)$('passwordChangePanel').classList.remove('hide'); 
+        renderAll();
+
+        if(state.picks[state.user.key]) {
+           fetchSingleStockPrice(state.user.key).catch(e => console.log('백그라운드 갱신 실패:', e));
+        }
+      } catch(e) {
+        alert('로그인 처리 중 에러가 발생했습니다: ' + e.message);
+      }
+    }
+
     async function saveNewPin(){const p1=$('newPin').value.trim(),p2=$('newPin2').value.trim(); if(!isPin(p1))return alert('숫자 4자리로 입력하세요.'); if(p1!==p2)return alert('확인 비밀번호가 다릅니다.'); await update(ref(db,`${paths.members}/${state.user.key}`),{pin:p1,mustChangePin:false,updatedAt:Date.now()}); $('passwordChangePanel').classList.add('hide'); alert('변경되었습니다.')}
     function isAdmin(){return state.user&&state.user.role==='admin'} function showTab(t){if(t==='admin'&&!isAdmin())return; document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); ['ranking','pick','proof','admin'].forEach(x=>$(`${x}Tab`).classList.toggle('hide',x!==t))}
-    function status(){const s=state.settings,n=new Date(),ps=new Date(`${s.pickStartDate}T00:00:00+09:00`),pe=new Date(`${s.pickEndDate}T23:59:59+09:00`),ts=new Date(`${s.tradeStartDate}T${s.marketOpenTime||'09:00'}:00+09:00`),te=new Date(`${s.tradeEndDate}T${s.marketCloseTime||'15:30'}:00+09:00`); if(s.locked||n>te)return'종료/고정'; if(n>=ps&&n<=pe)return'선택기간'; if(n<ps)return'선택전'; if(n>=ts&&n<=te)return'경쟁중'; return'대기'} function canPick(){return ['선택기간','선택전'].includes(status())&&!state.settings.locked} function hideOthers(){return ['선택기간','선택전'].includes(status())} function fine(rank){const f=state.settings.fines||defaultSettings().fines; if(rank<=3)return +f.top3||0; if(rank<=6)return +f.r4to6||10000; if(rank<=9)return +f.r7to9||20000; if(rank<=12)return +f.r10to12||30000; return +f.r13plus||40000} function rankIcon(r){return r===1?'👑 1':r===2?'🥈 2':r===3?'🥉 3':'📈 '+r} function mny(v){return v?KRW.format(+v):'-'} function pct(v){return v===null||v===undefined||Number.isNaN(+v)?'-':NUM.format(+v)+'%'}
+    
+    function status(){
+      const s=state.settings, n=new Date(), 
+            ts=new Date(`${s.tradeStartDate}T00:00:00+09:00`), 
+            te=new Date(`${s.tradeEndDate}T23:59:59+09:00`); 
+      if(s.locked||n>te) return '종료/고정'; 
+      if(n<ts) return '종목선택가능 (경쟁전)'; 
+      if(n>=ts&&n<=te) return '경쟁중 (변경불가)'; 
+      return '대기';
+    } 
+    
+    function canPick(){
+      const s=state.settings, n=new Date(), pe=new Date(`${s.pickEndDate}T23:59:59+09:00`);
+      return n <= pe && !s.locked; // 선택 마감일(6/11) 24:00 까지만 입력 허용
+    } 
+    
+    function hideOthers(){
+      const s=state.settings, n=new Date(), ts=new Date(`${s.tradeStartDate}T00:00:00+09:00`);
+      return n < ts; // 6/12 시작 전까지 타인 종목 사유 블라인드
+    } 
+
+    function fine(rank){const f=state.settings.fines||defaultSettings().fines; if(rank<=3)return +f.top3||0; if(rank<=6)return +f.r4to6||10000; if(rank<=9)return +f.r7to9||20000; if(rank<=12)return +f.r10to12||30000; return +f.r13plus||40000} function rankIcon(r){return r===1?'👑 1':r===2?'🥈 2':r===3?'🥉 3':'📈 '+r} function mny(v){return v?KRW.format(+v):'-'} function pct(v){return v===null||v===undefined||Number.isNaN(+v)?'-':NUM.format(+v)+'%'}
+    
     function getRows(){return Object.entries(state.members).filter(([,m])=>m.active!==false).map(([key,m])=>{const p=state.picks[key]||{}, pr=state.prices[key]||{}, base=+pr.startOpen||0, end=+(state.settings.locked&&pr.finalClose?pr.finalClose:(pr.finalClose||pr.currentPrice||0)), ret=base&&end?((end-base)/base*100):null, prev=(+pr.prevClose&&+pr.currentPrice)?((+pr.currentPrice-(+pr.prevClose))/(+pr.prevClose)*100):null; return{key,m,p,pr,ret,prev,end}}).sort((a,b)=>a.ret===null&&b.ret===null?(a.m.name||'').localeCompare(b.m.name||'ko'):a.ret===null?1:b.ret===null?-1:b.ret-a.ret)}
-    function renderAll(){if(!state.user)return; $('currentUserLabel').textContent=state.user.name; $('roleLabel').textContent=isAdmin()?'관리자':'회원'; $('adminTabBtn').classList.toggle('hide',!isAdmin()); $('lastFetchedLabel').textContent=state.settings.lastFetchedAt?fmtDt(state.settings.lastFetchedAt):'-'; renderRanking(); renderPick(); renderProofs(); renderAdmin()}
-    function renderRanking(){const s=state.settings, st=status(); $('pickPeriodLabel').textContent=`${s.pickStartDate}~${s.pickEndDate}`; $('tradePeriodLabel').textContent=`${s.tradeStartDate} ${s.marketOpenTime}~${s.tradeEndDate} ${s.marketCloseTime}`; $('statusLabel').textContent=st; $('memoText').textContent=s.memo||''; $('hiddenPickNotice').classList.toggle('hide',!hideOthers()); $('rankingLockedNotice').classList.toggle('hide',st!=='종료/고정'); renderFines(); const body=$('rankingBody'), mob=$('mobileRanking'), list=getRows(); body.innerHTML=''; mob.innerHTML=''; list.forEach((r,i)=>{const rank=i+1, show=!hideOthers()||isAdmin()||r.key===state.user.key, ff=fine(rank), stock=show&&r.p.name, tr=document.createElement('tr'); tr.className=rank<=3?`rank${rank}`:''; const reason=stock?`<div class="org">${esc(r.p.symbol||'')}</div><div class="reason">${esc(r.p.memo||'-')}</div>`:'<span class="masked muted">비공개/미등록</span>'; tr.innerHTML=`<td><span class="rank">${rankIcon(rank)}</span></td><td><div class="member-name">${esc(r.m.name)}</div><div class="org">${esc(r.m.org||'-')}</div></td><td>${stock?`<b>${esc(r.p.name)}</b>${reason}`:reason}</td><td>${mny(r.pr.startOpen)}</td><td>${mny(r.end)}</td><td class="${r.ret>=0?'good':'bad'}">${pct(r.ret)}</td><td class="${r.prev>=0?'good':'bad'}">${pct(r.prev)}</td><td class="money ${ff?'fine':'fine0'}">${KRW.format(ff)}원</td><td class="small muted">${r.pr.fetchedAt?fmtDt(r.pr.fetchedAt):'-'}</td>`; body.appendChild(tr); const card=document.createElement('div'); card.className='rank-card'; card.innerHTML=`<div class="rank-head"><div><b>${rankIcon(rank)}위 · ${esc(r.m.name)}</b><div class="org">${esc(r.m.org||'-')}</div></div><div class="money ${ff?'fine':'fine0'}">벌금 ${KRW.format(ff)}원</div></div><div class="rank-stock">${stock?`<b>${esc(r.p.name)}</b><div class="org">${esc(r.p.symbol||'')}</div><div class="reason">추천 사유: ${esc(r.p.memo||'-')}</div>`:'<span class="muted">비공개/미등록</span>'}</div><div class="metric-grid"><div class="metric"><div class="label">시초가</div><div class="value">${mny(r.pr.startOpen)}</div></div><div class="metric"><div class="label">현재/종료가</div><div class="value">${mny(r.end)}</div></div><div class="metric"><div class="label">수익률</div><div class="value ${r.ret>=0?'good':'bad'}">${pct(r.ret)}</div></div><div class="metric"><div class="label">전일대비</div><div class="value ${r.prev>=0?'good':'bad'}">${pct(r.prev)}</div></div></div><div class="small muted" style="margin-top:8px">수집: ${r.pr.fetchedAt?fmtDt(r.pr.fetchedAt):'-'}</div>`; mob.appendChild(card)})}
+    
+    function renderAll(){if(!state.user)return; $('currentUserLabel').textContent=state.user.name; $('roleLabel').textContent=isAdmin()?'관리자':'회원'; $('adminTabBtn').classList.toggle('hide',!isAdmin()); renderRanking(); renderPick(); renderProofs(); renderAdmin()}
+    function renderRanking(){
+      const s=state.settings, st=status();
+      $('pickPeriodLabel').textContent=`~${s.pickEndDate}`;
+      $('tradePeriodLabel').textContent=`${s.tradeStartDate} ${s.marketOpenTime}~${s.tradeEndDate} ${s.marketCloseTime}`;
+      $('statusLabel').textContent=st;
+      $('memoText').textContent=s.memo||'';
+      $('hiddenPickNotice').classList.toggle('hide',!hideOthers());
+      $('rankingLockedNotice').classList.toggle('hide',st!=='종료/고정');
+      renderFines();
+      const body=$('rankingBody'), mob=$('mobileRanking'), list=getRows();
+      body.innerHTML=''; mob.innerHTML='';
+      list.forEach((r,i)=>{
+        const rank=i+1, show=!hideOthers()||isAdmin()||r.key===state.user.key, ff=fine(rank), stock=show&&r.p.name;
+        const registered = r.p.selectedAt || r.p.updatedAt;
+        const priceBasis = r.pr.basis ? `${r.pr.basis}${r.pr.startOpenDate?' · 시초가 기준일 '+r.pr.startOpenDate:''}` : '시초가 기준 미확인';
+        const reasonText = stock ? esc(r.p.memo||'-') : '비공개/미등록';
+        const mainTr=document.createElement('tr');
+        mainTr.className=rank<=3?`rank${rank}`:'';
+        mainTr.innerHTML=`<td><span class="rank">${rankIcon(rank)}</span></td><td><div class="member-name">${esc(r.m.name)}</div><div class="org">${esc(r.m.org||'-')}</div></td><td>${stock?`<b>${esc(r.p.name)}</b><div class="org">${esc(r.p.symbol||'')}</div>`:'<span class="masked muted">비공개/미등록</span>'}</td><td>${mny(r.pr.startOpen)}<div class="price-basis">${esc(priceBasis)}</div></td><td>${mny(r.end)}</td><td class="${r.ret>=0?'good':'bad'}">${pct(r.ret)}</td><td class="${r.prev>=0?'good':'bad'}">${pct(r.prev)}</td><td class="money ${ff?'fine':'fine0'}">${KRW.format(ff)}원</td><td class="small muted">${registered?fmtDt(registered):'-'}</td>`;
+        body.appendChild(mainTr);
+        const reasonTr=document.createElement('tr');
+        reasonTr.className='reason-row';
+        reasonTr.innerHTML=`<td colspan="9"><span class="full-reason"><b>선정 사유</b> ${reasonText}<span class="meta">종목등록일: ${registered?fmtDt(registered):'-'} · ${esc(priceBasis)}</span></span></td>`;
+        body.appendChild(reasonTr);
+
+        const card=document.createElement('div');
+        card.className='rank-card';
+        card.innerHTML=`<div class="rank-head"><div><b>${rankIcon(rank)}위 · ${esc(r.m.name)}</b><div class="org">${esc(r.m.org||'-')}</div></div><div class="money ${ff?'fine':'fine0'}">벌금 ${KRW.format(ff)}원</div></div><div class="rank-stock">${stock?`<div class="mobile-stock-title">${esc(r.p.name)}</div><div class="org">${esc(r.p.symbol||'')}</div><div class="mobile-reason"><b>선정 사유</b> ${esc(r.p.memo||'-')}</div>`:'<span class="muted">비공개/미등록</span>'}<div class="mobile-compact-line"><span>등록 ${registered?fmtDt(registered):'-'}</span></div></div><div class="metric-grid"><div class="metric"><div class="label">시초가</div><div class="value">${mny(r.pr.startOpen)}</div></div><div class="metric"><div class="label">현재</div><div class="value">${mny(r.end)}</div></div><div class="metric"><div class="label">수익률</div><div class="value ${r.ret>=0?'good':'bad'}">${pct(r.ret)}</div></div></div><div class="basis-chip">${esc(priceBasis)}</div>`;
+        mob.appendChild(card);
+      });
+    }
     function renderFines(){const f=state.settings.fines||defaultSettings().fines; $('fineSummary').innerHTML=`<span class="pill">1~3등 <strong>${KRW.format(f.top3)}원</strong></span><span class="pill">4~6등 <strong>${KRW.format(f.r4to6)}원</strong></span><span class="pill">7~9등 <strong>${KRW.format(f.r7to9)}원</strong></span><span class="pill">10~12등 <strong>${KRW.format(f.r10to12)}원</strong></span><span class="pill">13등 이하 <strong>${KRW.format(f.r13plus)}원</strong></span>`}
-    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?'종목 선택/수정이 가능합니다. 추천 사유는 1,000자 이내입니다.':'현재는 종목 선택/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>$(id).disabled=!ok); const p=state.picks[state.user.key]||{}; $('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||''; $('memoCount').textContent=($('pickMemo').value||'').length}
-    function renderProofs(){const box=$('proofList'); box.innerHTML=''; const list=[]; Object.entries(state.proofs||{}).forEach(([mk,items])=>Object.entries(items||{}).forEach(([id,it])=>list.push({memberKey:mk,id,...it}))); list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); if(!list.length){box.innerHTML='<p>아직 인증 이미지가 없습니다.</p>';return} list.forEach(it=>{const m=state.members[it.memberKey]||{}, p=state.picks[it.memberKey]||{}, src=it.dataUrl||it.url||'', div=document.createElement('div'); div.className='proof-card'; div.innerHTML=`<a href="${esc(src)}" target="_blank"><img src="${esc(src)}" alt="인증 이미지"></a><div><b>${esc(m.name||it.memberName||'-')}</b><div class="small muted">${esc(p.name||'-')} ${esc(p.symbol||'')}</div><div class="reason">추천 사유: ${esc(p.memo||'-')}</div><div class="small muted">인증 설명: ${esc(it.memo||'-')}</div><div class="small muted">${fmtDt(it.createdAt)} · ${esc(it.storageMode||'DB image')}</div></div>${isAdmin()||it.memberKey===state.user.key?`<button class="danger small" data-del="${esc(it.memberKey)}|${esc(it.id)}">삭제</button>`:''}`; box.appendChild(div)}); box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('삭제할까요?'))return; const [mk,id]=b.dataset.del.split('|'); await remove(ref(db,`${paths.proofs}/${mk}/${id}`))})}
-    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickStartDate').value=s.pickStartDate||''; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('apiBaseUrl').value=s.apiBaseUrl||''; $('adminMemo').value=s.memo||''; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
-    async function searchStock(){const q=$('stockKeyword').value.trim(); if(!q)return alert('검색어를 입력하세요.'); const api=(state.settings.apiBaseUrl||'').replace(/\/$/,''); const box=$('searchResults'); box.innerHTML='<p>검색 중...</p>'; let results=[]; try{if(api){const r=await fetch(`${api}/search?q=${encodeURIComponent(q)}&market=KRX&stockOnly=1`); if(r.ok)results=await r.json()}}catch(e){console.warn(e)} if(!Array.isArray(results)||!results.length)results=localSearch(q); results=results.map(x=>({name:x.name||x.stockName||x.korName||'', code:String(x.code||x.symbol||'').replace('.KS','').trim(), market:x.market||x.marketName||''})).filter(x=>/^\d{6}$/.test(x.code)); box.innerHTML=''; if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 관리자 API 연결 또는 6자리 종목코드 직접 입력이 필요합니다.</div>';return} results.slice(0,100).forEach(it=>{const d=document.createElement('div'); d.className='result-item'; d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted">${esc(it.code)} · ${esc(it.market||'KOSPI/KOSDAQ')}</div></div><button>선택</button>`; d.querySelector('button').onclick=()=>{$('pickName').value=it.name;$('pickSymbol').value=normalizeSymbol(it.code)}; box.appendChild(d)})}
+    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?`현재 종목 선택이 가능합니다. (선택 마감일 ${state.settings.pickEndDate} 24:00 이후에는 등록/수정이 불가능합니다.)`:'현재는 종목 등록/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>$(id).disabled=!ok); const p=state.picks[state.user.key]||{}; $('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||''; $('memoCount').textContent=($('pickMemo').value||'').length}
+    function renderProofs(){const box=$('proofList'); box.innerHTML=''; const list=[]; Object.entries(state.proofs||{}).forEach(([mk,items])=>Object.entries(items||{}).forEach(([id,it])=>list.push({memberKey:mk,id,...it}))); list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); if(!list.length){box.innerHTML='<p>아직 인증 이미지가 없습니다.</p>';return} list.forEach(it=>{const m=state.members[it.memberKey]||{}, p=state.picks[it.memberKey]||{}, src=it.dataUrl||it.url||'', div=document.createElement('div'); div.className='proof-card'; div.innerHTML=`<a href="${esc(src)}" target="_blank"><img src="${esc(src)}" alt="인증 이미지"></a><div><b>${esc(m.name||it.memberName||'-')}</b><div class="small muted">${esc(p.name||'-')} ${esc(p.symbol||'')}</div><div class="reason">선정 사유: ${esc(p.memo||'-')}</div><div class="small muted">인증 설명: ${esc(it.memo||'-')}</div><div class="small muted">${fmtDt(it.createdAt)} · ${esc(it.storageMode||'DB image')}</div></div>${isAdmin()||it.memberKey===state.user.key?`<button class="danger small" data-del="${esc(it.memberKey)}|${esc(it.id)}">삭제</button>`:''}`; box.appendChild(div)}); box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('삭제할까요?'))return; const [mk,id]=b.dataset.del.split('|'); await remove(ref(db,`${paths.proofs}/${mk}/${id}`))})}
+    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('adminMemo').value=s.memo||''; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
+    async function searchStock(){const q=$('stockKeyword').value.trim(); if(!q)return alert('검색어를 입력하세요.'); const box=$('searchResults'); box.innerHTML='<p>검색 중...</p>'; let results=localSearch(q); results=results.map(x=>({name:x.name||x.stockName||x.korName||'', code:String(x.code||x.symbol||'').replace('.KS','').trim(), market:x.market||x.marketName||''})).filter(x=>/^\d{6}$/.test(x.code)); box.innerHTML=''; if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 6자리 종목코드를 직접 입력하세요.</div>';return} results.slice(0,100).forEach(it=>{const d=document.createElement('div'); d.className='result-item'; d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted">${esc(it.code)} · ${esc(it.market||'KOSPI/KOSDAQ')}</div></div><button>선택</button>`; d.querySelector('button').onclick=()=>{$('pickName').value=it.name;$('pickSymbol').value=normalizeSymbol(it.code)}; box.appendChild(d)})}
     function localSearch(q){const s=norm(q); return STOCKS.filter(x=>norm(x.name).includes(s)||x.code.includes(s)||norm(x.symbol).includes(s))}
-    async function savePick(){if(!canPick())return alert('현재는 종목 선택 기간이 아닙니다.'); const name=$('pickName').value.trim(), sym=normalizeSymbol($('pickSymbol').value), memo=$('pickMemo').value.trim(); if(memo.length>1000)return alert('추천 사유는 1,000자 이내로 입력하세요.'); if(!name||!/^\d{6}\.KS$/.test(sym))return alert('코스피/코스닥 국내 주식만 등록 가능합니다. 예: 066570 또는 066570.KS'); await set(ref(db,`${paths.picks}/${state.user.key}`),{memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:'KRX_STOCK',memo,updatedAt:Date.now()}); alert('저장되었습니다.')}
-    async function saveSettings(){if(!isAdmin())return; await update(ref(db,paths.settings),{pickStartDate:$('pickStartDate').value,pickEndDate:$('pickEndDate').value,tradeStartDate:$('tradeStartDate').value,tradeEndDate:$('tradeEndDate').value,marketOpenTime:$('marketOpenTime').value||'09:00',marketCloseTime:$('marketCloseTime').value||'15:30',apiBaseUrl:$('apiBaseUrl').value.trim(),memo:$('adminMemo').value.trim(),fines:{top3:+$('fineTop3').value||0,r4to6:+$('fine4to6').value||10000,r7to9:+$('fine7to9').value||20000,r10to12:+$('fine10to12').value||30000,r13plus:+$('fine13plus').value||40000},updatedAt:Date.now()}); alert('저장되었습니다.')}
+    
+    async function savePick(){
+      if(!canPick())return alert('현재는 종목 선택 및 수정이 불가능합니다.');
+      const name=$('pickName').value.trim(), sym=normalizeSymbol($('pickSymbol').value), memo=$('pickMemo').value.trim();
+      if(memo.length>1000)return alert('선정 사유는 1,000자 이내로 입력하세요.');
+      if(!name||!/^[0-9]{6}\.KS$/.test(sym))return alert('코스피/코스닥 국내 주식만 등록 가능합니다. 예: 066570 또는 066570.KS');
+
+      const now = Date.now();
+      const pickObj = {memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:'KRX_STOCK',memo,selectedAt:now,updatedAt:now};
+      const btn = $('savePickBtn');
+      btn.disabled = true;
+      btn.textContent = '저장 및 가격 연동 중...';
+
+      try {
+        // 종목을 다시 선택하면 기존 가격을 먼저 해당 종목 기준으로 갈아끼웁니다.
+        // fetchSingleStockPrice에 새 pickObj를 직접 넘겨서 Firebase 실시간 반영 지연 때문에 이전 종목 가격이 들어가는 문제를 막습니다.
+        await set(ref(db,`${paths.picks}/${state.user.key}`), pickObj);
+        await fetchSingleStockPrice(state.user.key, 0, pickObj, true);
+        alert('종목 저장 및 시초가/현재가 연동이 완료되었습니다.');
+      } catch (err) {
+        console.error(err);
+        alert('종목은 저장되었으나 자동 가격 연동에 실패했습니다.\n네이버 가격 프록시가 막힌 경우 잠시 뒤 전체 가격 새로고침을 다시 눌러주세요.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '내 종목 저장';
+        showTab('ranking');
+      }
+    }
+
+    async function saveSettings(){if(!isAdmin())return; await update(ref(db,paths.settings),{pickEndDate:$('pickEndDate').value,tradeStartDate:$('tradeStartDate').value,tradeEndDate:$('tradeEndDate').value,marketOpenTime:$('marketOpenTime').value||'09:00',marketCloseTime:$('marketCloseTime').value||'15:30',memo:$('adminMemo').value.trim(),fines:{top3:+$('fineTop3').value||0,r4to6:+$('fine4to6').value||10000,r7to9:+$('fine7to9').value||20000,r10to12:+$('fine10to12').value||30000,r13plus:+$('fine13plus').value||40000},updatedAt:Date.now()}); alert('저장되었습니다.')}
     async function setLocked(v){if(!isAdmin())return; await update(ref(db,paths.settings),{locked:v,lockedAt:v?Date.now():null}); alert(v?'고정했습니다.':'고정을 해제했습니다.')} async function resetPins(){if(!isAdmin())return;if(!confirm('전체 비밀번호를 0000으로 초기화할까요?'))return; const u={}; Object.keys(state.members).forEach(k=>{u[`${paths.members}/${k}/pin`]='0000';u[`${paths.members}/${k}/mustChangePin`]=true}); await update(ref(db),u); alert('초기화했습니다.')}
-    async function refreshAllPrices(){const api=(state.settings.apiBaseUrl||'').replace(/\/$/,''); if(!api)return alert('가격 API 주소가 필요합니다. 관리자 화면에 Cloud Functions API 주소를 입력하세요.'); const keys=Object.keys(state.picks||{}); let ok=0,fail=0; for(const k of keys){try{await refreshPrice(k);ok++}catch(e){console.error(e);fail++}} await update(ref(db,paths.settings),{lastFetchedAt:Date.now()}); alert(`가격 조회 완료: 성공 ${ok}건, 실패 ${fail}건`)}
-    async function refreshPrice(k){const p=state.picks[k], s=state.settings, api=s.apiBaseUrl.replace(/\/$/,''); const url=`${api}/quote?code=${encodeURIComponent(p.code||codeFromSymbol(p.symbol))}&symbol=${encodeURIComponent(p.symbol)}&start=${encodeURIComponent(s.tradeStartDate)}&end=${encodeURIComponent(s.tradeEndDate)}&marketOpen=${encodeURIComponent(s.marketOpenTime||'09:00')}&marketClose=${encodeURIComponent(s.marketCloseTime||'15:30')}&basis=competitionStartOpen`; const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw new Error('quote API 실패'); const q=await r.json(); const startOpen=+(q.startOpen??q.openingPrice??q.start?.open??0), current=+(q.currentPrice??q.price??q.current??0); if(!startOpen||!current)throw new Error('시초가 또는 현재가 없음'); await set(ref(db,`${paths.prices}/${k}`),{name:p.name,symbol:p.symbol,startOpen,currentPrice:current,prevClose:q.prevClose?+q.prevClose:null,finalClose:q.finalClose?+q.finalClose:null,fetchedAt:q.fetchedAt||new Date().toISOString(),source:q.source||'api',basis:'랭킹 경쟁 시작일 정규장 시초가'})}
+    
+    // silent 모드가 켜져있으면 버튼 상태나 알람을 띄우지 않고 백그라운드 갱신
+    async function refreshAllPrices(silent = false) {
+      const keys = Object.keys(state.picks || {});
+      if(keys.length === 0) {
+        if(!silent) alert('선택된 종목이 없습니다.');
+        return;
+      }
+      
+      if(!silent) {
+        $('refreshBtn').textContent = '동기화 중... 잠시 대기';
+        $('refreshBtn').disabled = true;
+      }
+
+      for (const k of keys) {
+        try { await fetchSingleStockPrice(k); } catch (e) { console.error(`[${k}] 에러:`, e); }
+        await sleep(500); 
+      }
+      
+      await update(ref(db, paths.settings), { lastFetchedAt: Date.now() });
+      
+      if(!silent) {
+        $('refreshBtn').textContent = '전체 가격 새로고침';
+        $('refreshBtn').disabled = false;
+        alert(`가격 일괄 동기화 완료!`);
+      }
+    }
+
+    async function fetchSingleStockPrice(memberKey, retryCount = 0, pickOverride = null, forceRefreshStartOpen = false) {
+      const p = pickOverride || state.picks[memberKey];
+      const s = state.settings;
+      if (!p) return;
+      const code = p.code || codeFromSymbol(p.symbol);
+      if (!s.tradeStartDate || !s.tradeEndDate) return;
+
+      const priceBasis = buildStockPriceBasis(p, s);
+      const existingPrice = state.prices[memberKey] || {};
+      const sameSymbol = existingPrice.symbol === p.symbol || existingPrice.code === code;
+      const sameBasis = existingPrice.basis === priceBasis.basis;
+      const sameStartDate = existingPrice.startOpenDate === priceBasis.startDate;
+      const canReuseStartOpen = !forceRefreshStartOpen && sameSymbol && sameBasis && sameStartDate && Number(existingPrice.startOpen) > 0;
+
+      const startDateStr = String(priceBasis.startDate).replace(/-/g,'');
+      const endDateStr = String(priceBasis.endDate).replace(/-/g,'');
+      const naverUrl = `https://api.finance.naver.com/siseJson.naver?symbol=${code}&requestType=1&startTime=${startDateStr}&endTime=${endDateStr}&timeframe=day&_cb=${Date.now()}`;
+
+      try {
+        const rawText = await fetchTextWithProxy(naverUrl);
+        const dataArray = parseNaverSiseText(rawText);
+        const rows = dataArray.slice(1).filter(row => Array.isArray(row) && row.length >= 5 && /^\d{8}$/.test(String(row[0])));
+        if (!rows.length) throw new Error('해당 기간 주식 데이터가 없습니다. 휴장일이면 다음/이전 거래일 기준 데이터가 필요할 수 있습니다.');
+
+        const startData = rows[0];
+        const currentData = rows[rows.length - 1];
+        const prevData = rows.length > 1 ? rows[rows.length - 2] : startData;
+
+        let startOpen = canReuseStartOpen ? parseInt(existingPrice.startOpen, 10) : parseInt(startData[1], 10);
+        let currentPrice = parseInt(currentData[4], 10);
+        let prevClose = parseInt(prevData[4], 10);
+
+        if (isNaN(startOpen) || startOpen <= 0 || isNaN(currentPrice) || currentPrice <= 0) {
+          throw new Error('가격 숫자 변환 실패');
+        }
+
+        await set(ref(db, `${paths.prices}/${memberKey}`), {
+          name: p.name,
+          symbol: p.symbol,
+          code,
+          startOpen,
+          currentPrice,
+          prevClose,
+          finalClose: priceBasis.isFinished ? currentPrice : null,
+          fetchedAt: new Date().toISOString(),
+          source: 'naver-finance-proxy-v9',
+          basis: priceBasis.basis,
+          startOpenDate: String(startData[0]).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'),
+          requestedStartDate: priceBasis.startDate,
+          selectedAt: p.selectedAt || p.updatedAt || null,
+          lockedStartOpen: !priceBasis.beforeStart
+        });
+      } catch (error) {
+        if (retryCount < 2) {
+          await sleep(1000);
+          return fetchSingleStockPrice(memberKey, retryCount + 1, pickOverride, forceRefreshStartOpen);
+        }
+        throw error;
+      }
+    }
+
     async function uploadProof(){if(!state.user)return; const files=[...($('proofFile').files||[])], memo=$('proofMemo').value.trim(); if(!files.length)return alert('사진을 선택하세요.'); $('uploadProgress').classList.remove('hide'); let ok=0; for(let i=0;i<files.length;i++){const f=files[i]; $('uploadStatus').textContent=`${i+1}/${files.length} 압축/저장 중`; $('uploadProgress').querySelector('span').style.width=`${Math.round(i/files.length*100)}%`; const dataUrl=await compress(f,1280,.72); const item=push(ref(db,`${paths.proofs}/${state.user.key}`)); await set(item,{memberName:state.user.name,memo,dataUrl,createdAt:Date.now(),originalName:f.name,storageMode:'Realtime DB compressed image'}); ok++} $('uploadProgress').querySelector('span').style.width='100%'; $('proofFile').value=''; $('proofMemo').value=''; $('uploadStatus').textContent=`${ok}장 저장 완료`; alert(`${ok}장 저장되었습니다.`)}
     function compress(file,max=1280,quality=.72){return new Promise((resolve,reject)=>{const reader=new FileReader(), img=new Image(); reader.onerror=reject; img.onerror=reject; reader.onload=()=>{img.onload=()=>{let w=img.width,h=img.height,ratio=Math.min(1,max/Math.max(w,h)); w=Math.round(w*ratio); h=Math.round(h*ratio); const c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); resolve(c.toDataURL('image/jpeg',quality))}; img.src=reader.result}; reader.readAsDataURL(file)})}
-    init().catch(e=>{console.error(e); alert('초기화 오류: Firebase Realtime Database 규칙을 확인하세요.')});
+    
+    init().catch(e=>{console.error(e); alert('초기화 오류: Firebase 연결에 실패했습니다.')});
   </script>
 </body>
 </html>

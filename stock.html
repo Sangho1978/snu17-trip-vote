@@ -3,398 +3,2141 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Money Plus 국내주식 리그</title>
+  <meta name="format-detection" content="telephone=no" />
+  <title>하반기 국외연수 장소 2차 투표</title>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <style>
-    :root{--bg:#08111f;--card:#111827;--card2:#172033;--line:#334155;--text:#f8fafc;--muted:#94a3b8;--accent:#38bdf8;--red:#ef4444;--blue:#3b82f6;--yellow:#f59e0b;--green:#22c55e;--radius:18px;--shadow:0 16px 40px rgba(0,0,0,.32)}
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} body{margin:0;background:linear-gradient(145deg,#020617,#0f172a 55%,#111827);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;font-size:15px} button,input,textarea,select{font:inherit} button{border:0;border-radius:14px;padding:12px 15px;background:var(--accent);color:#082f49;font-weight:900;cursor:pointer;min-height:44px} button.secondary{background:#334155;color:var(--text)} button.danger{background:#ef4444;color:#fff} button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)} button:disabled{opacity:.48;cursor:not-allowed} input,textarea,select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#020617;color:var(--text);outline:none;min-height:46px} textarea{min-height:104px;resize:vertical;line-height:1.45} label{display:block;color:var(--muted);font-size:13px;margin:0 0 7px}.wrap{width:min(1280px,100%);margin:0 auto;padding:18px}.hide{display:none!important}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:16px;background:radial-gradient(circle at 30% 25%,#facc15,#fb923c 36%,#38bdf8 76%);display:grid;place-items:center;color:#020617;font-size:25px;font-weight:1000;box-shadow:var(--shadow)}h1{font-size:22px;margin:0}h2{font-size:18px;margin:0 0 13px}p{color:var(--muted);line-height:1.55}.card{background:rgba(17,24,39,.92);border:1px solid rgba(148,163,184,.18);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}.grid{display:grid;gap:14px}.grid.two{grid-template-columns:1.15fr .85fr}.grid.three{grid-template-columns:repeat(3,1fr)}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#0f172a;border:1px solid var(--line);color:var(--muted);font-size:13px}.pill strong{color:var(--text)}.notice{padding:12px 13px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fde68a;border-radius:14px}.info{padding:12px 13px;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.35);color:#bae6fd;border-radius:14px}.error{padding:12px 13px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fecaca;border-radius:14px}.muted{color:var(--muted)}.small{font-size:12px}.good{color:var(--red)}.bad{color:var(--blue)}.fine0{color:#86efac}.fine{color:#fca5a5}.money{font-weight:1000}.tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#0b1220 70%,rgba(11,18,32,0));padding-top:4px}.tabs button{background:#1f2937;color:var(--text);white-space:nowrap;flex:0 0 auto}.tabs button.active{background:var(--accent);color:#082f49}.table-wrap{overflow:auto;max-height:70vh}table{width:100%;border-collapse:collapse}th,td{padding:11px 9px;border-bottom:1px solid rgba(148,163,184,.15);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#111827;color:var(--muted);font-size:12px;z-index:2}.member-name{font-weight:900}.org{color:var(--muted);font-size:12px;margin-top:3px}.reason{white-space:pre-wrap;line-height:1.45;color:#cbd5e1;max-width:none;width:100%}.stock-cell{min-width:360px}.stock-reason{margin-top:8px;padding:9px 10px;background:rgba(15,23,42,.72);border:1px solid rgba(148,163,184,.14);border-radius:12px}.registered-line{margin-top:6px;color:var(--muted);font-size:11px}.price-basis{margin-top:5px;color:var(--muted);font-size:11px;line-height:1.35}.rank{font-size:21px;display:inline-block;min-width:44px}.rank1{background:linear-gradient(90deg,rgba(250,204,21,.20),transparent)}.rank2{background:linear-gradient(90deg,rgba(203,213,225,.16),transparent)}.rank3{background:linear-gradient(90deg,rgba(251,146,60,.16),transparent)}.mobile-list{display:none}.rank-card{background:#020617;border:1px solid var(--line);border-radius:18px;padding:14px}.rank-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.rank-stock{margin-top:10px;padding:11px;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:14px}.reason-row td{background:rgba(15,23,42,.55);padding-top:8px;padding-bottom:12px}.full-reason{display:block;width:100%;white-space:pre-wrap;line-height:1.45;color:#cbd5e1}.full-reason .meta{display:block;color:var(--muted);font-size:11px;margin-top:5px}.mobile-compact-line{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}.mobile-stock-title{font-size:15px;font-weight:900}.mobile-reason{margin-top:8px;white-space:pre-wrap;line-height:1.4;font-size:13px;color:#cbd5e1;max-height:5.6em;overflow:auto}.basis-chip{display:inline-block;margin-top:5px;color:#94a3b8;font-size:11px}
-    /* 모바일 UI 1줄(4열) 최적화 */
-    .metric-grid{display:flex;justify-content:space-between;gap:4px;margin-top:10px;text-align:center}
-    .metric{flex:1;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:7px 3px;min-width:0}
-    .metric .label{font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:-0.5px}
-    .metric .value{font-weight:900;font-size:12px;letter-spacing:-0.4px;word-break:keep-all}
-    .search-results{display:grid;gap:8px;max-height:430px;overflow:auto}.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;background:#020617;border:1px solid var(--line);border-radius:14px}.proof-list{display:grid;gap:10px}.proof-card{display:grid;grid-template-columns:104px 1fr auto;gap:12px;align-items:start;padding:10px;background:#020617;border:1px solid var(--line);border-radius:16px}.proof-card img{width:104px;height:104px;object-fit:cover;border-radius:13px;background:#111827}.progress{height:8px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress span{display:block;width:0%;height:100%;background:var(--accent)}.login-box{max-width:460px;margin:8vh auto}.charline{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}.divider{height:1px;background:rgba(148,163,184,.18);margin:14px 0}.bottom-safe{padding-bottom:env(safe-area-inset-bottom)}
-    @media(max-width:860px){body{font-size:13px}.wrap{padding:12px 10px 18px}.top{align-items:flex-start;flex-direction:column}.brand{width:100%}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.grid.two,.grid.three{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.card{padding:14px;border-radius:16px}.desktop-table{display:none}.mobile-list{display:grid;gap:10px}.tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}.tabs button{padding:10px 12px;min-height:42px}.proof-card{grid-template-columns:88px 1fr}.proof-card img{width:88px;height:88px}.proof-card button{grid-column:1/-1}.toolbar button{flex:1 1 auto}.result-item{align-items:flex-start}.result-item button{flex:0 0 auto}.pill{font-size:12px;padding:7px 9px}.login-box{margin:5vh auto}.reason{max-width:none}}
-    @media(max-width:390px){.proof-card{grid-template-columns:76px 1fr}.proof-card img{width:76px;height:76px}.top .toolbar{width:100%}.top .toolbar button{flex:1}}
+    :root{
+      --navy:#071f55;--navy2:#133b83;--gold:#b67720;--gold2:#dca340;--red:#be271d;
+      --ink:#172033;--muted:#687386;--line:#e6d8c3;--soft:#fff8ec;--bg:#f6efe4;--card:#fff;
+      --ok:#087443;--warn:#b54708;--danger:#b42318;--shadow:0 12px 34px rgba(19,31,58,.11);--r:18px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;line-height:1.42}.wrap{width:min(1120px,calc(100% - 28px));margin:auto}.hide{display:none!important}.desktop-only{display:none}.mobile-only{display:inline-flex}.hero{background:radial-gradient(circle at 92% 0%,rgba(255,255,255,.12),transparent 32%),linear-gradient(135deg,#061944,#0b2f74 58%,#0f4e9a);color:#fff;border-bottom:4px solid var(--gold);padding:18px 0 12px}.hero-grid{display:grid;gap:12px}.eyebrow{font-size:12px;color:#f5d89d;font-weight:950;letter-spacing:.08em}.hero h1{margin:4px 0 5px;font-size:clamp(24px,7.3vw,46px);letter-spacing:-.06em;line-height:1.12}.hero p{margin:0;color:#e7eeff;font-size:13px}.login-card,.user-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:18px;padding:12px;backdrop-filter:blur(8px)}.login-card h2{font-size:15px;margin:0 0 8px}.login-grid{display:grid;grid-template-columns:1fr 112px;gap:8px}.login-grid input{border:0;border-radius:12px;min-height:46px;padding:11px 12px;background:#fff;color:#111827;font-weight:800}.login-grid button{grid-column:1/-1}.small{font-size:12px;color:#dbe6ff;margin:8px 0 0}.btn{border:0;border-radius:13px;background:var(--navy);color:#fff;text-decoration:none;font-weight:950;min-height:44px;padding:10px 14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 8px 20px rgba(8,31,85,.16);white-space:nowrap}.btn.gold{background:linear-gradient(135deg,var(--gold),#df9d31)}.btn.ghost{background:#fff;color:var(--navy);border:1px solid #dfe5ef;box-shadow:none}.btn.soft{background:#fff8e8;color:#744900;border:1px solid #ead1a5;box-shadow:none}.btn.green{background:var(--ok)}.btn.danger{background:#a11a16}.btn:disabled,.btn.disabled{opacity:.48;cursor:not-allowed;box-shadow:none}.btn.full{width:100%}.user-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.user-row strong{font-size:16px}.user-row small{display:block;color:#e2eaff}.statusbar{position:sticky;top:0;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);z-index:30;backdrop-filter:blur(10px)}.statusbar .wrap{display:flex;gap:6px;overflow-x:auto;padding:7px 0}.pill{display:inline-flex;align-items:center;gap:4px;border:1px solid #e0e6f0;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:950;white-space:nowrap;color:#40506d}.pill.ok{background:#ecfdf3;border-color:#abefc6;color:#067647}.pill.warn{background:#fffaeb;border-color:#fedf89;color:#b54708}.pill.danger{background:#fef3f2;border-color:#fecdca;color:#b42318}.section{padding:14px 0}.section-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;margin-bottom:9px}.section-title h2{margin:0;color:var(--navy);font-size:clamp(21px,5.5vw,32px);letter-spacing:-.045em}.section-title p{margin:3px 0 0;color:var(--muted);font-size:12px}.card{background:var(--card);border:1px solid rgba(180,119,32,.24);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}.grid-main{display:grid;gap:14px}.side{display:grid;gap:12px}.rank-card{padding:12px}.response-hero{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 12px;padding:12px;border:1px solid #ead2a5;border-radius:18px;background:linear-gradient(135deg,#fff7e6,#eef4ff);box-shadow:0 8px 20px rgba(80,52,15,.06)}.response-main{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}.response-label{font-size:12px;font-weight:950;color:#8b5200}.response-number{font-size:34px;line-height:1;font-weight:1000;color:var(--navy);letter-spacing:-.05em}.response-number small{font-size:16px;color:#667085}.response-sub{font-size:13px;color:#4c5870;font-weight:900}.response-bar{height:14px;background:#fff;border:1px solid #e8ddcb;border-radius:999px;overflow:hidden}.response-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--navy2));border-radius:999px;transition:width .35s ease}.response-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.response-stat{background:#fff;border:1px solid #e8ddcb;border-radius:14px;padding:8px;text-align:center}.response-stat b{display:block;font-size:20px;color:var(--navy);line-height:1.1}.response-stat span{font-size:11px;color:#667085;font-weight:950}.response-stat.pending b{color:#b54708}.response-stat.rate b{color:#087443}@media(min-width:760px){.response-hero{grid-template-columns:1.1fr 1fr;align-items:center}.response-bar{grid-column:1/-1}.response-number{font-size:40px}}.rank-list{display:grid;gap:8px}.rank-row{position:relative;overflow:hidden;border:1px solid #e8ddcb;border-radius:15px;background:#fff;cursor:pointer}.rank-bg{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,rgba(220,163,64,.24),rgba(220,163,64,.04));z-index:0}.rank-content{position:relative;z-index:1;display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:center;padding:10px}.rank-num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:14px;font-weight:950}.rank-title strong{display:block;font-size:14px;color:#102356}.rank-title span{display:block;font-size:12px;color:#667085}.score{text-align:right;color:#a96300;font-size:18px;font-weight:950}.score small{display:block;font-size:11px;color:#7b8495}.empty{padding:18px;border:1px dashed #d8c8ab;background:#fffaf1;border-radius:14px;color:#705a38;text-align:center;font-weight:850}.vote-card{padding:13px}.choice-grid{display:grid;grid-template-columns:1fr;gap:8px}.select-row{display:grid;grid-template-columns:58px 1fr;gap:8px;align-items:center}.select-row label{font-weight:950;color:#8b5200;font-size:13px}.select-row select{width:100%;min-height:48px;border:1px solid #d8dfec;border-radius:13px;background:#fff;padding:10px 11px;font-weight:850;color:#172033;font-size:15px}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.vote-actions .primary{grid-column:1/-1}.last-save{margin-top:8px;font-size:12px;color:#596579;font-weight:850}.quick-jump{display:flex;gap:7px;overflow-x:auto;padding:7px;background:#fff;border:1px solid #eadbc4;border-radius:16px;box-shadow:0 8px 20px rgba(80,52,15,.05);scroll-snap-type:x mandatory}.jump{scroll-snap-align:start;min-width:max-content;border:0;border-radius:12px;padding:9px 11px;background:#f8f1e5;color:#744900;font-weight:950;cursor:pointer}.jump.active{background:var(--navy);color:#fff}.dest-list{display:grid;gap:10px}.rank-more{margin-top:10px;width:100%}.dest-card{overflow:hidden}.dest-summary{list-style:none;cursor:pointer;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}.dest-summary::-webkit-details-marker{display:none}.dest-summary-title strong{display:block;color:var(--navy);font-size:22px;letter-spacing:-.05em}.dest-summary-title span{display:block;color:#a74318;font-weight:950;margin-top:2px}.dest-summary:after{content:"펼치기";font-size:12px;font-weight:950;color:#8b5200;background:#fff5e1;border:1px solid #ead2a5;border-radius:999px;padding:4px 9px;white-space:nowrap}.dest-card[open] .dest-summary{border-bottom:1px solid #f1e4cf}.dest-card[open] .dest-summary:after{content:"접기"}.dest-img-link{display:block;background:#eee;position:relative}.dest-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#eee}.text-hero{min-height:172px;background:linear-gradient(135deg,#fff7e6,#eef4ff);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;border-bottom:1px solid #eadcc6}.text-hero strong{display:block;color:var(--navy);font-size:24px;letter-spacing:-.05em}.text-hero span{display:block;color:#8b5200;margin-top:5px;font-weight:950}.dest-body{padding:13px}.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.badge{display:inline-flex;align-items:center;border:1px solid #ead2a5;background:#fff8e8;color:#875500;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:950}.badge.muted{border-color:#d8dce5;background:#f6f7fa;color:#667085}.badge.red{border-color:#f4c1bd;background:#fff3f1;color:#a43125}.dest-body h3{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.05em}.dest-card .dest-img-link{margin:10px 0;border-radius:15px;overflow:hidden}.dest-card .text-hero{margin:10px 0;border-radius:15px}.dest-body .sub{color:#a74318;font-weight:950;margin-top:2px}.brief{margin:9px 0;color:#39465e;font-size:14px;font-weight:760}.meta{display:grid;gap:6px;margin:10px 0}.meta-line{border:1px solid #e9dfcf;background:#fffaf3;border-radius:12px;padding:8px 10px;font-size:13px}.meta-line b{color:#825000}.action-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.detail{border-top:1px solid #f0e3d0;padding:0 13px 13px}.detail summary{cursor:pointer;list-style:none;font-weight:950;color:var(--navy);padding:12px 0;display:flex;justify-content:space-between}.detail summary::-webkit-details-marker{display:none}.detail summary:after{content:"보기";font-size:12px;color:#8b5200;background:#fff5e1;border:1px solid #ead2a5;border-radius:999px;padding:3px 8px}.detail[open] summary:after{content:"닫기"}.timeline{display:grid;gap:6px;margin:8px 0}.day{display:grid;grid-template-columns:52px 1fr;gap:8px;border:1px solid #e8edf5;border-radius:12px;padding:8px;background:#fff}.day b{color:#9a5800}.admin{display:none}.admin.visible{display:block}.admin-card{padding:13px}.admin-grid{display:grid;gap:9px}.field label{display:block;font-weight:950;color:#3d465c;font-size:13px;margin-bottom:4px}.field input{width:100%;min-height:44px;border:1px solid #d8dfec;border-radius:12px;padding:10px;background:#fff}.check{display:flex;gap:8px;align-items:center;margin:8px 0;font-weight:900}.check input{width:18px;height:18px}.people-wrap{display:grid;gap:10px}.listbox{background:#fff;border:1px solid #e4e9f2;border-radius:16px;overflow:hidden}.listbox summary{list-style:none;cursor:pointer;padding:12px 14px;background:#f8f5ef;color:var(--navy);font-weight:950}.listbox summary::-webkit-details-marker{display:none}.people{padding:8px;max-height:380px;overflow:auto}.person{padding:8px 9px;border:1px solid #edf0f5;border-radius:12px;margin:6px 0;background:#fff}.person strong{color:#172850}.person small{display:block;color:#667085}.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.tag{border-radius:999px;padding:3px 7px;font-size:11px;font-weight:900;background:#eef2ff;color:#283b7a}.tag.r1{background:#fff4e5;color:#9a4b00}.tag.r2{background:#ecfdf3;color:#067647}.tag.r3{background:#f3f4f6;color:#475467}.notice{font-size:12px;color:#6f5a38;background:#fff8e8;border:1px solid #f0d9ab;border-radius:14px;padding:10px;margin-top:10px;font-weight:800}.modal-back{position:fixed;inset:0;background:rgba(3,12,32,.62);display:none;align-items:flex-end;justify-content:center;padding:10px;z-index:80}.modal-back.show{display:flex}.modal{width:min(760px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.32)}.modal-head{position:sticky;top:0;background:#fff;z-index:1;border-bottom:1px solid #edf0f4;padding:14px;display:flex;justify-content:space-between;gap:10px}.modal-head h2{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.04em}.modal-head p{margin:3px 0 0;color:#667085;font-size:13px}.x{border:0;background:#f2f4f7;border-radius:50%;width:38px;height:38px;font-weight:950;cursor:pointer}.modal-body{padding:14px}.footer{padding:24px 0 38px;text-align:center;color:#667085;font-size:12px}.pdf-frame{width:100%;height:70vh;border:1px solid #d8dfec;border-radius:14px;background:#f8f9fb;margin-top:10px}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#172033;color:#fff;padding:10px 13px;border-radius:999px;box-shadow:0 10px 25px rgba(0,0,0,.25);display:none;z-index:100;font-size:13px;font-weight:850}.toast.show{display:block}
+    @media(max-width:719px){.hero{padding:14px 0 10px}.hero h1{font-size:28px}.login-grid{grid-template-columns:1fr 102px}.section{padding:10px 0}.rank-card,.vote-card,.admin-card{padding:10px}.section-title h2{font-size:20px}.section-title p{font-size:11px}.dest-body h3{font-size:20px}.brief{font-size:13px}.action-row{grid-template-columns:1fr 1fr}.quick-jump{display:none}.rank-content{grid-template-columns:28px 1fr auto;padding:9px}.rank-num{width:28px;height:28px}.score{font-size:16px}.dest-img{aspect-ratio:16/10}.side{gap:10px}.people-wrap{display:grid}}
+    
+.admin-candidate-tools{display:grid;gap:10px;margin:12px 0;padding:12px;border:1px solid #e4e9f2;border-radius:16px;background:#fff}.admin-candidate-row{display:grid;grid-template-columns:52px 1.2fr 1fr 1.4fr auto;gap:7px;align-items:center;border:1px solid #edf1f7;border-radius:14px;padding:8px;background:#fbfcff}.admin-candidate-row input{min-height:40px}.admin-candidate-row .btn{min-height:40px;padding:8px 10px}.notice-editor textarea{width:100%;min-height:96px;border:1px solid #d8dfec;border-radius:14px;padding:10px;font-family:inherit;line-height:1.45;resize:vertical}.dest-card.selected{border:2px solid var(--ok);box-shadow:0 0 0 4px rgba(6,118,71,.12),var(--shadow)}.dest-card.selected .vote-now-btn{background:var(--ok)}.candidate-meta{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.candidate-note{margin:8px 0 0;color:#4a5568;font-size:13px;font-weight:760}.notice-top{padding:14px;border:1px solid #ead2a5;border-radius:18px;background:#fff8e8;color:#523700;line-height:1.58;font-weight:850}.notice-top strong{display:block;color:#744900;font-size:16px;margin-bottom:5px}@media(max-width:720px){.admin-candidate-row{grid-template-columns:1fr}.admin-candidate-row .btn{width:100%}}
+@media(min-width:720px){.choice-grid{grid-template-columns:repeat(3,1fr)}.select-row{grid-template-columns:1fr}.select-row label{font-size:14px}.vote-actions{grid-template-columns:1fr auto auto}.vote-actions .primary{grid-column:auto}.dest-list{grid-template-columns:repeat(2,1fr)}.action-row{grid-template-columns:repeat(3,1fr)}.people-wrap{grid-template-columns:1fr 1fr}.admin-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:980px){.wrap{width:min(1160px,calc(100% - 48px))}.hero{padding:30px 0 22px}.hero-grid{grid-template-columns:1.15fr .85fr;align-items:end}.login-grid{grid-template-columns:1fr 140px auto}.login-grid button{grid-column:auto}.hero p{font-size:15px}.grid-main{grid-template-columns:minmax(0,1fr) 380px;align-items:start}.side{position:sticky;top:58px}.dest-list{grid-template-columns:repeat(2,minmax(0,1fr))}.dest-img{aspect-ratio:16/9}.desktop-only{display:inline-flex}.mobile-only{display:none}.modal-back{align-items:center}.rank-list{grid-template-columns:1fr}.text-hero{min-height:190px}}
+  
+    .rank-row.top1{border-color:#dca340;background:linear-gradient(135deg,#fff8e8,#fff)}.rank-row.top1 .rank-num{background:linear-gradient(135deg,#dca340,#9a5800)}.rank-row.top2 .rank-num{background:#4b5f82}.rank-row.top3 .rank-num{background:#8b5d3a}.rank-row.inactive-dest{opacity:.58}.rank-meter{height:8px;border-radius:999px;background:#edf0f5;overflow:hidden;margin-top:6px}.rank-meter span{display:block;height:100%;background:linear-gradient(90deg,#dca340,#b67720);border-radius:999px}.flight-box{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.flight-item{border:1px solid #d9e3f2;background:#f6f9ff;border-radius:13px;padding:9px 10px}.flight-item b{display:block;color:#071f55;font-size:12px}.flight-item span{display:block;color:#172033;font-size:14px;font-weight:950;margin-top:2px}.feedback-box{margin-top:12px;border-top:1px solid #edf0f4;padding-top:10px}.feedback-box label{display:flex;justify-content:space-between;gap:8px;font-weight:950;color:#3d465c;font-size:13px;margin-bottom:5px}.feedback-box textarea{width:100%;min-height:94px;resize:vertical;border:1px solid #d8dfec;border-radius:14px;padding:10px 11px;font-family:inherit;font-size:14px;line-height:1.45;background:#fff}.feedback-count{font-size:12px;color:#667085}.admin-dest-list{display:grid;gap:6px;max-height:300px;overflow:auto;border:1px solid #e7edf6;border-radius:14px;padding:8px;background:#fff}.admin-dest-list label{display:flex;align-items:flex-start;gap:8px;padding:8px;border-radius:10px;background:#fafafa;font-weight:850}.admin-dest-list input{margin-top:2px}.admin-report{margin-top:12px;display:grid;gap:8px}.report-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px}.report-table th{text-align:left;color:#667085;font-weight:950}.report-table td,.report-table th{padding:6px}.report-table tbody tr{background:#fff;border:1px solid #e7edf6}.report-table td:first-child{border-radius:10px 0 0 10px}.report-table td:last-child{border-radius:0 10px 10px 0}.vote-blocked{border:1px solid #fecdca;background:#fff5f4;color:#b42318;border-radius:14px;padding:9px 10px;margin-top:9px;font-size:13px;font-weight:900;cursor:pointer}.tag.r4{background:#fff1f3;color:#9f1239}
+    @media(max-width:719px){.flight-box{grid-template-columns:1fr}.report-table{font-size:11px}.report-table td,.report-table th{padding:5px}}
 
-    .proof-disabled-panel{padding:12px 13px;background:rgba(148,163,184,.10);border:1px dashed rgba(148,163,184,.35);color:#cbd5e1;border-radius:14px;margin-bottom:12px}
-    .fine-bg-0{background:linear-gradient(90deg,rgba(34,197,94,.13),rgba(17,24,39,.92))!important;border-left:5px solid rgba(34,197,94,.85)}
-    .fine-bg-1{background:linear-gradient(90deg,rgba(59,130,246,.16),rgba(17,24,39,.92))!important;border-left:5px solid rgba(59,130,246,.85)}
-    .fine-bg-2{background:linear-gradient(90deg,rgba(245,158,11,.18),rgba(17,24,39,.92))!important;border-left:5px solid rgba(245,158,11,.9)}
-    .fine-bg-3{background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(17,24,39,.92))!important;border-left:5px solid rgba(249,115,22,.95)}
-    .fine-bg-4{background:linear-gradient(90deg,rgba(239,68,68,.22),rgba(17,24,39,.92))!important;border-left:5px solid rgba(239,68,68,.95)}
-    tr.fine-bg-0 td,tr.fine-bg-1 td,tr.fine-bg-2 td,tr.fine-bg-3 td,tr.fine-bg-4 td{background:transparent}
-    .reason-row.fine-bg-0 td{background:rgba(34,197,94,.08)}
-    .reason-row.fine-bg-1 td{background:rgba(59,130,246,.09)}
-    .reason-row.fine-bg-2 td{background:rgba(245,158,11,.10)}
-    .reason-row.fine-bg-3 td{background:rgba(249,115,22,.11)}
-    .reason-row.fine-bg-4 td{background:rgba(239,68,68,.12)}
-    .fine-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 9px;font-weight:1000;border:1px solid rgba(255,255,255,.12)}
-    .fine-badge.fine-bg-0{background:rgba(34,197,94,.15)!important;color:#bbf7d0;border-color:rgba(34,197,94,.35)}
-    .fine-badge.fine-bg-1{background:rgba(59,130,246,.16)!important;color:#bfdbfe;border-color:rgba(59,130,246,.35)}
-    .fine-badge.fine-bg-2{background:rgba(245,158,11,.18)!important;color:#fde68a;border-color:rgba(245,158,11,.42)}
-    .fine-badge.fine-bg-3{background:rgba(249,115,22,.18)!important;color:#fed7aa;border-color:rgba(249,115,22,.42)}
-    .fine-badge.fine-bg-4{background:rgba(239,68,68,.20)!important;color:#fecaca;border-color:rgba(239,68,68,.45)}
-    .admin-toggle-card{padding:12px 13px;border:1px solid rgba(148,163,184,.22);border-radius:14px;background:#020617}
-    .toggle-row{display:flex;align-items:center;gap:10px}.toggle-row input{width:auto;min-height:auto;transform:scale(1.15)}
-
-  </style>
+    body.logged-out .statusbar, body.logged-out main, body.logged-out footer{display:none!important}
+    body.logged-out .hero{min-height:100vh;display:flex;align-items:center}
+    body.logged-out .hero .wrap{width:min(560px,calc(100% - 28px))}
+    body.logged-out .hero-grid{grid-template-columns:1fr!important;align-items:center}
+    body.logged-out .login-card{display:block!important;background:rgba(255,255,255,.18)}
+    body.logged-out .user-card{display:none!important}
+    body.logged-out .hero h1{font-size:clamp(30px,8vw,48px)}
+    body.logged-in .login-card{display:none!important}
+</style>
 </head>
-<body class="bottom-safe">
-  <div id="loginView" class="wrap login-box">
-    <div class="card">
-      <div class="brand" style="margin-bottom:18px"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="muted small">아이디는 성명, 초기 비밀번호는 모두 0000입니다.</div></div></div>
-      <div id="seedNotice" class="notice hide" style="margin-bottom:14px">데이터 연결 중입니다...</div>
-      <div class="grid"><div><label for="loginName">아이디 / 성명</label><input id="loginName" autocomplete="username" placeholder="예: 한상호" /></div><div><label for="loginPin">비밀번호 4자리</label><input id="loginPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="0000" /></div><button id="loginBtn">로그인</button><p class="small">최초 로그인 후 새 4자리 비밀번호로 변경하세요.</p></div>
+<body class="logged-out">
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">하반기 국외연수 장소 2차 투표</div>
+        <h1>하반기 국외연수 장소<br />2차 투표</h1>
+        <p>이번 하반기 국외연수 장소 2차 투표는 1개 지역만 선택합니다. 동일 지역에 2팀 이상 배정될 수 있습니다.</p>
+      </div>
+      <section class="login-card" id="loginCard">
+        <h2>로그인</h2>
+        <form id="loginForm" class="login-grid">
+          <input id="loginName" autocomplete="name" placeholder="이름" />
+          <input id="loginPin" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="전화번호 뒤 4자리" />
+          <button class="btn gold" type="submit">로그인</button>
+        </form>
+        <p class="small">예: 본인 이름 + 휴대전화번호 뒤 4자리. 1차 설문과 동일한 방식으로 로그인합니다.</p>
+      </section>
+      <section class="user-card hide" id="userCard">
+        <div class="user-row">
+          <div><strong id="userName">-</strong><small id="userOrg">-</small></div>
+          <button class="btn ghost" id="logoutBtn" type="button">로그아웃</button>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <nav class="statusbar">
+    <div class="wrap">
+      <span class="pill warn" id="storeStatus">저장소 확인 중</span>
+      <span class="pill" id="surveyStatus">설문 상태 확인 중</span>
+      <span class="pill" id="countStatus">응답 0 / 111</span>
+      <span class="pill" id="timeStatus">마지막 갱신 -</span>
+    </div>
+  </nav>
+
+  <main class="wrap section grid-main">
+    <div>
+      <section class="card rank-card" id="rankSection">
+        <div class="section-title">
+          <div><h2>하반기 국외연수 장소 2차 투표 실시간 집계</h2><p>후보지별 선택 인원을 확인합니다.</p></div>
+          <button class="btn ghost" id="refreshBtn" type="button">갱신</button>
+        </div>
+        <div class="response-hero" id="responseHero">
+          <div>
+            <div class="response-label">전체 응답 현황</div>
+            <div class="response-main">
+              <div class="response-number" id="responseMainNumber">0<small>/111명</small></div>
+              <div class="response-sub" id="responseMainText">아직 응답이 없습니다.</div>
+            </div>
+          </div>
+          <div class="response-stats">
+            <div class="response-stat"><b id="responseDoneCount">0</b><span>응답</span></div>
+            <div class="response-stat pending"><b id="responsePendingCount">111</b><span>미응답</span></div>
+            <div class="response-stat rate"><b id="responseRateCount">0%</b><span>응답률</span></div>
+          </div>
+          <div class="response-bar"><div class="response-fill" id="responseFill"></div></div>
+        </div>
+        <div class="rank-list" id="ranking"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div><h2>하반기 국외연수 장소 2차 투표 후보지</h2><p>후보지명만 표시합니다.</p></div>
+        </div>
+        <div class="quick-jump" id="jumpNav"></div>
+        <div class="dest-list" id="destList"></div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card vote-card" id="voteCard">
+        <div class="section-title">
+          <div><h2>내 투표</h2><p>하반기 국외연수 장소 2차 투표는 1개 지역만 선택합니다.</p></div>
+        </div>
+        <div class="choice-grid" id="rankSelectors"></div>
+        <div class="notice-top" id="topNoticeBox"></div>
+        <input type="hidden" id="feedbackText" value="" />
+        <span class="hide" id="feedbackCount">0 / 0자</span>
+        <div class="vote-blocked hide" id="voteBlockedReason">투표 가능 여부 확인 중</div>
+        <div class="vote-actions">
+          <button class="btn gold primary" id="saveVoteBtn" type="button">내 선택 저장</button>
+          <button class="btn ghost" id="clearVoteBtn" type="button">초기화</button>
+          <button class="btn soft" id="myVoteBtn" type="button">내 투표 확인</button>
+        </div>
+        <div class="last-save" id="myLastSave">로그인 후 투표할 수 있습니다.</div>
+      </section>
+
+      <section class="admin card" id="adminPanel">
+        <div class="admin-card">
+          <div class="section-title"><div><h2>관리자</h2><p>한상호 로그인 시 표시됩니다.</p></div></div>
+          <div class="admin-grid">
+            <div class="field"><label for="adminStart">시작일</label><input type="date" id="adminStart" /></div>
+            <div class="field"><label for="adminEnd">종료일</label><input type="date" id="adminEnd" /></div>
+          </div>
+          <label class="check"><input type="checkbox" id="adminVoteOpen" /> 투표 개시 상태로 전환</label>
+          <!-- 후보지 선택 게시 기능 주석 처리: 모든 후보지를 투표 대상으로 공개합니다.
+          <div class="field"><label>게시할 여행 후보지 선택</label><div class="admin-dest-list" id="adminDestList"></div></div>
+          -->
+          <label class="check"><input type="checkbox" id="adminShowRanking" /> 일반 사용자에게도 통계 공개</label>
+          <input type="checkbox" id="adminShowVoters" class="hide" />
+          <input type="checkbox" id="adminShowPending" class="hide" />
+          <div class="vote-actions">
+            <button class="btn green primary" id="saveSettingsBtn" type="button">설정 저장</button>
+            <button class="btn ghost" id="exportCsvBtn" type="button">CSV</button>
+            <button class="btn ghost" id="exportJsonBtn" type="button">JSON</button>
+            <button class="btn ghost" id="exportReportBtn" type="button">통계 리포트</button>
+            <button class="btn ghost" id="exportReportCsvBtn" type="button">통계 CSV</button>
+            <button class="btn ghost" id="exportFeedbackCsvBtn" type="button">피드백 CSV</button>
+            <button class="btn danger" id="resetVotesBtn" type="button">투표 초기화</button>
+          </div>
+          <details class="listbox" id="candidateManageBox" style="margin-top:12px" open>
+            <summary>후보지 및 공지사항 관리</summary>
+            <div class="admin-candidate-tools">
+              <div class="field notice-editor">
+                <label for="adminNoticeText">공지사항 문구</label>
+                <textarea id="adminNoticeText" placeholder="공지사항 문구를 입력하세요"></textarea>
+              </div>
+              <div class="section-title" style="margin:4px 0"><div><h2 style="font-size:18px">후보지 관리</h2><p>후보지명, 1차 설문 순위, 추가 문구를 수정하고 추가/삭제할 수 있습니다.</p></div></div>
+              <div id="adminCandidateList" class="admin-candidate-list"></div>
+              <button class="btn ghost" id="addCandidateBtn" type="button">후보지 추가</button>
+            </div>
+          </details>
+
+          <details class="listbox" style="margin-top:12px">
+            <summary>명단 로그인 검증 도구</summary>
+            <div class="people">
+              <div class="notice">원본 명단을 <strong>이름,전화번호뒤4자리</strong> 형식으로 붙여넣으면 index.html의 로그인 해시와 자동 비교합니다. 입력값은 저장되지 않고 관리자 화면에서만 일시적으로 계산됩니다.</div>
+              <div class="field">
+                <label for="verifyInput">원본 명단 붙여넣기</label>
+                <textarea id="verifyInput" rows="8" placeholder="예시:
+강명봉,1234
+김해영,2083
+한상호,4572" style="width:100%;border:1px solid #d8dfec;border-radius:14px;padding:10px;font-family:inherit;line-height:1.45;resize:vertical"></textarea>
+              </div>
+              <div class="vote-actions" style="grid-template-columns:1fr 1fr">
+                <button class="btn green" id="verifyRosterBtn" type="button">명단 검증</button>
+                <button class="btn ghost" id="exportVerifyCsvBtn" type="button">검증 CSV</button>
+              </div>
+              <div class="admin-report" id="verifyReport"></div>
+            </div>
+          </details>
+          <div class="admin-report" id="adminReport"></div>
+        </div>
+      </section>
+
+      <section class="card vote-card" id="peoplePanel">
+        <div class="section-title"><div><h2>응답 현황</h2><p>선택 완료자와 미응답자 현황을 확인합니다.</p></div></div>
+        <div class="people-wrap" id="peopleStatus"></div>
+      </section>
+    </aside>
+  </main>
+
+  <div class="modal-back" id="detailModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div><h2 id="modalTitle">상세</h2><p id="modalSub">-</p></div>
+        <button class="x" id="closeModal" type="button" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
-  <div id="appView" class="wrap hide">
-    <div class="top"><div class="brand"><div class="logo">₩</div><div><h1>Money Plus 국내주식 리그</h1><div class="toolbar" style="margin-top:7px"><span class="pill">접속자 <strong id="currentUserLabel"></strong></span><span class="pill">역할 <strong id="roleLabel"></strong></span></div></div></div><div class="toolbar"><button class="secondary" id="changePinBtn">비밀번호 변경</button><button class="ghost" id="logoutBtn">로그아웃</button></div></div>
+  <div class="toast" id="toast"></div>
+  <footer class="footer"><div class="wrap">하반기 국외연수 장소 2차 투표</div></footer>
 
-    <div id="passwordChangePanel" class="card hide" style="margin-bottom:14px"><h2>비밀번호 변경</h2><div class="notice" style="margin-bottom:12px">4자리 숫자로 변경해야 계속 사용할 수 있습니다.</div><div class="row"><div><label for="newPin">새 비밀번호 4자리</label><input id="newPin" type="password" inputmode="numeric" maxlength="4" placeholder="예: 1234" /></div><div><label for="newPin2">새 비밀번호 확인</label><input id="newPin2" type="password" inputmode="numeric" maxlength="4" placeholder="한 번 더 입력" /></div><button id="savePinBtn">저장</button></div></div>
+<script>
+/* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
+  authDomain: "snu17-trip-vote.firebaseapp.com",
+  databaseURL: "https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "snu17-trip-vote",
+  storageBucket: "snu17-trip-vote.firebasestorage.app",
+  messagingSenderId: "1043680927852",
+  appId: "1:1043680927852:web:98b6916873cda945d63849",
+  measurementId: "G-MTF99DNV7M"
+};
+const APP_PATH = "snu17_trip_vote_2026_round2"; // 2차 설문 전용 Firebase 경로
+const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
+const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
+const POINTS = [1];
+const DESTINATIONS = [
+  {
+    "id": "turkiye",
+    "num": 1,
+    "title": "튀르키예",
+    "subtitle": "",
+    "shortTitle": "튀르키예",
+    "tab": "1 튀르키예",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "이스탄불 중심",
+    "price": "상세 협의",
+    "duration": "6박 8일 검토",
+    "season": "하반기 국외연수 장소 2차 투표 후보",
+    "objective": "1차 설문 1위 후보지 재확인",
+    "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "italy_north",
+    "num": 2,
+    "title": "이탈리아북부",
+    "subtitle": "",
+    "shortTitle": "이탈리아북부",
+    "tab": "2 이탈리아",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "베네치아 - 돌로미티 - 밀라노",
+    "price": "상세 협의",
+    "duration": "6박 8일 검토",
+    "season": "하반기 국외연수 장소 2차 투표 후보",
+    "objective": "1차 설문 7위 후보지 재검토",
+    "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "spain_south",
+    "num": 3,
+    "title": "스페인남부",
+    "subtitle": "",
+    "shortTitle": "스페인남부",
+    "tab": "3 스페인남부",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "마드리드 및 안달루시아 검토",
+    "price": "상세 협의",
+    "duration": "6박 8일 검토",
+    "season": "하반기 국외연수 장소 2차 투표 후보",
+    "objective": "1차 설문 12위 후보지 재검토",
+    "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "croatia",
+    "num": 4,
+    "title": "크로아티아",
+    "subtitle": "",
+    "shortTitle": "크로아티아",
+    "tab": "4 크로아티아",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "자그레브 및 아드리아해 검토",
+    "price": "",
+    "duration": "6박 8일 검토",
+    "season": "하반기 예산범위 내 진행이 어려울 수 있는 후보",
+    "objective": "1차 설문 3위 후보이나 추가 자부담 가능성을 전제로 재검토",
+    "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  },
+  {
+    "id": "canada",
+    "num": 5,
+    "title": "북미동부",
+    "subtitle": "",
+    "shortTitle": "북미동부",
+    "tab": "5 북미동부",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "토론토 및 보스턴 검토",
+    "price": "",
+    "duration": "6박 8일 검토",
+    "season": "하반기 예산범위 내 진행이 어려울 수 있는 후보",
+    "objective": "1차 설문 4위 후보이나 추가 자부담 가능성을 전제로 재검토",
+    "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  }
+];
+const ROSTER = [
+  {
+    "id": "u001",
+    "serial": 1,
+    "name": "강명봉",
+    "org": "한국중부발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "a57bcba600dee5c47d21dd66782daa55dbb8676687c69b5ad3557a3df68a6561",
+    "admin": false
+  },
+  {
+    "id": "u002",
+    "serial": 2,
+    "name": "고재성",
+    "org": "한국고용정보원",
+    "gender": "남",
+    "title": "선임연구위원",
+    "pinHash": "273de2077092474990647eb043c5d238c5d7cbb0514de88a4c8cddbd341c5b88",
+    "admin": false
+  },
+  {
+    "id": "u003",
+    "serial": 3,
+    "name": "곽영은",
+    "org": "한국부동산원",
+    "gender": "여",
+    "title": "지사장",
+    "pinHash": "04806aebd8e8523cdc765424caaf33a8b557204d595c903f0c3732950d942841",
+    "admin": false
+  },
+  {
+    "id": "u004",
+    "serial": 4,
+    "name": "권혁만",
+    "org": "한국국토정보공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "7da869c3b86f9b34ded487017a161f16ff15c71dac1cfe360655cb58f63da5f1",
+    "admin": false
+  },
+  {
+    "id": "u005",
+    "serial": 5,
+    "name": "김남구",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "8cd5224e76533ac453919f17d5b11f0b4b37fd6b65a2d45ca10aebd8b9503da0",
+    "admin": false
+  },
+  {
+    "id": "u006",
+    "serial": 6,
+    "name": "김동욱",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "10791501a7a31022b1c31d2b684527d31322ca73bbf97e75528d7171e749d47e",
+    "admin": false
+  },
+  {
+    "id": "u007",
+    "serial": 7,
+    "name": "김미나",
+    "org": "한국환경산업기술원",
+    "gender": "여",
+    "title": "센터장",
+    "pinHash": "855864ed28c8ec0cf407923e2a79845f7c905160d7e2333eb6615a3d1020fa51",
+    "admin": false
+  },
+  {
+    "id": "u008",
+    "serial": 8,
+    "name": "김병현",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "fc76c0e42550a550c0ad96607283f91b821a2dcae93bcd69bfb86c44554936e8",
+    "admin": false
+  },
+  {
+    "id": "u009",
+    "serial": 9,
+    "name": "김수연",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "차장",
+    "pinHash": "3a377315cd96babe02719cc06908bbd3a5d2169dd4ec3087ba67ec219c8ac454",
+    "admin": false
+  },
+  {
+    "id": "u010",
+    "serial": 10,
+    "name": "김수정",
+    "org": "한국소비자원",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "12e4638223ddf47e845f04ae5a72b413ffbf67dcc79493acdfbd7373c42c5dbf",
+    "admin": false
+  },
+  {
+    "id": "u011",
+    "serial": 11,
+    "name": "김영상",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "2d17d62cf5907d35b44659f270646cf758d9cfc8ac195de5f0d19b4a7b08277a",
+    "admin": false
+  },
+  {
+    "id": "u012",
+    "serial": 12,
+    "name": "김용식",
+    "org": "건설기술교육원",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "35500ba7560e5c73f9366e55c30a1d06887598d668c8276050b47dc7e5673e61",
+    "admin": false
+  },
+  {
+    "id": "u013",
+    "serial": 13,
+    "name": "김용현",
+    "org": "에스알",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "c1ba490d54637c1422b829969847b84fdef70cc9571269962daf2fee589247cf",
+    "admin": false
+  },
+  {
+    "id": "u014",
+    "serial": 14,
+    "name": "김윤정",
+    "org": "한국수자원공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "d0aa5bc1369dc24ab120bf0012dd29ecd211c8f736982426411601ba2b7c3b18",
+    "admin": false
+  },
+  {
+    "id": "u015",
+    "serial": 15,
+    "name": "김인규",
+    "org": "한국자산관리공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "03df5328ae870083d955b5a6ea911b41962fee822b183336835effc89493ab56",
+    "admin": false
+  },
+  {
+    "id": "u016",
+    "serial": 16,
+    "name": "김정도",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "7ac2120cdaee9c81f367eb6037e88eb27984392a5428af6df1323bd0157ed6e6",
+    "admin": false
+  },
+  {
+    "id": "u017",
+    "serial": 17,
+    "name": "김준용",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "31d120832a776a453dcedf1e18afe816aa5cd5109608508518268c2882315ab5",
+    "admin": false
+  },
+  {
+    "id": "u018",
+    "serial": 18,
+    "name": "김지미",
+    "org": "한국전력공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "401c3d6022fb9a64d5dd426af94972c39616fa5c8d49a21623e043c895e95263",
+    "admin": false
+  },
+  {
+    "id": "u019",
+    "serial": 19,
+    "name": "김진아",
+    "org": "한국공항공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "46a8c1f881b1803610c913f4b061f0da2807c7c8631d08c1c42767138522e0a5",
+    "admin": false
+  },
+  {
+    "id": "u020",
+    "serial": 20,
+    "name": "김진웅",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "41bf3acc02aa5e2fbaecc9caee7327eb65bc063195034d3b95ae29422b28876e",
+    "admin": false
+  },
+  {
+    "id": "u021",
+    "serial": 21,
+    "name": "김태균",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "a5acf915dc2d6359b6204a05ab7142d19e625d7ec44e096e9a6f7b8fe1ac337a",
+    "admin": false
+  },
+  {
+    "id": "u022",
+    "serial": 22,
+    "name": "김해영",
+    "org": "한국농어촌공사",
+    "gender": "여",
+    "title": "차장",
+    "pinHash": "bbdd8d4643eac0410c5b07e277bead344ce1cd1f471f4a6c70708db9a9ea69a4",
+    "admin": false
+  },
+  {
+    "id": "u023",
+    "serial": 23,
+    "name": "김현교",
+    "org": "국립공원공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "e9bf3d8d7328eb126a8834fb7a0c88706c5c6af44adf858399d5443a413bc471",
+    "admin": false
+  },
+  {
+    "id": "u024",
+    "serial": 24,
+    "name": "김호영",
+    "org": "국민체육진흥공단",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "2455ea4cbaa742b5de9549c9e7385f56ff9dc1ed590c904f49fbd72c569ecb91",
+    "admin": false
+  },
+  {
+    "id": "u025",
+    "serial": 25,
+    "name": "김희웅",
+    "org": "한국수자원공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "91bc9b71fa7aa85a74af7f2ea94dbcd89b8f1ba3085df7e3f8fc6d6f1afa9520",
+    "admin": false
+  },
+  {
+    "id": "u026",
+    "serial": 26,
+    "name": "남상모",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "331ff478df2c2225f1a1decb445e0a2e09db9f1f9ad556cb1051277618ee05dd",
+    "admin": false
+  },
+  {
+    "id": "u027",
+    "serial": 27,
+    "name": "노지석",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "24ca6f493dc412b475cd1e8066381cfd236d8969f4f86f1162879b1675924c0e",
+    "admin": false
+  },
+  {
+    "id": "u028",
+    "serial": 28,
+    "name": "류준호",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "76ae97d326105f2184b5e0204b9b0f04e6442f061b74a7fd5b2bbb5a03654d73",
+    "admin": false
+  },
+  {
+    "id": "u029",
+    "serial": 29,
+    "name": "문미영",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "f50cc1001be529283f03b1a5f20fdc61ee2cb66eef2feb9afc73d05092d0d09c",
+    "admin": false
+  },
+  {
+    "id": "u030",
+    "serial": 30,
+    "name": "문철웅",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "f93d78828f071b71aed2d32c7c4aca6dd5e8f963d3829298508f2bffea5eee70",
+    "admin": false
+  },
+  {
+    "id": "u031",
+    "serial": 31,
+    "name": "문현정",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "41bfa6f6abd8ae7fc6efe90453d38573e9f3784ffc3335bcbb783aaa66f2db5d",
+    "admin": false
+  },
+  {
+    "id": "u032",
+    "serial": 32,
+    "name": "박덕배",
+    "org": "한국남동발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "25b9c0a2e356cdf9e5e6277983b86dba4c1c29d75e6d38ef7c35e2379811282b",
+    "admin": false
+  },
+  {
+    "id": "u033",
+    "serial": 33,
+    "name": "박상환",
+    "org": "한국인터넷진흥원",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "cdc62b6700b0784cff767b558778b791fadc0609d0b1dd34f881fac628244790",
+    "admin": false
+  },
+  {
+    "id": "u034",
+    "serial": 34,
+    "name": "박정휘",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "44df030cca05bebd7e616ac18ea5e53fb81d9353f21e1e41bf85345943568542",
+    "admin": false
+  },
+  {
+    "id": "u035",
+    "serial": 35,
+    "name": "박종현",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "e75a46aa599621af0b15eeb3814f5aebedcbc0cb80b40d9adba691169815db38",
+    "admin": false
+  },
+  {
+    "id": "u036",
+    "serial": 36,
+    "name": "박준덕",
+    "org": "한국석유관리원",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ce1542e5c9bcb919edbffd073dc2d22eb175acc95508ec97dbd0b97418d37b18",
+    "admin": false
+  },
+  {
+    "id": "u037",
+    "serial": 37,
+    "name": "박창수",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ff6e4459d01eb7bdbbbe27979f021c8916c36bc9811baa640fd385fd277da599",
+    "admin": false
+  },
+  {
+    "id": "u038",
+    "serial": 38,
+    "name": "박현종",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "b69e19b9e69701e72bc34dc3df7eab3bc0fa713639939fc4574180fea54d0ebc",
+    "admin": false
+  },
+  {
+    "id": "u039",
+    "serial": 39,
+    "name": "박현준",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "a5859f822ce299d93cbe6e0481ea0ddaf7deede91dec2cb29e89a3bf9a893dfd",
+    "admin": false
+  },
+  {
+    "id": "u040",
+    "serial": 40,
+    "name": "박형수",
+    "org": "공영홈쇼핑",
+    "gender": "남",
+    "title": "부장(실장)",
+    "pinHash": "1a205a8fb25321bfbfb1a4e8d26dbf5db28ccc70bfe3b68bada675556893cc2d",
+    "admin": false
+  },
+  {
+    "id": "u041",
+    "serial": 41,
+    "name": "배황철",
+    "org": "한국남동발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "ed893d09c2057ae34a5a482f9cfac80e406ba08486788d134782ae5c1c8b887e",
+    "admin": false
+  },
+  {
+    "id": "u042",
+    "serial": 42,
+    "name": "변규섭",
+    "org": "인천항만공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "323b4e26cfe798ad894ad3bcca1fba8ee78c71188f11380e4ca2927c94dc2560",
+    "admin": false
+  },
+  {
+    "id": "u043",
+    "serial": 43,
+    "name": "변영웅",
+    "org": "제주국제자유도시개발센터",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "cbe03aa9f99768abd0e48189c5d3a7a7687645408e307de30a14f867df46b756",
+    "admin": false
+  },
+  {
+    "id": "u044",
+    "serial": 44,
+    "name": "변태윤",
+    "org": "국가철도공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "ca196b7bb0cd424cbda8b3216e0379886be42bbba5298fd81b4e1e9fcb1363df",
+    "admin": false
+  },
+  {
+    "id": "u045",
+    "serial": 45,
+    "name": "선우영식",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "4028ccd2cf8a3afe3084ea3c20e0ec56364f361a420d1211fc8ae2cb80b768c4",
+    "admin": false
+  },
+  {
+    "id": "u046",
+    "serial": 46,
+    "name": "신명진",
+    "org": "한국서부발전",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "a310606a54d1f6fb92db06c5ee422e3a492ee61e96b5f055e31bfe012e524343",
+    "admin": false
+  },
+  {
+    "id": "u047",
+    "serial": 47,
+    "name": "신상철",
+    "org": "강원개발공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "96dd5f70c9b909740aa36be89b4a55e9603748fd607d563241b986a45cdf8aad",
+    "admin": false
+  },
+  {
+    "id": "u048",
+    "serial": 48,
+    "name": "안상희",
+    "org": "한국남부발전",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "e3ff88075b4745b8a3c32c44be6e51d606aa88bff51cb6c00b9b5b96e6f76189",
+    "admin": false
+  },
+  {
+    "id": "u049",
+    "serial": 49,
+    "name": "안치영",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "d4aa24ce3d1a78d825ddf503a6eeaaaef60781b0665b654b4195ce122f3d115f",
+    "admin": false
+  },
+  {
+    "id": "u050",
+    "serial": 50,
+    "name": "양광남",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "43ce4d8681ef3706d12ae07832f0f6e63048a0842ed71e2f3ae8f260785dc7d8",
+    "admin": false
+  },
+  {
+    "id": "u051",
+    "serial": 51,
+    "name": "양대원",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "2016b8e6bf90143de8c8286ddf019e266ae4cff7e6c50bdd23b57c5eab95539d",
+    "admin": false
+  },
+  {
+    "id": "u052",
+    "serial": 52,
+    "name": "양명식",
+    "org": "한국동서발전",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "adec6c0b8a9ae83f245a617df1a041d6f85967181f52847dc5cac7415699dbb4",
+    "admin": false
+  },
+  {
+    "id": "u053",
+    "serial": 53,
+    "name": "양정미",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "ddd8b5c6b392705e05faa7876f1a25603c2cbab1461ef0317d155dfa40bfc646",
+    "admin": false
+  },
+  {
+    "id": "u054",
+    "serial": 54,
+    "name": "양종철",
+    "org": "한국소비자원",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "1b20198b4be0e4ad7399d35ea8ec52a53d2d78fc4ef511c49fff879528b2e527",
+    "admin": false
+  },
+  {
+    "id": "u055",
+    "serial": 55,
+    "name": "양지민",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "c345d86ced3dcce328ccf58a088b7532d65430436ce14ee068284cf60785e255",
+    "admin": false
+  },
+  {
+    "id": "u056",
+    "serial": 56,
+    "name": "오시창",
+    "org": "축산물품질평가원",
+    "gender": "남",
+    "title": "본부장",
+    "pinHash": "1d867a5d373d554d2e06297f0a9a92a4936b23b09c14148068262e3f7979c897",
+    "admin": false
+  },
+  {
+    "id": "u057",
+    "serial": 57,
+    "name": "오유상",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "22912ea7a601e50fc4f9d03dbaffc549dca89be52c9529f437a6851641690ad7",
+    "admin": false
+  },
+  {
+    "id": "u058",
+    "serial": 58,
+    "name": "위재복",
+    "org": "한국도로공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "60eba97e4da4263346d71ed32f3d5cfef4171921dfe0aaf20016e95f4b8fa9eb",
+    "admin": false
+  },
+  {
+    "id": "u059",
+    "serial": 59,
+    "name": "유복현",
+    "org": "한국전력공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9b933b33fa50e19e7ea43ea49ff87d1835a94d08dd099ed4954deb14ad1c79ad",
+    "admin": false
+  },
+  {
+    "id": "u060",
+    "serial": 60,
+    "name": "유조환",
+    "org": "한전원자력연료",
+    "gender": "남",
+    "title": "부처장",
+    "pinHash": "169f4058eb92be9e9ccdfd86b080bd0ee31ce733cf4e4423fc7f897eaa553904",
+    "admin": false
+  },
+  {
+    "id": "u061",
+    "serial": 61,
+    "name": "유종훈",
+    "org": "한국교직원공제회",
+    "gender": "남",
+    "title": "실장",
+    "pinHash": "adfb8b6a5c6245a8a1f1e7a349bea916ee3c97f1114880b804e1c7af09277e76",
+    "admin": false
+  },
+  {
+    "id": "u062",
+    "serial": 62,
+    "name": "유지연",
+    "org": "한국폴리텍대학",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "9b80fdde98030574231a4dbf17183f02665170c55dfa4cf4d10dc1dce1f783ef",
+    "admin": false
+  },
+  {
+    "id": "u063",
+    "serial": 63,
+    "name": "윤선아",
+    "org": "강원랜드",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "51348150fe18d160bc5d1ba1b335cfb7e30293c792cf3572bbc2c987063d1478",
+    "admin": false
+  },
+  {
+    "id": "u064",
+    "serial": 64,
+    "name": "윤세형",
+    "org": "인천도시공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "d3a2b14280c5cce31cd011f65cced5613c284e0c874cfe038ee60df533ef5238",
+    "admin": false
+  },
+  {
+    "id": "u065",
+    "serial": 65,
+    "name": "윤소연",
+    "org": "한국전력공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "989a265527b9507313fe5811564e9b36bf26493177c03d8d99dc4ef9646a79ed",
+    "admin": false
+  },
+  {
+    "id": "u066",
+    "serial": 66,
+    "name": "윤주길",
+    "org": "서울교통공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "9cee85012ca286ff53921c93c8e2c993f6abc708de1095d668468bfa756e5fa7",
+    "admin": false
+  },
+  {
+    "id": "u067",
+    "serial": 67,
+    "name": "이근호",
+    "org": "한국사회보장정보원",
+    "gender": "남",
+    "title": "본부장",
+    "pinHash": "2359ee294a612d79be8a8d4b57833377538af6d6ae6afe6e6b7e939aa9944960",
+    "admin": false
+  },
+  {
+    "id": "u068",
+    "serial": 68,
+    "name": "이동훈",
+    "org": "한국교직원공제회",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "4ab627481f544db93ab6bd2e2fb9b2b74a589ba5abc2790b22fef0bdcdc2f4c9",
+    "admin": false
+  },
+  {
+    "id": "u069",
+    "serial": 69,
+    "name": "이상미",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "76ad96fdbf358670c853479937673d7321214da1e062c2207e0d8aaf0c4b46cb",
+    "admin": false
+  },
+  {
+    "id": "u070",
+    "serial": 70,
+    "name": "이수진",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "523c19378c9ed98c00064527d68812a1a7ba6ff687cd213d744e2cce8e56c83f",
+    "admin": false
+  },
+  {
+    "id": "u071",
+    "serial": 71,
+    "name": "이승민",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "12d54b5194debe3145a00d75adf6d8d0c6e616f11d310a63bb6bb7a65b4f7f4b",
+    "admin": false
+  },
+  {
+    "id": "u072",
+    "serial": 72,
+    "name": "이승훈",
+    "org": "한국장학재단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "d391709fb2511ada10c0430fc5f406c37e0ab6d210c7c71d1bb5c7cf8f2bb3df",
+    "admin": false
+  },
+  {
+    "id": "u073",
+    "serial": 73,
+    "name": "이은경",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "be0568a17fdefa00071f813888089d34bf825bff167499206caa751bfec24bb3",
+    "admin": false
+  },
+  {
+    "id": "u074",
+    "serial": 74,
+    "name": "이재학",
+    "org": "한국원자력환경공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "8148d6acf93068d980b362822de56f1bda7c05a24775e4f45789bf78d0848262",
+    "admin": false
+  },
+  {
+    "id": "u075",
+    "serial": 75,
+    "name": "이정원",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "19c87f5756f044554af4ea9681e9616ff85640b3c572be16febef51dcc94daed",
+    "admin": false
+  },
+  {
+    "id": "u076",
+    "serial": 76,
+    "name": "이주훈",
+    "org": "한국산업기술기획평가원",
+    "gender": "남",
+    "title": "연구위원",
+    "pinHash": "5c3858c3f1eaf903ccddbec086fddc790413ae44bde6dad6ee6315e36a82ce9b",
+    "admin": false
+  },
+  {
+    "id": "u077",
+    "serial": 77,
+    "name": "이준영",
+    "org": "인천국제공항공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9213a1184a11db0284bf295d86c3d99c3cf3fe848c3b393f743ebfe722ddc53a",
+    "admin": false
+  },
+  {
+    "id": "u078",
+    "serial": 78,
+    "name": "이진형",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "dfbc8f54448e9d63512fed2ac7a351f75e0085ca513149b7e40a5821af154466",
+    "admin": false
+  },
+  {
+    "id": "u079",
+    "serial": 79,
+    "name": "이태열",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "f0bf1cc2c1e3362ad783098a990477e8c86efeb692e2449040a3cb60af3176a7",
+    "admin": false
+  },
+  {
+    "id": "u080",
+    "serial": 80,
+    "name": "이태영",
+    "org": "인천국제공항공사",
+    "gender": "여",
+    "title": "부장",
+    "pinHash": "4785a8f7a925d2f879cde29e43ac0c440db295eae09d77146540b6f858ae1a15",
+    "admin": false
+  },
+  {
+    "id": "u081",
+    "serial": 81,
+    "name": "이호형",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "892691bae032745623962735c3ebe7992ce6eda7bf3c916d6492d9a0d8450fa9",
+    "admin": false
+  },
+  {
+    "id": "u082",
+    "serial": 82,
+    "name": "이홍규",
+    "org": "국민연금공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "18eb65c98df8f28d3a9c6076a217d94ae6108c4c6dcff0dbabfaf294524eac33",
+    "admin": false
+  },
+  {
+    "id": "u083",
+    "serial": 83,
+    "name": "임재철",
+    "org": "한국수자원공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "2046a26655a083fd223bfed5c8ce79912f1cfca8b45ec272ddc66eda02367456",
+    "admin": false
+  },
+  {
+    "id": "u084",
+    "serial": 84,
+    "name": "장준성",
+    "org": "농협생명",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "e709cac8221a198b06fb72398cfe35a64a5a63062ace5eb5acc06035fdd67a35",
+    "admin": false
+  },
+  {
+    "id": "u085",
+    "serial": 85,
+    "name": "장현웅",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "20893d7036e7999d92396aa3545d0e01beed79d3153d69c735a1ab616d0aa193",
+    "admin": false
+  },
+  {
+    "id": "u086",
+    "serial": 86,
+    "name": "전상욱",
+    "org": "한국폴리텍대학",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "9d62ec26f0abcace1aecb73b0b0cceb67f82cd0c0f8bbccb82fb08f0350cab3b",
+    "admin": false
+  },
+  {
+    "id": "u087",
+    "serial": 87,
+    "name": "전희영",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "24b443109a4cc9677f3e545de6ad1f93232953d6fc08a7b1ef43c03492ce2553",
+    "admin": false
+  },
+  {
+    "id": "u089",
+    "serial": 89,
+    "name": "정장식",
+    "org": "한국환경공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "45f9cd036d61ce434c77554a81644d1eaa28b458207fd3bc853cf9c47deed0ec",
+    "admin": false
+  },
+  {
+    "id": "u090",
+    "serial": 90,
+    "name": "정재훈",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "cacde0fdba072970af29d40949fb56dcbbb62da728ea8f1b233306f7fe789a51",
+    "admin": false
+  },
+  {
+    "id": "u091",
+    "serial": 91,
+    "name": "정창석",
+    "org": "한국화학융합시험연구원",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "5f2d72630bec206a2bb59764257dff835c7e1565b4be5ec4488bf583b2e49bf8",
+    "admin": false
+  },
+  {
+    "id": "u092",
+    "serial": 92,
+    "name": "정현정",
+    "org": "농협중앙회",
+    "gender": "여",
+    "title": "국장",
+    "pinHash": "8c02188322186b5ef3b17c578d48c5b8c320d624e3a79dcb72cd35d17a6dad2c",
+    "admin": false
+  },
+  {
+    "id": "u093",
+    "serial": 93,
+    "name": "정형모",
+    "org": "한국농어촌공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "7384118ca494a406a8e6e3fd5b7db6abdb36c6ed2813f6427fde459c30841ab1",
+    "admin": false
+  },
+  {
+    "id": "u094",
+    "serial": 94,
+    "name": "조봉준",
+    "org": "농협경제지주",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "f2b297bfa3241e7108d167e9e37d08cdfabf19e57b7ba3ab9ede9487689ef3b2",
+    "admin": false
+  },
+  {
+    "id": "u095",
+    "serial": 95,
+    "name": "주상화",
+    "org": "한국철도공사",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "ff66aa290b4a1ae6cf27d2e3fb1df3e66047c492e7338efe8facba846c4a646a",
+    "admin": false
+  },
+  {
+    "id": "u096",
+    "serial": 96,
+    "name": "차덕권",
+    "org": "한국수력원자력",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "1873e7922e9c908d9ce217c74b77f10adc8325e64231cfd8c5287df865b41a9e",
+    "admin": false
+  },
+  {
+    "id": "u097",
+    "serial": 97,
+    "name": "차두표",
+    "org": "국가철도공단",
+    "gender": "남",
+    "title": "처장",
+    "pinHash": "834a60d6f2b8d41783e30fb38c7268dfe8995d5c14649060635af0753bc65909",
+    "admin": false
+  },
+  {
+    "id": "u098",
+    "serial": 98,
+    "name": "채수진",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "d3443f6ec3c06ee55475301d0c66c195bcdbb34bd3361d76f100005d82572d63",
+    "admin": false
+  },
+  {
+    "id": "u099",
+    "serial": 99,
+    "name": "최동원",
+    "org": "한국산업안전보건공단",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "8f8abdcc035963e21f9404e1b4e8cf96ea574fda046aae6f598b0dc9c2c8d61f",
+    "admin": false
+  },
+  {
+    "id": "u100",
+    "serial": 100,
+    "name": "최미숙",
+    "org": "한국철도공사",
+    "gender": "여",
+    "title": "처장",
+    "pinHash": "7a164bb66b32055dbfd4ba06f2e4530ad20b6ff5670f134cd72dee389678f0bf",
+    "admin": false
+  },
+  {
+    "id": "u101",
+    "serial": 101,
+    "name": "최성호",
+    "org": "인천관광공사",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "831fb109b1387221e25df8b9e22e8078e1ec8690f198f72d71ae5dd98868afac",
+    "admin": false
+  },
+  {
+    "id": "u102",
+    "serial": 102,
+    "name": "최성호",
+    "org": "한국지역난방공사",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "771292184ee64aba19717c131df2addf67d17e36287a88a61a1b303c1a9fa7c4",
+    "admin": false
+  },
+  {
+    "id": "u103",
+    "serial": 103,
+    "name": "최원욱",
+    "org": "국립공원공단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "f8b6b985c54ec8d66e21d32fc0fdcb21b3f83b411d529dc600908b99c04e29a1",
+    "admin": false
+  },
+  {
+    "id": "u104",
+    "serial": 104,
+    "name": "최재영",
+    "org": "금융결제원",
+    "gender": "남",
+    "title": "실장",
+    "pinHash": "681fe0a294b2bf16aa1bfd02bbed74d5e7dffc371532d9bed4a9a2b4de3d9236",
+    "admin": false
+  },
+  {
+    "id": "u105",
+    "serial": 105,
+    "name": "최진홍",
+    "org": "한국장학재단",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "24c82d0220d8deca49ba5adb20bc6adad1d0c27683fdf7e7a8e662408bfc0d7c",
+    "admin": false
+  },
+  {
+    "id": "u106",
+    "serial": 106,
+    "name": "최하영",
+    "org": "한국토지주택공사",
+    "gender": "여",
+    "title": "팀장",
+    "pinHash": "33e8e69136c39b27b36c884af0dc305718aaab794205301e533d281b9ae64f3b",
+    "admin": false
+  },
+  {
+    "id": "u107",
+    "serial": 107,
+    "name": "한상호",
+    "org": "한전KDN",
+    "gender": "남",
+    "title": "부장",
+    "pinHash": "38875f82d7293aed5e02b2bbc4686d958536aa827291eb7d2ba588e6a8965c88",
+    "admin": true
+  },
+  {
+    "id": "u108",
+    "serial": 108,
+    "name": "한성룡",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "cde3899b822c343f11e10ea387ad44533029561364e7aa53afb47e9e6290e9a2",
+    "admin": false
+  },
+  {
+    "id": "u109",
+    "serial": 109,
+    "name": "한성일",
+    "org": "농협중앙회",
+    "gender": "남",
+    "title": "국장",
+    "pinHash": "491524cbea6dc5731bf8ca4f59d0b859c220ee0b6b7faae2a0520d8532f16937",
+    "admin": false
+  },
+  {
+    "id": "u110",
+    "serial": 110,
+    "name": "홍준희",
+    "org": "한국토지주택공사",
+    "gender": "남",
+    "title": "차장",
+    "pinHash": "d526df2ac4d3c45aeecbe13301e59f34a8f84dd92f5e5a0fc171baf8f7c2b036",
+    "admin": false
+  },
+  {
+    "id": "u111",
+    "serial": 111,
+    "name": "황인환",
+    "org": "한국마사회",
+    "gender": "남",
+    "title": "단장",
+    "pinHash": "74df36a907c274670d7f5031a3f82a81cd73bb6bffdeb81f3635dd279c9c26f1",
+    "admin": false
+  },
+  {
+    "id": "u112",
+    "serial": 112,
+    "name": "황종욱",
+    "org": "국민체육진흥공단",
+    "gender": "남",
+    "title": "팀장",
+    "pinHash": "f2928853a279554e938c9a52958a8d5bf7d8c283326d892a74f3b2bc2c2e0655",
+    "admin": false
+  },
+  {
+    "id": "viewer_kimeunhye",
+    "serial": 999,
+    "name": "김은혜",
+    "org": "조회전용",
+    "gender": "",
+    "title": "조회전용",
+    "pinHash": "a14ebb77202ede4a66a99d9600e92129d04ab1c8843583ff37bc12780b30da99",
+    "admin": false,
+    "viewerOnly": true
+  }
+];
+const DEFAULT_NOTICE_TEXT = `최근 환율 및 유가할증료 인상 이슈로 현재 상기 지역은 모두 중동 경유 항공편 이용 가능성이 매우 높습니다.
 
-    <div class="tabs"><button data-tab="ranking" class="active">랭킹</button><button data-tab="pick">종목 선택</button><button data-tab="proof" id="proofTabBtn">인증 조회/업로드</button><button data-tab="admin" id="adminTabBtn" class="hide">관리자</button></div>
+크로아티아/북미동부는 +100만원 이내 자부담 필요가능성 있음.
 
-    <section id="rankingTab"><div class="grid two"><div class="card"><div class="toolbar" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">랭킹 조회</h2><button id="refreshBtn">전체 가격 새로고침</button></div><div class="toolbar" style="margin-bottom:12px"><span class="pill">선택마감 <strong id="pickPeriodLabel">-</strong></span><span class="pill">경쟁기간 <strong id="tradePeriodLabel">-</strong></span><span class="pill">상태 <strong id="statusLabel">-</strong></span></div><div id="hiddenPickNotice" class="info hide" style="margin-bottom:12px">종목 선택 기간에는 다른 회원의 선택 종목과 선정 사유가 보이지 않습니다.</div><div id="rankingLockedNotice" class="notice hide" style="margin-bottom:12px">경쟁 종료 후에는 종료일 장마감 종가 기준으로 순위가 고정됩니다.</div><div class="table-wrap desktop-table"><table><thead><tr><th>순위</th><th>회원</th><th>종목/선정 사유</th><th>시초가(시가)</th><th>현재가(종가)</th><th>수익률</th><th>전일대비</th><th>벌금</th><th>종목등록일</th></tr></thead><tbody id="rankingBody"></tbody></table></div><div id="mobileRanking" class="mobile-list"></div></div><div class="card"><h2>벌금 규칙</h2><div id="fineSummary" class="toolbar"></div><div class="divider"></div><h2>운영 메모</h2><p id="memoText"></p><div class="notice">화면을 켜두면 30초마다 자동으로 가격이 갱신됩니다.<br/>* <b>종목을 다시 선택하면 새 종목의 선택일 시초가로 바뀝니다.</b><br/>* <b>경쟁 시작 전:</b> 종목 선택일의 시초가 기준<br/>* <b>경쟁 시작 후:</b> 랭킹 시작일 정규장 시초가로 자동 변경/저장</div></div></div></section>
+이번 투표는 4개 지역을 꼭 선정하는 투표가 아닙니다. 예를 들어 튀르키예 선택이 많으면 2개팀 이상이 갈수도 있음.`;
+const DEFAULT_SETTINGS = {
+  startAt:"",
+  endAt:"",
+  showRanking:true,
+  showVoterNames:true,
+  showPendingNames:false,
+  voteOpen:true,
+  activeDestinations:null,
+  candidates:null,
+  noticeText:DEFAULT_NOTICE_TEXT
+};
 
-    <section id="pickTab" class="hide"><div class="grid two"><div class="card"><h2>내 종목 선택</h2><div id="pickWindowNotice" class="notice" style="margin-bottom:12px"></div><div class="grid"><div><label for="stockKeyword">코스피/코스닥 주식 검색</label><input id="stockKeyword" placeholder="예: LG, LG전자, 삼성, 현대" /></div><div class="toolbar"><button id="searchStockBtn">검색</button><button class="secondary" id="manualInputBtn">직접 입력</button></div><div id="searchResults" class="search-results"></div></div></div><div class="card"><h2>선택된 종목</h2><div class="grid"><div><label for="pickName">종목명</label><input id="pickName" placeholder="LG전자" /></div><div><label for="pickSymbol">종목코드</label><input id="pickSymbol" placeholder="066570 또는 066570.KS" /></div><div><label for="pickMemo">선정 사유 1,000자 이내</label><textarea id="pickMemo" maxlength="1000" placeholder="선정 이유를 적어주세요. 경쟁 시작 후 종목 밑에 공개됩니다."></textarea><div class="charline"><span id="memoCount">0</span>/1000</div></div><button id="savePickBtn">내 종목 저장</button></div></div></div></section>
+const FLIGHT_INFO = {
+  canada:{type:"직항+경유 혼합", time:"ICN→토론토 직항 약 13시간대, 보스턴→ICN은 경유 포함 약 17~22시간", airlines:"대한항공·에어캐나다, 미국/캐나다 환승 항공사", note:"토론토는 직항 가능, 보스턴 귀국은 직항편 확인이 제한적이라 토론토·뉴욕·디트로이트 등 경유 가능성이 큽니다."},
+  newzealand:{type:"경유", time:"크라이스트처치/퀸스타운 기준 약 15~22시간", airlines:"에어뉴질랜드, 싱가포르항공, 콴타스, 대한항공 연계", note:"인천-남섬 직항은 일반적으로 제한적이며 오클랜드·싱가포르·호주 경유를 전제로 보는 편이 안전합니다."},
+  croatia:{type:"직항 제한/경유 중심", time:"자그레브 기준 약 16~23시간", airlines:"대한항공 시즌성/전세 가능성, 터키항공, 카타르항공, 루프트한자 등", note:"자그레브 직항은 정기 상시편으로 보기 어렵고, 계절·전세·경유편 확인이 필요합니다."},
+  spain_south:{type:"직항 가능/경유 가능", time:"마드리드 기준 직항 약 14~15시간, 경유 약 17~23시간", airlines:"대한항공, 카타르항공, 에미레이트, 터키항공, 유럽계 항공사", note:"마드리드 직항 가능성이 있으나 운항일과 단체좌석은 별도 확인이 필요합니다."},
+  iceland:{type:"경유", time:"레이캬비크 기준 약 18~26시간", airlines:"핀에어, 루프트한자, KLM, 에어프랑스, 아이슬란드항공 연계", note:"인천-아이슬란드 직항은 일반적이지 않아 유럽 주요 도시 환승이 필요합니다."},
+  france_south:{type:"경유", time:"니스 기준 약 16~23시간", airlines:"에어프랑스, KLM, 루프트한자, 터키항공, 에미레이트 등", note:"니스 직항은 제한적이며 파리·암스테르담·프랑크푸르트·이스탄불 경유가 일반적입니다."},
+  egypt:{type:"직항 가능/경유 가능", time:"카이로 기준 직항 약 11~12시간, 경유 약 15~22시간", airlines:"아시아나항공, 카타르항공, 에티하드, 에미레이트, 터키항공 등", note:"카이로 직항 여부는 시즌·운항사 일정 확인이 필요합니다."},
+  london_paris:{type:"직항 가능", time:"ICN→런던 약 14~15시간, 파리→ICN 약 12~13시간대", airlines:"대한항공, 아시아나항공, 에어프랑스, 영국항공 등", note:"런던·파리는 직항 선택지가 비교적 많은 편이나 단체좌석과 요일별 운항 확인이 필요합니다."},
+  usa_west:{type:"직항 가능", time:"ICN→LA 약 11~12시간, 샌프란시스코→ICN 약 12~13시간", airlines:"대한항공, 아시아나항공, 에어프레미아, 유나이티드, 델타 등", note:"미국 서부는 직항 선택지가 비교적 많지만 도시별 귀국편 요일 확인이 필요합니다."},
+  spain_north:{type:"직항 가능/경유 가능", time:"마드리드 왕복 기준 직항 약 14~15시간, 경유 약 17~23시간", airlines:"대한항공, 카타르항공, 에미레이트, 터키항공, 유럽계 항공사", note:"마드리드 도착 후 사리아·산티아고 구간은 국내선/철도/버스 연계가 필요합니다."},
+  italy_north:{type:"직항/경유 혼합", time:"베네치아 IN·밀라노 OUT 기준 약 15~22시간", airlines:"대한항공·아시아나/이탈리아 노선 연계, 루프트한자, 에미레이트, 카타르항공, 터키항공 등", note:"밀라노는 직항 가능성이 있으나 베네치아는 경유가 일반적입니다. 오픈조 단체좌석 확인이 필요합니다."},
+  turkey:{type:"직항", time:"인천↔이스탄불 직항 기준 약 11시간 40분~12시간 20분", airlines:"터키항공(Turkish Airlines), 대한항공 등", note:"인천-이스탄불은 직항 이용이 가능하며, 실제 소요시간·운항일·단체좌석은 항공사 스케줄에 따라 달라집니다. 일정 중 삼순 및 이스탄불 국내선 이동은 별도 확인이 필요합니다."},
+  japan_architecture:{type:"직항", time:"도쿄 기준 약 2시간 10분~2시간 40분", airlines:"대한항공, 아시아나항공, 제주항공, 진에어, 티웨이항공, 에어프레미아, ZIPAIR 등", note:"도쿄 직항편은 많지만 도쿄-오사카 이동과 건축 답사 동선은 별도 조율이 필요합니다."}
+};
+function flightInfo(d){ return FLIGHT_INFO[d.id] || {type:"확인 필요", time:"항공 일정 확정 후 안내", note:""}; }
+let currentUser = null;
+let settings = {...DEFAULT_SETTINGS};
+let votes = {};
+let selectedChoices = [null];
+let feedbackText = "";
+let usingFirebase = false;
+let db = null;
+let dataReady = false;
+let remoteReady = false;
+let storeError = "";
+let rankingExpanded = false;
 
-    <section id="proofTab" class="hide"><div class="grid two"><div class="card"><h2>실제구매 및 수익률 인증 업로드</h2><div id="proofDisabledPanel" class="proof-disabled-panel hide">관리자가 인증 사진 등록 메뉴를 비활성화했습니다. 현재는 업로드할 수 없습니다.</div><div class="info" style="margin-bottom:12px">모바일 사진을 1280px 이하 JPG로 자동 압축해서 저장합니다.</div><div class="grid"><div><label for="proofFile">사진 선택 / 카메라 촬영</label><input id="proofFile" type="file" accept="image/*" multiple /></div><div><label for="proofMemo">설명</label><textarea id="proofMemo" maxlength="1000" placeholder="예: 실제 매수 내역, 보유 화면, 수익률 화면 등"></textarea></div><button id="uploadProofBtn">인증 이미지 저장</button><div id="uploadStatus" class="small muted"></div><div class="progress hide" id="uploadProgress"><span></span></div></div></div><div class="card"><h2>전체 인증 조회</h2><div id="proofList" class="proof-list"></div></div></div></section>
+const $ = id => document.getElementById(id);
+function defaultCandidates(){
+  return DESTINATIONS.map((d,i)=>({
+    id:d.id,
+    num:i+1,
+    title:d.title,
+    firstRank:d.objective?.match(/1차 설문\s*([0-9]+)위/)?.[1] || '',
+    note:(d.id==='croatia'||d.id==='canada')?'+100만원 이내 자부담 필요가능성 있음':'',
+    active:true
+  }));
+}
+function currentCandidates(){
+  const list = Array.isArray(settings.candidates) && settings.candidates.length ? settings.candidates : defaultCandidates();
+  return list.filter(c=>c && c.active!==false).map((c,i)=>({
+    id:c.id || `candidate_${i+1}`,
+    num:Number(c.num || i+1),
+    title:c.title || `후보지 ${i+1}`,
+    firstRank:c.firstRank || '',
+    note:c.note || '',
+    active:c.active!==false
+  })).sort((a,b)=>a.num-b.num);
+}
+function destById(id){ return currentCandidates().find(d => d.id === id) || DESTINATIONS.find(d=>d.id===id); }
+const voterRoster = () => ROSTER.filter(u => !u.viewerOnly);
+function defaultActiveDestinations(){ return currentCandidates().map(d=>d.id); }
+function activeDestinationIds(){ return defaultActiveDestinations(); }
+function isDestinationActive(id){ return currentCandidates().some(d=>d.id===id); }
+function publicDestinations(){ return currentCandidates(); }
+function selectableDestinations(){ return currentCandidates(); }
+function voteBlockReason(){
+  if(!currentUser) return '먼저 로그인해 주세요.';
+  if(isViewerOnly()) return '조회 전용 계정은 투표할 수 없습니다.';
+  if(!storeAvailable()) return 'Firebase 원격 저장소가 연결되지 않아 투표할 수 없습니다.';
+  if(!settings.voteOpen) return '아직 투표가 개시되지 않았습니다.';
+  const now=Date.now(), s=parseMs(settings.startAt), e=parseMs(settings.endAt,true);
+  // 2차 설문은 설문 기간을 별도로 설정하지 않아도 투표 가능하게 합니다.
+  if(s && now<s) return '투표기간이 아직 시작되지 않았습니다.';
+  if(e && now>e) return '투표기간이 종료되었습니다.';
+  if(selectableDestinations().length<1) return '투표 가능한 후보지가 없습니다.';
+  return '';
+}
+function isViewerOnly(){ return !!currentUser?.viewerOnly; }
+function storeAvailable(){ return usingFirebase && remoteReady && db; }
+function storeUnavailableMessage(){
+  if (!hasFirebaseConfig()) return "Firebase 설정값이 index.html에 입력되지 않았습니다. GitHub Pages에서는 원격 저장이 되지 않습니다.";
+  return storeError || "Firebase 원격 저장소가 아직 연결되지 않았습니다.";
+}
+const normalizeName = v => String(v || '').normalize('NFC').replace(/\s+/g,'').trim();
+const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function isDateOnly(v){return /^\d{4}-\d{2}-\d{2}$/.test(String(v||''));}
+function parseMs(v, endOfDay=false){
+  if(!v) return null;
+  if(isDateOnly(v)) return new Date(`${v}T${endOfDay?'23:59:59':'00:00:00'}+09:00`).getTime();
+  return new Date(v).getTime();
+}
+function formatDateOnly(v){
+  if(!v) return '-';
+  const d = isDateOnly(v) ? new Date(`${v}T00:00:00+09:00`) : new Date(v);
+  if(Number.isNaN(d.getTime())) return '-';
+  return `${String(d.getFullYear()).slice(2)}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+function formatDateTime(v){
+  if(!v) return '-';
+  const d = isDateOnly(v) ? new Date(`${v}T00:00:00+09:00`) : new Date(v);
+  if(Number.isNaN(d.getTime())) return '-';
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function formatShortTime(v){
+  if(!v) return '-';
+  const d = new Date(v); if(Number.isNaN(d.getTime())) return '-';
+  const today = new Date();
+  const sameDay = d.getFullYear()===today.getFullYear() && d.getMonth()===today.getMonth() && d.getDate()===today.getDate();
+  const hm = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  return sameDay ? `오늘 ${hm}` : `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${hm}`;
+}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1800);}
+function hasSurveyPeriod(){return !!(settings.startAt && settings.endAt && parseMs(settings.startAt) && parseMs(settings.endAt));}
+function periodText(){return hasSurveyPeriod()?`${formatDateOnly(settings.startAt)}~${formatDateOnly(settings.endAt)}`:'설문 기간 미설정';}
+function isSurveyOpen(){if(!hasSurveyPeriod())return false;const now=Date.now();const s=parseMs(settings.startAt),e=parseMs(settings.endAt,true);return now>=s&&now<=e;}
+function isSurveyEnded(){const e=parseMs(settings.endAt,true);return !!(hasSurveyPeriod()&&e&&Date.now()>e);}
+function surveyLabel(){if(!settings.voteOpen)return '개시 전';if(!hasSurveyPeriod())return '기간 미설정';const s=parseMs(settings.startAt),e=parseMs(settings.endAt,true);if(s&&Date.now()<s)return '시작 전';if(e&&Date.now()>e)return '종료';return '진행 중';}
+function canVote(){return !voteBlockReason();}
+function canSeeRanking(){return currentUser?.admin || settings.showRanking || isSurveyEnded();}
+function canSeeVoterNames(){return !!currentUser?.admin;}
+function canSeePendingNames(){return !!currentUser?.admin;}
+function validChoices(r){return r && Array.isArray(r.choices) && r.choices.length===1 && r.choices.every(c=>c && destById(c.optionId));}
+function hasFirebaseConfig(){return !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && FIREBASE_CONFIG.projectId);}
+function withTimeout(promise, ms, message){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error(message)), ms))
+  ]);
+}
 
-    <section id="adminTab" class="hide"><div class="grid two"><div class="card"><h2>관리자 설정</h2><div class="grid"><h2>랭킹 경쟁 기간 (이 기간 전까지만 종목 등록 가능)</h2><div class="row"><div><label for="pickEndDate">선택 마감일 (기본: 2026-06-11)</label><input id="pickEndDate" type="date" /></div></div><div class="row"><div><label for="tradeStartDate">경쟁 시작일 (기본: 2026-06-12)</label><input id="tradeStartDate" type="date" /></div><div><label for="tradeEndDate">경쟁 종료일 (기본: 2026-08-28)</label><input id="tradeEndDate" type="date" /></div></div><div class="row"><div><label for="marketOpenTime">장시작 시간</label><input id="marketOpenTime" type="time" value="09:00" /></div><div><label for="marketCloseTime">장마감 시간</label><input id="marketCloseTime" type="time" value="15:30" /></div></div><h2>인증 사진 등록 메뉴</h2><div class="admin-toggle-card"><label class="toggle-row"><input id="proofEnabled" type="checkbox" /> <span>인증 조회/업로드 메뉴 활성화</span></label><div class="small muted" style="margin-top:6px">기본값은 비활성입니다. 이 체크박스는 관리자 페이지에서만 변경할 수 있습니다. 비활성 시 모든 사용자에게 인증 탭이 보이지 않고 업로드도 막힙니다.</div></div><h2>벌금 설정</h2><div class="grid three"><div><label for="fineTop3">1~3등</label><input id="fineTop3" type="number" step="10000" value="0" /></div><div><label for="fine4to6">4~6등</label><input id="fine4to6" type="number" step="10000" value="10000" /></div><div><label for="fine7to9">7~9등</label><input id="fine7to9" type="number" step="10000" value="20000" /></div><div><label for="fine10to12">10~12등</label><input id="fine10to12" type="number" step="10000" value="30000" /></div><div><label for="fine13plus">13등 이하</label><input id="fine13plus" type="number" step="10000" value="40000" /></div></div><div><label for="adminMemo">공지/운영 메모</label><textarea id="adminMemo"></textarea></div><div class="toolbar"><button id="saveSettingsBtn">설정 저장</button><button class="secondary" id="lockRankingBtn">순위 고정</button><button class="secondary" id="unlockRankingBtn">고정 해제</button><button class="danger" id="resetPinsBtn">비번 0000 초기화</button></div></div></div><div class="card"><h2>회원 관리</h2><div class="toolbar" style="margin-bottom:12px"><button id="seedBtn">초기 회원 보정</button></div><div id="memberAdminList" class="proof-list"></div></div></div></section>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-    import { getDatabase, ref, set, update, get, child, onValue, push, remove } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
-
-    const FIREBASE_CONFIG = { apiKey:"AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng", authDomain:"snu17-trip-vote.firebaseapp.com", databaseURL:"https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app", projectId:"snu17-trip-vote", storageBucket:"snu17-trip-vote.firebasestorage.app", messagingSenderId:"1043680927852", appId:"1:1043680927852:web:98b6916873cda945d63849", measurementId:"G-MTF99DNV7M" };
-    const app = initializeApp(FIREBASE_CONFIG); const db = getDatabase(app);
-
-    // 김윤정 회원 기관명(한국수자원공사) 반영 완료
-    const INITIAL_MEMBERS=[{name:'한상호',org:'',role:'admin'},{name:'곽영은',org:'한국부동산원',role:'member'},{name:'김수정',org:'한국소비자원',role:'member'},{name:'김태균',org:'농협중앙회',role:'member'},{name:'김해영',org:'한국농어촌공사',role:'member'},{name:'김현교',org:'국립공원공단',role:'member'},{name:'류준호',org:'한국전력공사',role:'member'},{name:'문철웅',org:'한국전력공사',role:'member'},{name:'박상환',org:'한국인터넷진흥원',role:'member'},{name:'변태윤',org:'국가철도공단',role:'member'},{name:'김윤정',org:'한국수자원공사',role:'member'},{name:'신명진',org:'한국서부발전',role:'member'},{name:'윤선아',org:'강원랜드',role:'member'},{name:'이승민',org:'농협중앙회',role:'member'},{name:'이주훈',org:'한국산업기술기획평가원',role:'member'},{name:'정장식',org:'한국환경공단',role:'member'},{name:'정형모',org:'한국농어촌공사',role:'member'},{name:'최미숙',org:'한국철도공사',role:'member'}];
-    const STOCKS=[['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['009150','삼성전기','KOSPI'],['028260','삼성물산','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['091990','셀트리온헬스케어','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['028300','HLB','KOSDAQ']].map(([code,name,market])=>({code,name,market,symbol:`${code}.KS`}));
-
-    const state={user:null,members:{},picks:{},prices:{},settings:{},proofs:{}}; const $=id=>document.getElementById(id); const KRW=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:0}); const NUM=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2,minimumFractionDigits:2}); const paths={members:'moneyPlus/members',picks:'moneyPlus/picks',prices:'moneyPlus/prices',settings:'moneyPlus/settings',proofs:'moneyPlus/proofs'};
-    const sleep = ms => new Promise(r => setTimeout(r, ms)); 
-
-    function kstYMD(value){
-      const d = value ? new Date(value) : new Date();
-      return d.toLocaleDateString('sv-SE', { timeZone:'Asia/Seoul' });
+function sha256Fallback(ascii) {
+  function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+  const mathPow = Math.pow, maxWord = mathPow(2, 32);
+  let result = '', words = [], asciiBitLength = ascii.length * 8;
+  const hash = [], k = [];
+  let primeCounter = 0, candidate = 2;
+  function isPrime(n){ for(let i=2;i*i<=n;i++) if(n%i===0) return false; return true; }
+  while (primeCounter < 64) {
+    if (isPrime(candidate)) {
+      if (primeCounter < 8) hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter] = (mathPow(candidate, 1/3) * maxWord) | 0;
+      primeCounter++;
     }
-    function kstDateObjFromYMD(ymd){
-      return new Date(`${ymd}T00:00:00+09:00`);
+    candidate++;
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    if (j >> 8) throw new Error('ASCII only');
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = ((asciiBitLength / maxWord) | 0);
+  words[words.length] = (asciiBitLength);
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = hash.slice(0);
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = hash[0], e = hash[4];
+      const temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash[7] = hash[6]; hash[6] = hash[5]; hash[5] = hash[4]; hash[4] = (hash[3] + temp1) | 0;
+      hash[3] = hash[2]; hash[2] = hash[1]; hash[1] = hash[0]; hash[0] = (temp1 + temp2) | 0;
     }
-    function toYYYYMMDD(dateObj){
-      return kstYMD(dateObj).replace(/-/g, '');
+    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+  }
+  for (let i = 0; i < 8; i++) {
+    for (let j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
     }
-    function toYMDHyphen(dateObj){
-      return kstYMD(dateObj);
-    }
-    function parseNaverSiseText(text){
-      const cleaned = String(text || '').trim().replace(/^\s*callback\(/, '').replace(/\);?\s*$/, '');
-      const arr = new Function('return ' + cleaned)();
-      if(!Array.isArray(arr) || arr.length < 2) throw new Error('네이버 일봉 데이터가 비어 있습니다.');
-      return arr;
-    }
-    async function fetchTextWithProxy(url){
-      const encoded = encodeURIComponent(url);
-      const candidates = [
-        { kind:'allorigins-raw', url:`https://api.allorigins.win/raw?url=${encoded}` },
-        { kind:'allorigins-get', url:`https://api.allorigins.win/get?url=${encoded}` }
-      ];
-      let lastError;
-      for(const c of candidates){
-        try{
-          const res = await fetch(c.url, { cache:'no-store' });
-          if(!res.ok) throw new Error(`${c.kind} HTTP ${res.status}`);
-          if(c.kind === 'allorigins-get'){
-            const json = await res.json();
-            if(!json || !json.contents) throw new Error(`${c.kind} 빈 응답`);
-            return json.contents;
-          }
-          const text = await res.text();
-          if(!text) throw new Error(`${c.kind} 빈 응답`);
-          return text;
-        }catch(e){
-          lastError = e;
-          console.warn('가격 프록시 실패:', c.kind, e);
-        }
-      }
-      throw lastError || new Error('가격 프록시 전체 실패');
-    }
-    function buildStockPriceBasis(p, s){
-      const now = new Date();
-      const tradeStart = new Date(`${s.tradeStartDate}T00:00:00+09:00`);
-      const tradeEnd = new Date(`${s.tradeEndDate}T23:59:59+09:00`);
-      const beforeStart = now < tradeStart;
-      const selectedAt = p.selectedAt || p.updatedAt || Date.now();
-      const selectedYMD = kstYMD(selectedAt);
-      const startDate = beforeStart ? selectedYMD : s.tradeStartDate;
-      const todayYMD = kstYMD(now);
-      const endDate = now > tradeEnd ? s.tradeEndDate : todayYMD;
-      const startObj = kstDateObjFromYMD(startDate);
-      const endObj = kstDateObjFromYMD(endDate);
-      const basis = beforeStart ? '임시: 종목 등록일 시초가' : '확정: 경쟁 시작일 시초가';
-      return { beforeStart, basis, startObj, endObj, startDate, endDate, selectedYMD, isFinished: now > tradeEnd || !!s.locked };
-    }
+  }
+  return result;
+}
+async function sha256Hex(text){
+  if (window.crypto && crypto.subtle && window.isSecureContext) {
+    const data=new TextEncoder().encode(text);
+    const digest=await crypto.subtle.digest('SHA-256',data);
+    return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  return sha256Fallback(unescape(encodeURIComponent(text)));
+}
+async function hashPin(name,pin){return sha256Hex(`${AUTH_SALT}|${normalizeName(name)}|${pin}`);}
+function downloadBlob(content,filename,type='text/plain;charset=utf-8'){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);}
+function writeLocal(){
+  // 운영 안정성을 위해 더 이상 localStorage를 원격 저장소처럼 사용하지 않습니다.
+  // Firebase가 연결되지 않은 경우 설정/투표 저장은 차단됩니다.
+}
+function setStorePill(cls, msg){
+  const el = $('storeStatus');
+  if (!el) return;
+  el.className = `pill ${cls || ''}`;
+  el.textContent = msg;
+}
+function firebaseHelpText(){
+  return 'Firebase Console에서 Realtime Database와 Authentication > Anonymous를 활성화하고, index.html의 FIREBASE_CONFIG 값을 채워 주세요.';
+}
+async function initStore(){
+  usingFirebase = false;
+  remoteReady = false;
+  storeError = '';
+  settings = {...DEFAULT_SETTINGS};
+  votes = {};
+  dataReady = true;
+  setStorePill('warn', '저장소 확인 중');
 
-    function safeKey(n){return String(n||'').trim().replace(/[.#$\[\]/]/g,'_')} function today(){return new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'})} function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} function isPin(v){return /^\d{4}$/.test(String(v||''))} function fmtDt(v){return v?new Date(v).toLocaleString('ko-KR',{hour12:false}):'-'} function norm(v){return String(v||'').toLowerCase().replace(/\s/g,'')} function normalizeSymbol(v){const s=String(v||'').trim().toUpperCase(); if(/^\d{6}$/.test(s)) return `${s}.KS`; if(/^\d{6}\.KS$/.test(s)) return s; return s} function codeFromSymbol(v){return normalizeSymbol(v).replace('.KS','')}
-    
-    // 기본 세팅: 선택마감 6/11, 시작일 6/12, 종료일 8/28
-    function defaultSettings(){return{pickEndDate:'2026-06-11',tradeStartDate:'2026-06-12',tradeEndDate:'2026-08-28',marketOpenTime:'09:00',marketCloseTime:'15:30',locked:false,proofEnabled:false,memo:'Money Plus 국내주식 리그입니다.',fines:{top3:0,r4to6:10000,r7to9:20000,r10to12:30000,r13plus:40000},updatedAt:Date.now()}}
-    
-    async function seed(){const root=ref(db); for(const m of INITIAL_MEMBERS){const k=safeKey(m.name), snap=await get(child(root,`${paths.members}/${k}`)); if(!snap.exists()) await set(ref(db,`${paths.members}/${k}`),{...m,pin:'0000',mustChangePin:true,active:true,createdAt:Date.now()}); else await update(ref(db,`${paths.members}/${k}`),{name:m.name,org:m.org,role:m.role,active:snap.val().active!==false});} const ss=await get(child(root,paths.settings)); if(!ss.exists()) await set(ref(db,paths.settings),defaultSettings())}
-    
-    async function init(){
-      try {
-        $('seedNotice').textContent = '데이터 연결 확인 중...';
-        const ms=await get(ref(db,paths.members)); 
-        if(!ms.exists()){
-          $('seedNotice').textContent = 'Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.';
-          $('seedNotice').classList.remove('hide'); 
-          await seed();
-        } 
-        $('seedNotice').classList.add('hide'); 
-        bindRealtime(); 
-        bindEvents(); 
-        const saved=localStorage.getItem('moneyPlusLoginName'); 
-        if(saved) $('loginName').value=saved;
+  if(!hasFirebaseConfig()){
+    storeError = 'Firebase 설정 필요';
+    setStorePill('danger', 'Firebase 미연결');
+    renderAll();
+    return;
+  }
 
-        // 🔥 30초마다 자동 갱신 (관리자 로그인 시에만 작동하여 네이버 API 차단 방지)
-        setInterval(() => {
-          if (isAdmin() && !state.settings.locked) {
-            refreshAllPrices(true); // silent = true
-          }
-        }, 30000);
-
-      } catch (e) {
-        console.error('Firebase DB Error:', e);
-        const errorMsg = '데이터베이스 접근 권한이 없습니다.\nFirebase 콘솔에서 [Realtime Database] -> [규칙] 탭을 확인하여 읽기/쓰기 권한(true)을 부여해주세요.\n\n상세 오류: ' + e.message;
-        $('seedNotice').classList.remove('hide');
-        $('seedNotice').classList.replace('notice', 'error');
-        $('seedNotice').textContent = errorMsg;
-        alert(errorMsg);
-      }
+  const waitForFirebaseSdk = async () => {
+    const started = Date.now();
+    while(!window.firebase && Date.now() - started < 8000){
+      await new Promise(r=>setTimeout(r,120));
     }
-    
-    function bindRealtime(){onValue(ref(db,paths.members),s=>{state.members=s.val()||{}; renderAll()}); onValue(ref(db,paths.picks),s=>{state.picks=s.val()||{}; renderAll()}); onValue(ref(db,paths.prices),s=>{state.prices=s.val()||{}; renderAll()}); onValue(ref(db,paths.settings),s=>{const val=s.val()||{}; state.settings={...defaultSettings(),...val,fines:{...defaultSettings().fines,...(val.fines||{})}}; renderAll()}); onValue(ref(db,paths.proofs),s=>{state.proofs=s.val()||{}; renderAll()})}
-    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';$('pickName').focus()}; $('pickMemo').oninput=()=>{$('memoCount').textContent=$('pickMemo').value.length}; $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=()=>refreshAllPrices(false); $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; $('seedBtn').onclick=async()=>{await seed();alert('회원 데이터를 보정했습니다.')}}
-    
-    async function login(){
-      try {
-        const name=$('loginName').value.trim(), pin=$('loginPin').value.trim(), key=safeKey(name);
-        if (Object.keys(state.members).length === 0) {
-           return alert('데이터를 불러오지 못했습니다. Firebase 규칙이 만료되었는지 확인해주세요.');
-        }
-        const m = state.members[key]; 
-        if(!name||!pin)return alert('성명과 비밀번호를 입력하세요.'); 
-        if(!m||m.active===false)return alert('등록된 회원 이름이 아닙니다.'); 
-        if(String(m.pin)!==pin)return alert('비밀번호가 맞지 않습니다. 초기 비밀번호는 0000입니다.'); 
-        
-        state.user={key,...m}; 
-        localStorage.setItem('moneyPlusLoginName',name); 
-        $('loginView').classList.add('hide'); $('appView').classList.remove('hide'); $('loginPin').value=''; 
-        if(m.mustChangePin)$('passwordChangePanel').classList.remove('hide'); 
+    return !!window.firebase;
+  };
+
+  if(!window.firebase){
+    const loaded = await waitForFirebaseSdk();
+    if(!loaded){
+      storeError = 'Firebase SDK 로딩 실패';
+      setStorePill('danger', 'Firebase SDK 실패');
+      renderAll();
+      return;
+    }
+  }
+
+  let slowTimer = null;
+  try{
+    setStorePill('warn', 'Firebase 연결 중');
+    if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    if(firebase.auth){
+      await withTimeout(firebase.auth().signInAnonymously(), 10000, 'Firebase 익명 로그인 시간 초과');
+    }
+    db = firebase.database();
+    usingFirebase = true;
+
+    let seenSettings=false, seenVotes=false;
+    slowTimer = setTimeout(()=>{
+      if(!remoteReady){
+        storeError = 'Firebase 응답 지연: Realtime Database 규칙, databaseURL, Anonymous 인증 설정을 확인하세요.';
+        setStorePill('danger','Firebase 연결 지연');
         renderAll();
-
-        if(state.picks[state.user.key]) {
-           fetchSingleStockPrice(state.user.key).catch(e => console.log('백그라운드 갱신 실패:', e));
-        }
-      } catch(e) {
-        alert('로그인 처리 중 에러가 발생했습니다: ' + e.message);
       }
+    }, 10000);
+
+    function markReady(){
+      if(seenSettings && seenVotes){
+        remoteReady = true;
+        storeError = '';
+        if(slowTimer) clearTimeout(slowTimer);
+        setStorePill('ok', 'Firebase 실시간 저장');
+      }
+      renderAll();
     }
+    db.ref(`${APP_PATH}/settings`).on('value',s=>{
+      settings={...DEFAULT_SETTINGS,...(s.val()||{})};
+      seenSettings=true;
+      markReady();
+    }, err=>{
+      console.error(err);
+      storeError = '설정 읽기 실패: ' + (err.message || err.code || err);
+      setStorePill('danger','Firebase 읽기 실패');
+      renderAll();
+    });
+    db.ref(`${APP_PATH}/votes`).on('value',s=>{
+      votes=s.val()||{};
+      seenVotes=true;
+      markReady();
+    }, err=>{
+      console.error(err);
+      storeError = '투표 읽기 실패: ' + (err.message || err.code || err);
+      setStorePill('danger','Firebase 읽기 실패');
+      renderAll();
+    });
+  }catch(err){
+    if(slowTimer) clearTimeout(slowTimer);
+    console.error(err);
+    usingFirebase = false;
+    remoteReady = false;
+    storeError = (err && (err.message || err.code)) ? (err.message || err.code) : String(err);
+    setStorePill('danger','Firebase 연결 실패');
+    renderAll();
+  }
+}
+async function saveSettings(next){
+  if(!currentUser?.admin){ alert('관리자만 설정할 수 있습니다.'); return false; }
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 설정을 저장할 수 없습니다.\n\n' + storeUnavailableMessage() + '\n\n' + firebaseHelpText()); return false; }
+  const nextSettings={...settings,...next,updatedAt:new Date().toISOString(),updatedBy:currentUser.id};
+  try{
+    await db.ref(`${APP_PATH}/settings`).set(nextSettings);
+    settings = nextSettings;
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('설정 저장 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
+async function saveVoteRecord(id,record){
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 투표를 저장할 수 없습니다.\n\n' + storeUnavailableMessage() + '\n\n' + firebaseHelpText()); return false; }
+  try{
+    await db.ref(`${APP_PATH}/votes/${id}`).set(record);
+    votes[id]=record;
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('투표 저장 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
+async function resetVotes(){
+  if(!currentUser?.admin){ return false; }
+  if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 초기화할 수 없습니다.\n\n' + storeUnavailableMessage()); return false; }
+  try{
+    await db.ref(`${APP_PATH}/votes`).set(null);
+    votes={};
+    renderAll();
+    return true;
+  }catch(err){
+    console.error(err);
+    alert('초기화 실패: ' + (err.message || err.code || err));
+    return false;
+  }
+}
 
-    async function saveNewPin(){const p1=$('newPin').value.trim(),p2=$('newPin2').value.trim(); if(!isPin(p1))return alert('숫자 4자리로 입력하세요.'); if(p1!==p2)return alert('확인 비밀번호가 다릅니다.'); await update(ref(db,`${paths.members}/${state.user.key}`),{pin:p1,mustChangePin:false,updatedAt:Date.now()}); $('passwordChangePanel').classList.add('hide'); alert('변경되었습니다.')}
-    function isAdmin(){return state.user&&state.user.role==='admin'} function proofEnabled(){return state.settings.proofEnabled===true} function showTab(t){if(t==='admin'&&!isAdmin())return; if(t==='proof'&&!proofEnabled())return alert('관리자 페이지에서 인증 조회/업로드 메뉴가 비활성화되어 있습니다.'); document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); ['ranking','pick','proof','admin'].forEach(x=>$(`${x}Tab`).classList.toggle('hide',x!==t))}
-    
-    function status(){
-      const s=state.settings, n=new Date(), 
-            ts=new Date(`${s.tradeStartDate}T00:00:00+09:00`), 
-            te=new Date(`${s.tradeEndDate}T23:59:59+09:00`); 
-      if(s.locked||n>te) return '종료/고정'; 
-      if(n<ts) return '종목선택가능 (경쟁전)'; 
-      if(n>=ts&&n<=te) return '경쟁중 (변경불가)'; 
-      return '대기';
-    } 
-    
-    function canPick(){
-      const s=state.settings, n=new Date(), pe=new Date(`${s.pickEndDate}T23:59:59+09:00`);
-      return n <= pe && !s.locked; // 선택 마감일(6/11) 24:00 까지만 입력 허용
-    } 
-    
-    function hideOthers(){
-      const s=state.settings, n=new Date(), ts=new Date(`${s.tradeStartDate}T00:00:00+09:00`);
-      return n < ts; // 6/12 시작 전까지 타인 종목 사유 블라인드
-    } 
+function computeRanking(){
+  const active = activeDestinationIds();
+  const base = DESTINATIONS.filter(d=>currentUser?.admin || active.includes(d.id));
+  const map={}; base.forEach(d=>map[d.id]={...d,active:isDestinationActive(d.id),score:0,rankCounts:[0],voters:[[]]});
+  Object.values(votes).forEach(rec=>{
+    if(!validChoices(rec))return;
+    const ru=ROSTER.find(u=>u.id===rec.memberId); if(ru?.viewerOnly)return;
+    rec.choices.forEach(ch=>{
+      const entry=map[ch.optionId]; if(!entry || !entry.active)return;
+      entry.score+=1; entry.rankCounts[0]+=1;
+      entry.voters[0].push({name:rec.name||rec.memberName||'',org:rec.org||'',updatedAt:rec.updatedAt||rec.updatedAtIso||'',memberId:rec.memberId});
+    });
+  });
+  return Object.values(map).sort((a,b)=>b.score-a.score || a.num-b.num);
+}
 
-    function fine(rank){const f=state.settings.fines||defaultSettings().fines; if(rank<=3)return +f.top3||0; if(rank<=6)return +f.r4to6||10000; if(rank<=9)return +f.r7to9||20000; if(rank<=12)return +f.r10to12||30000; return +f.r13plus||40000} function fineTierClass(rank){if(rank<=3)return 'fine-bg-0'; if(rank<=6)return 'fine-bg-1'; if(rank<=9)return 'fine-bg-2'; if(rank<=12)return 'fine-bg-3'; return 'fine-bg-4'} function rankIcon(r){return r===1?'👑 1':r===2?'🥈 2':r===3?'🥉 3':'📈 '+r} function mny(v){return v?KRW.format(+v):'-'} function pct(v){return v===null||v===undefined||Number.isNaN(+v)?'-':NUM.format(+v)+'%'}
-    
-    function getRows(){return Object.entries(state.members).filter(([,m])=>m.active!==false).map(([key,m])=>{const p=state.picks[key]||{}, pr=state.prices[key]||{}, base=+pr.startOpen||0, end=+(state.settings.locked&&pr.finalClose?pr.finalClose:(pr.finalClose||pr.currentPrice||0)), ret=base&&end?((end-base)/base*100):null, prev=(+pr.prevClose&&+pr.currentPrice)?((+pr.currentPrice-(+pr.prevClose))/(+pr.prevClose)*100):null; return{key,m,p,pr,ret,prev,end}}).sort((a,b)=>a.ret===null&&b.ret===null?(a.m.name||'').localeCompare(b.m.name||'ko'):a.ret===null?1:b.ret===null?-1:b.ret-a.ret)}
-    
-    function renderAll(){if(!state.user)return; $('currentUserLabel').textContent=state.user.name; $('roleLabel').textContent=isAdmin()?'관리자':'회원'; $('adminTabBtn').classList.toggle('hide',!isAdmin()); const showProof=proofEnabled(); if($('proofTabBtn')) $('proofTabBtn').classList.toggle('hide',!showProof); if(!showProof && !$('proofTab').classList.contains('hide')) showTab(isAdmin()?'admin':'ranking'); renderRanking(); renderPick(); renderProofs(); renderAdmin()}
-    function renderRanking(){
-      const s=state.settings, st=status();
-      $('pickPeriodLabel').textContent=`~${s.pickEndDate}`;
-      $('tradePeriodLabel').textContent=`${s.tradeStartDate} ${s.marketOpenTime}~${s.tradeEndDate} ${s.marketCloseTime}`;
-      $('statusLabel').textContent=st;
-      $('memoText').textContent=s.memo||'';
-      $('hiddenPickNotice').classList.toggle('hide',!hideOthers());
-      $('rankingLockedNotice').classList.toggle('hide',st!=='종료/고정');
-      renderFines();
-      const body=$('rankingBody'), mob=$('mobileRanking'), list=getRows();
-      body.innerHTML=''; mob.innerHTML='';
-      list.forEach((r,i)=>{
-        const rank=i+1, show=!hideOthers()||isAdmin()||r.key===state.user.key, ff=fine(rank), fineCls=fineTierClass(rank), stock=show&&r.p.name;
-        const registered = r.p.selectedAt || r.p.updatedAt;
-        const priceBasis = r.pr.basis ? `${r.pr.basis}${r.pr.startOpenDate?' · 시초가 기준일 '+r.pr.startOpenDate:''}` : '시초가 기준 미확인';
-        const reasonText = stock ? esc(r.p.memo||'-') : '비공개/미등록';
-        const mainTr=document.createElement('tr');
-        mainTr.className=(rank<=3?`rank${rank} `:'')+fineCls;
-        mainTr.innerHTML=`<td><span class="rank">${rankIcon(rank)}</span></td><td><div class="member-name">${esc(r.m.name)}</div><div class="org">${esc(r.m.org||'-')}</div></td><td>${stock?`<b>${esc(r.p.name)}</b><div class="org">${esc(r.p.symbol||'')}</div>`:'<span class="masked muted">비공개/미등록</span>'}</td><td>${mny(r.pr.startOpen)}<div class="price-basis">${esc(priceBasis)}</div></td><td>${mny(r.end)}</td><td class="${r.ret>=0?'good':'bad'}">${pct(r.ret)}</td><td class="${r.prev>=0?'good':'bad'}">${pct(r.prev)}</td><td class="money"><span class="fine-badge ${fineCls}">${KRW.format(ff)}원</span></td><td class="small muted">${registered?fmtDt(registered):'-'}</td>`;
-        body.appendChild(mainTr);
-        const reasonTr=document.createElement('tr');
-        reasonTr.className='reason-row '+fineCls;
-        reasonTr.innerHTML=`<td colspan="9"><span class="full-reason"><b>선정 사유</b> ${reasonText}<span class="meta">종목등록일: ${registered?fmtDt(registered):'-'} · ${esc(priceBasis)}</span></span></td>`;
-        body.appendChild(reasonTr);
+function renderStatus(){
+  const total=voterRoster().length;
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id])).length;
+  const pending=Math.max(0,total-complete);
+  const rate=total?Math.round(complete/total*100):0;
+  $('countStatus').textContent=`응답 ${complete} / ${total}`;
+  const mainNumber=$('responseMainNumber');
+  if(mainNumber) mainNumber.innerHTML=`${complete}<small>/${total}명</small>`;
+  const mainText=$('responseMainText');
+  if(mainText) mainText.textContent=`${pending}명 미응답 · 응답률 ${rate}%`;
+  const doneEl=$('responseDoneCount'); if(doneEl) doneEl.textContent=complete;
+  const pendingEl=$('responsePendingCount'); if(pendingEl) pendingEl.textContent=pending;
+  const rateEl=$('responseRateCount'); if(rateEl) rateEl.textContent=`${rate}%`;
+  const fillEl=$('responseFill'); if(fillEl) fillEl.style.width=`${rate}%`;
+  $('surveyStatus').textContent=`설문 ${surveyLabel()} · ${periodText()}`;
+  $('surveyStatus').className=`pill ${surveyLabel()==='진행 중'?'ok':surveyLabel()==='종료'?'danger':'warn'}`;
+  $('timeStatus').textContent=`갱신 ${formatShortTime(Date.now())}`;
+}
+function renderLogin(){
+  const loggedIn = !!currentUser;
+  document.body.classList.toggle('logged-in', loggedIn);
+  document.body.classList.toggle('logged-out', !loggedIn);
+  $('loginCard').classList.toggle('hide', loggedIn);
+  $('userCard').classList.toggle('hide', !loggedIn);
+  if(currentUser){
+    $('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':(currentUser.viewerOnly?' 조회전용':'')}`;
+    $('userOrg').textContent=`${currentUser.org} · ${currentUser.title||''}`;
+  }
+  $('adminPanel').classList.toggle('visible',!!currentUser?.admin);
+}
 
-        const card=document.createElement('div');
-        card.className='rank-card '+fineCls;
-        card.innerHTML=`<div class="rank-head"><div><b>${rankIcon(rank)}위 · ${esc(r.m.name)}</b><div class="org">${esc(r.m.org||'-')}</div></div><div class="money"><span class="fine-badge ${fineCls}">벌금 ${KRW.format(ff)}원</span></div></div><div class="rank-stock">${stock?`<div class="mobile-stock-title">${esc(r.p.name)}</div><div class="org">${esc(r.p.symbol||'')}</div><div class="mobile-reason"><b>선정 사유</b> ${esc(r.p.memo||'-')}</div>`:'<span class="muted">비공개/미등록</span>'}<div class="mobile-compact-line"><span>등록 ${registered?fmtDt(registered):'-'}</span></div></div><div class="metric-grid"><div class="metric"><div class="label">시초가</div><div class="value">${mny(r.pr.startOpen)}</div></div><div class="metric"><div class="label">현재</div><div class="value">${mny(r.end)}</div></div><div class="metric"><div class="label">수익률</div><div class="value ${r.ret>=0?'good':'bad'}">${pct(r.ret)}</div></div></div><div class="basis-chip">${esc(priceBasis)}</div>`;
-        mob.appendChild(card);
-      });
+function renderRanking(){
+  const box=$('ranking');
+  if(!canSeeRanking()){box.innerHTML='<div class="empty">관리자가 순위 공개 전으로 설정했습니다.</div>';return;}
+  const ranks=computeRanking(); const max=Math.max(1,...ranks.map(r=>r.score));
+  const visibleRanks = rankingExpanded ? ranks : ranks.slice(0,5);
+  const canOpen = !!currentUser?.admin;
+  const rows=visibleRanks.map((r,i)=>{
+    const tag = canOpen ? 'button' : 'div';
+    const attr = canOpen ? ` type="button" data-option="${r.id}"` : ' aria-label="통계 행" style="cursor:default"';
+    const pct = Math.max(3,r.score/max*100);
+    return `<${tag} class="rank-row ${i===0?'top1':i===1?'top2':i===2?'top3':''} ${!r.active?'inactive-dest':''}"${attr}>
+      <span class="rank-bg" style="width:${pct}%"></span>
+      <span class="rank-content"><span class="rank-num">${i+1}</span><span class="rank-title"><strong>${r.num}. ${escapeHtml(r.title)}</strong><span>선택 ${r.rankCounts[0]}명</span><span class="rank-meter"><span style="width:${pct}%"></span></span></span><span class="score">${r.score}<small>명</small></span></span>
+    </${tag}>`;
+  }).join('');
+  const toggle = ranks.length>5 ? `<button class="btn ghost rank-more" id="rankToggleBtn" type="button">${rankingExpanded?'접기':'전체 후보지 펼치기'}</button>` : '';
+  box.innerHTML=(rows || '<div class="empty">아직 저장된 투표가 없습니다.</div>') + toggle;
+}
+
+
+function optionHtml(selected, rank){
+  const opts = selectableDestinations();
+  return `<option value="">선택할 후보지</option>`+opts.map(d=>`<option value="${d.id}" ${selected===d.id?'selected':''}>${d.num}. ${escapeHtml(d.title)}</option>`).join('');
+}
+
+
+function renderVotePanel(){
+  if($('topNoticeBox')) $('topNoticeBox').innerHTML='<strong>공지사항</strong>'+escapeHtml(settings.noticeText||DEFAULT_NOTICE_TEXT).replace(/\n/g,'<br>');
+  const rec=currentUser?votes[currentUser.id]:null;
+  const chosenId = selectedChoices[0];
+  const chosen = chosenId ? destById(chosenId) : null;
+  const blockReason = voteBlockReason();
+  $('rankSelectors').innerHTML = chosen ? `<div class="selected-empty">현재 선택: <strong>${escapeHtml(chosen.num)}. ${escapeHtml(chosen.title)}</strong></div>` : '<div class="selected-empty">후보지 카드에서 원하는 장소를 선택해 주세요.</div>';
+  $('saveVoteBtn').classList.add('hide');
+  $('clearVoteBtn').classList.toggle('hide', !currentUser?.admin);
+  $('myVoteBtn').classList.toggle('hide', !currentUser?.admin);
+  $('voteBlockedReason').classList.toggle('hide',!blockReason);
+  $('voteBlockedReason').textContent=blockReason||'';
+  if(rec&&validChoices(rec)){
+    const saved=destById(rec.choices[0].optionId);
+    $('myLastSave').textContent=`저장된 선택: ${saved?`${saved.num}. ${saved.title}`:'-'} · ${formatDateTime(rec.updatedAt)}`;
+  }else{
+    $('myLastSave').textContent=currentUser?'아직 저장된 선택이 없습니다.':'로그인 후 투표할 수 있습니다.';
+  }
+}
+
+function destBadge(d){if(d.pdfStatus==='ready')return '<span class="badge">PDF 상세자료</span>';if(d.pdfStatus==='imageOnly')return '<span class="badge muted">이미지 소개자료</span>';return '<span class="badge red">간략 텍스트</span>';}
+function renderJump(){ $('jumpNav').innerHTML=''; }
+
+function renderDestinations(){
+  const selectedId = selectedChoices[0];
+  const blockReason = voteBlockReason();
+  const viewer = isViewerOnly();
+  $('destList').innerHTML=publicDestinations().map(d=>{
+    const selected = selectedId === d.id;
+    const disabled = viewer || !!blockReason || selected;
+    const rankBadge = d.firstRank ? `<span class="badge">1차설문 ${escapeHtml(d.firstRank)}위</span>` : '';
+    const noteBadge = d.note ? `<span class="badge red">${escapeHtml(d.note)}</span>` : '';
+    return `<article class="card dest-card ${selected?'selected':''}" id="dest-${d.id}"><div class="dest-body"><h3>${d.num}. ${escapeHtml(d.title)}</h3><div class="candidate-meta">${rankBadge}${noteBadge}</div>${d.note?`<p class="candidate-note">${escapeHtml(d.note)}</p>`:''}<button class="btn gold full vote-now-btn" type="button" data-vote-candidate="${d.id}" ${disabled?'disabled':''}>${selected?'선택됨':'이 장소로 투표'}</button></div></article>`;
+  }).join('');
+}
+
+function candidateRowHtml(c,i){
+  return `<div class="admin-candidate-row" data-admin-candidate-row="${i}"><input type="number" min="1" value="${escapeHtml(c.num||i+1)}" data-cand-field="num" title="번호"><input type="text" value="${escapeHtml(c.title||'')}" data-cand-field="title" placeholder="후보지명"><input type="text" value="${escapeHtml(c.firstRank||'')}" data-cand-field="firstRank" placeholder="1차 순위"><input type="text" value="${escapeHtml(c.note||'')}" data-cand-field="note" placeholder="추가 문구"><button class="btn danger" type="button" data-delete-candidate="${i}">삭제</button><input type="hidden" value="${escapeHtml(c.id||'')}" data-cand-field="id"></div>`;
+}
+function renderAdminCandidates(){
+  const list=$('adminCandidateList'); if(!list) return;
+  list.innerHTML=currentCandidates().map(candidateRowHtml).join('') || '<div class="empty">후보지가 없습니다. 후보지 추가를 눌러 주세요.</div>';
+}
+function collectAdminCandidates(){
+  return [...document.querySelectorAll('[data-admin-candidate-row]')].map((row,i)=>{
+    const get=f=>row.querySelector(`[data-cand-field="${f}"]`)?.value.trim()||'';
+    const title=get('title');
+    return {id:get('id')||`custom_${Date.now()}_${i}`,num:Number(get('num')||i+1),title:title||`후보지 ${i+1}`,firstRank:get('firstRank'),note:get('note'),active:true};
+  }).filter(c=>c.title);
+}
+function renderAdmin(){
+  if(!currentUser?.admin)return;
+  const active = document.activeElement;
+  if(active?.id!=='adminStart') $('adminStart').value=settings.startAt||'';
+  if(active?.id!=='adminEnd') $('adminEnd').value=settings.endAt||'';
+  if(active?.id!=='adminNoticeText' && $('adminNoticeText')) $('adminNoticeText').value=settings.noticeText || DEFAULT_NOTICE_TEXT;
+  $('adminVoteOpen').checked=!!settings.voteOpen;
+  $('adminShowRanking').checked=!!settings.showRanking;$('adminShowVoters').checked=!!settings.showVoterNames;$('adminShowPending').checked=!!settings.showPendingNames;
+  renderAdminCandidates();
+  renderAdminReport(false);
+}
+
+
+function renderPeople(){
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id]));
+  const pending=voterRoster().filter(u=>!validChoices(votes[u.id]));
+  if(!currentUser?.admin){
+    $('peopleStatus').innerHTML=`<details class="listbox" open><summary>응답 통계</summary><div class="people"><div class="person"><strong>선택 완료 ${complete.length}명</strong><small>미응답 ${pending.length}명 · 전체 ${voterRoster().length}명</small></div></div></details>`;
+    return;
+  }
+  const completeHtml=complete.map(u=>{
+    const rec=votes[u.id];
+    const choices=(rec.choices||[]).slice().sort((a,b)=>a.rank-b.rank);
+    return `<div class="person"><strong>${escapeHtml(u.name)}</strong><small>${escapeHtml(u.org)} · 저장 ${formatShortTime(rec.updatedAt)}</small><div class="tags">${choices.map(c=>`<span class="tag r${c.rank}">선택 ${destById(c.optionId)?.num}. ${escapeHtml(destById(c.optionId)?.shortTitle||destById(c.optionId)?.title||'')}</span>`).join('')}</div>${rec.feedback?`<small>피드백: ${escapeHtml(rec.feedback)}</small>`:''}</div>`;
+  }).join('');
+  const pendingHtml=pending.map(u=>`<div class="person"><strong>${escapeHtml(u.name)}</strong><small>${escapeHtml(u.org)} · ${escapeHtml(u.title||'')}</small></div>`).join('');
+  $('peopleStatus').innerHTML=`<details class="listbox" open><summary>선택 완료 ${complete.length}명</summary><div class="people">${completeHtml||'<div class="empty">아직 없습니다.</div>'}</div></details><details class="listbox" open><summary>미응답 ${pending.length}명</summary><div class="people">${pendingHtml||'<div class="empty">모두 응답했습니다.</div>'}</div></details>`;
+}
+
+
+function renderAdminReport(expanded=false){
+  const el=$('adminReport'); if(!el || !currentUser?.admin) return;
+  if(!expanded){el.innerHTML='';return;}
+  const ranks=computeRanking();
+  const rows=ranks.map((r,i)=>`<tr><td>${i+1}</td><td>${r.num}. ${escapeHtml(r.title)}</td><td><strong>${r.score}</strong></td><td>${r.rankCounts[0]}</td></tr>`).join('');
+  const complete=voterRoster().filter(u=>validChoices(votes[u.id])).length;
+  el.innerHTML=`<div class="notice">응답 ${complete}/${voterRoster().length}명 · 집계 기준: 1인 1개 후보 선택</div><table class="report-table"><thead><tr><th>순위</th><th>후보지</th><th>점수</th><th>선택수</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderAll(){
+  renderLogin();
+  if(!currentUser) return;
+  if(!dataReady && !usingFirebase) return;
+  renderStatus();renderRanking();renderJump();renderDestinations();renderVotePanel();renderAdmin();renderPeople();
+}
+
+async function saveMyVote(){
+  if(!currentUser){alert('먼저 로그인해 주세요.');return;}
+  if(isViewerOnly()){alert('조회 전용 계정은 투표할 수 없습니다.');return;}
+  const reason=voteBlockReason();
+  if(reason){alert(reason);return;}
+  if(selectedChoices.some(v=>!v)){alert('후보지 1개를 선택해 주세요.');return;}
+    const fb='';
+  const now=new Date().toISOString();
+  const choices=selectedChoices.map((id,i)=>({rank:i+1,optionId:id,points:POINTS[i]}));
+  const ok = await saveVoteRecord(currentUser.id,{memberId:currentUser.id,name:currentUser.name,org:currentUser.org,title:currentUser.title||'',choices,feedback:fb,updatedAt:now,updatedAtMs:Date.now()});
+  if(ok) toast(`저장 완료 · ${formatShortTime(now)}`);
+}
+
+
+async function voteForCandidate(id){
+  if(isViewerOnly()){alert('조회 전용 계정은 투표할 수 없습니다.');return;}
+  const reason=voteBlockReason();
+  if(reason){alert(reason);return;}
+  selectedChoices=[id];
+  renderVotePanel();
+  renderDestinations();
+  await saveMyVote();
+}
+
+function clearMySelection(){selectedChoices=[null];feedbackText='';if($('feedbackText'))$('feedbackText').value='';renderVotePanel();}
+
+function showMyVote(){if(!currentUser)return;const rec=votes[currentUser.id];if(!validChoices(rec)){alert('저장된 내 투표가 없습니다.');return;}showMemberVote(currentUser.id);}
+
+function showMemberVote(memberId){
+  const u=ROSTER.find(x=>x.id===memberId); const rec=votes[memberId]; if(!u||!validChoices(rec))return;
+  $('modalTitle').textContent=`${u.name} 님의 선택`;$('modalSub').textContent=`저장 시각 ${formatDateTime(rec.updatedAt)}`;
+  $('modalBody').innerHTML=`<div class="timeline">${rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>{const d=destById(c.optionId);return `<div class="day"><b>${c.rank}지망</b><span>${d?.num}. ${escapeHtml(d?.title)} <strong>${c.points}점</strong></span></div>`}).join('')}</div>${rec.feedback?`<div class="notice"><strong>피드백</strong><br>${escapeHtml(rec.feedback)}</div>`:''}`;
+  $('detailModal').classList.add('show');
+}
+
+
+function showVoteDetail(optionId){
+  if(!currentUser?.admin) return;
+  const d=destById(optionId);if(!d)return;const ranks=computeRanking();const row=ranks.find(r=>r.id===optionId)||d;
+  $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=`총 ${row.score||0}명 선택`;
+  const groups=[1].map(rank=>{const voters=(row.voters?.[rank-1]||[]).sort((a,b)=>String(a.name).localeCompare(String(b.name),'ko'));return `<details class="listbox" open><summary>선택 ${voters.length}명</summary><div class="people">${voters.map(v=>`<div class="person"><strong>${escapeHtml(v.name)}</strong><small>${escapeHtml(v.org||'')} · 투표 ${formatShortTime(v.updatedAt)}</small></div>`).join('')||'<div class="empty">없음</div>'}</div></details>`;}).join('');
+  $('modalBody').innerHTML=`<div class="people-wrap">${groups}</div>`;
+  $('detailModal').classList.add('show');
+}
+
+
+function showDestinationDetail(id){
+  const d=destById(id); if(!d)return; const f=flightInfo(d);
+  $('modalTitle').textContent=`${d.num}. ${d.title}`;$('modalSub').textContent=d.subtitle;
+  const visual=d.image?`<img class="dest-img" src="${d.image}" alt="${escapeHtml(d.title)}" style="border-radius:16px;aspect-ratio:16/9;margin-bottom:10px" />`:`<div class="text-hero" style="border-radius:16px;margin-bottom:10px"><div><strong>${escapeHtml(d.title)}</strong><span>${escapeHtml(d.subtitle)}</span></div></div>`;
+  const imgBtns=d.image?`<a class="btn ghost" href="${d.image}" target="_blank" rel="noopener">1장요약보기</a>`:'';
+  const pdfBtns=d.pdf?`<button class="btn" type="button" data-pdf-download="${d.id}">브로셔다운받기</button>`:'';
+  $('modalBody').innerHTML=`${visual}<div class="flight-box"><div class="flight-item"><b>직항/경유</b><span>${escapeHtml(f.type)}</span></div><div class="flight-item"><b>인천 기준 소요시간</b><span>${escapeHtml(f.time)}</span></div><div class="flight-item" style="grid-column:1/-1"><b>예시 항공</b><span>${escapeHtml(f.airlines||'확인 필요')}</span></div></div><div class="badges"><span class="badge">${escapeHtml(d.duration)}</span><span class="badge muted">${escapeHtml(d.route)}</span></div><p class="brief">${escapeHtml(d.brief)}</p><div class="meta"><div class="meta-line"><b>연수목적</b> ${escapeHtml(d.objective)}</div><div class="meta-line"><b>계절·포인트</b> ${escapeHtml(d.season)}</div><div class="meta-line"><b>항공 참고</b> ${escapeHtml(f.note)}</div></div><div class="timeline">${d.days.map((x,i)=>`<div class="day"><b>Day ${i+1}</b><span>${escapeHtml(x)}</span></div>`).join('')}</div><div class="action-row">${imgBtns}${pdfBtns}</div>`;
+  $('detailModal').classList.add('show');
+}
+
+async function downloadBrochure(id){
+  const d=destById(id); if(!d || !d.pdf) return;
+  const filename=`${d.num}_${d.title}_브로셔.pdf`.replace(/[\/:*?"<>|]/g,'_');
+  try{
+    const res=await fetch(d.pdf,{cache:'no-store'});
+    if(!res.ok) throw new Error('PDF 응답 오류');
+    const blob=await res.blob();
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);
+    toast('브로셔 다운로드를 시작했습니다.');
+  }catch(err){
+    const a=document.createElement('a');
+    a.href=d.pdf;
+    a.download=filename;
+    a.target='_blank';
+    a.rel='noopener';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>a.remove(),0);
+    toast('브라우저 설정에 따라 새 창에서 열릴 수 있습니다.');
+  }
+}
+
+function exportCsv(){
+  const header=['연번','이름','소속기관','직위','응답여부','선택후보','저장시각'];
+  const rows=voterRoster().map(u=>{const rec=votes[u.id];const ch=validChoices(rec)?rec.choices[0]:null;const d=ch?destById(ch.optionId):null;return [u.serial,u.name,u.org,u.title||'',validChoices(rec)?'완료':'미선택',d?`${d.num}. ${d.title}`:'',rec?.updatedAt?formatDateTime(rec.updatedAt):''];});
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');downloadBlob('\ufeff'+csv,'2026_trip_vote_results.csv','text/csv;charset=utf-8');
+}
+
+
+function exportReportCsv(){
+  const ranks=computeRanking();
+  const header=['순위','후보번호','후보지','선택수'];
+  const rows=ranks.map((r,i)=>[i+1,r.num,r.title,r.score]);
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob('\ufeff'+csv,'2026_trip_vote_statistics_report.csv','text/csv;charset=utf-8');
+}
+
+function exportFeedbackCsv(){
+  const header=['연번','이름','소속기관','피드백','저장시각'];
+  const rows=voterRoster().map(u=>{const rec=votes[u.id];return [u.serial,u.name,u.org,rec?.feedback||'',rec?.updatedAt?formatDateTime(rec.updatedAt):''];});
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob('\ufeff'+csv,'2026_trip_vote_feedback.csv','text/csv;charset=utf-8');
+}
+
+function exportJson(){downloadBlob(JSON.stringify({settings,votes},null,2),'2026_trip_vote_backup.json','application/json;charset=utf-8');}
+
+// Events
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = normalizeName($('loginName').value);
+  const pin = $('loginPin').value.trim();
+  if (!name || !/^[0-9]{4}$/.test(pin)) {
+    alert('이름과 휴대전화 뒤 4자리 숫자를 입력해 주세요.');
+    return;
+  }
+  const candidates = ROSTER.filter(u => normalizeName(u.name) === name);
+  if (!candidates.length) {
+    alert('명단에서 이름을 찾지 못했습니다.');
+    return;
+  }
+  let matched = null;
+  for (const u of candidates) {
+    const hp = await hashPin(u.name, pin);
+    const isHashMatched = hp === u.pinHash || (Array.isArray(u.altPinHashes) && u.altPinHashes.includes(hp));
+    // 김해영 계정은 이름 정정 과정에서 일부 브라우저/캐시 환경에서 해시 검증이 꼬이는 사례가 있어
+    // 요청에 따라 2083을 명시적으로 허용합니다. 다른 계정에는 적용되지 않습니다.
+    const isKimHaeyoungForced = normalizeName(u.name) === '김해영' && pin === '2083';
+    if (isHashMatched || isKimHaeyoungForced) {
+      matched = u;
+      break;
     }
-    function renderFines(){const f=state.settings.fines||defaultSettings().fines; $('fineSummary').innerHTML=`<span class="pill fine-badge fine-bg-0">1~3등 <strong>${KRW.format(f.top3)}원</strong></span><span class="pill fine-badge fine-bg-1">4~6등 <strong>${KRW.format(f.r4to6)}원</strong></span><span class="pill fine-badge fine-bg-2">7~9등 <strong>${KRW.format(f.r7to9)}원</strong></span><span class="pill fine-badge fine-bg-3">10~12등 <strong>${KRW.format(f.r10to12)}원</strong></span><span class="pill fine-badge fine-bg-4">13등 이하 <strong>${KRW.format(f.r13plus)}원</strong></span>`}
-    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?`현재 종목 선택이 가능합니다. (선택 마감일 ${state.settings.pickEndDate} 24:00 이후에는 등록/수정이 불가능합니다.)`:'현재는 종목 등록/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>$(id).disabled=!ok); const p=state.picks[state.user.key]||{}; $('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||''; $('memoCount').textContent=($('pickMemo').value||'').length}
-    function renderProofs(){const enabled=proofEnabled(); if($('proofDisabledPanel')) $('proofDisabledPanel').classList.toggle('hide',enabled); ['proofFile','proofMemo','uploadProofBtn'].forEach(id=>{if($(id)) $(id).disabled=!enabled;}); const box=$('proofList'); box.innerHTML=''; if(!enabled){box.innerHTML='<div class="notice">인증 사진 등록 메뉴가 현재 비활성 상태입니다. 관리자 페이지에서 활성화하면 인증 탭이 열립니다.</div>'; if(!isAdmin()) return;} const list=[]; Object.entries(state.proofs||{}).forEach(([mk,items])=>Object.entries(items||{}).forEach(([id,it])=>list.push({memberKey:mk,id,...it}))); list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); if(!list.length){box.innerHTML='<p>아직 인증 이미지가 없습니다.</p>';return} list.forEach(it=>{const m=state.members[it.memberKey]||{}, p=state.picks[it.memberKey]||{}, src=it.dataUrl||it.url||'', div=document.createElement('div'); div.className='proof-card'; div.innerHTML=`<a href="${esc(src)}" target="_blank"><img src="${esc(src)}" alt="인증 이미지"></a><div><b>${esc(m.name||it.memberName||'-')}</b><div class="small muted">${esc(p.name||'-')} ${esc(p.symbol||'')}</div><div class="reason">선정 사유: ${esc(p.memo||'-')}</div><div class="small muted">인증 설명: ${esc(it.memo||'-')}</div><div class="small muted">${fmtDt(it.createdAt)} · ${esc(it.storageMode||'DB image')}</div></div>${isAdmin()||it.memberKey===state.user.key?`<button class="danger small" data-del="${esc(it.memberKey)}|${esc(it.id)}">삭제</button>`:''}`; box.appendChild(div)}); box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('삭제할까요?'))return; const [mk,id]=b.dataset.del.split('|'); await remove(ref(db,`${paths.proofs}/${mk}/${id}`))})}
-    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('adminMemo').value=s.memo||''; if($('proofEnabled')) $('proofEnabled').checked=!!s.proofEnabled; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
-    async function searchStock(){const q=$('stockKeyword').value.trim(); if(!q)return alert('검색어를 입력하세요.'); const box=$('searchResults'); box.innerHTML='<p>검색 중...</p>'; let results=localSearch(q); results=results.map(x=>({name:x.name||x.stockName||x.korName||'', code:String(x.code||x.symbol||'').replace('.KS','').trim(), market:x.market||x.marketName||''})).filter(x=>/^\d{6}$/.test(x.code)); box.innerHTML=''; if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 6자리 종목코드를 직접 입력하세요.</div>';return} results.slice(0,100).forEach(it=>{const d=document.createElement('div'); d.className='result-item'; d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted">${esc(it.code)} · ${esc(it.market||'KOSPI/KOSDAQ')}</div></div><button>선택</button>`; d.querySelector('button').onclick=()=>{$('pickName').value=it.name;$('pickSymbol').value=normalizeSymbol(it.code)}; box.appendChild(d)})}
-    function localSearch(q){const s=norm(q); return STOCKS.filter(x=>norm(x.name).includes(s)||x.code.includes(s)||norm(x.symbol).includes(s))}
-    
-    async function savePick(){
-      if(!canPick())return alert('현재는 종목 선택 및 수정이 불가능합니다.');
-      const name=$('pickName').value.trim(), sym=normalizeSymbol($('pickSymbol').value), memo=$('pickMemo').value.trim();
-      if(memo.length>1000)return alert('선정 사유는 1,000자 이내로 입력하세요.');
-      if(!name||!/^[0-9]{6}\.KS$/.test(sym))return alert('코스피/코스닥 국내 주식만 등록 가능합니다. 예: 066570 또는 066570.KS');
+  }
+  if (!matched) {
+    alert('비밀번호가 일치하지 않습니다.');
+    return;
+  }
+  currentUser = matched;
+  sessionStorage.setItem('tripVoteCurrentUserIdV3', currentUser.id);
+  const rec = votes[currentUser.id];
+  selectedChoices = (currentUser.viewerOnly || !validChoices(rec)) ? [null] : rec.choices.slice().sort((a, b) => a.rank - b.rank).map(c => c.optionId);
+  feedbackText = validChoices(rec) ? (rec.feedback || '') : '';
+  $('loginName').value = '';
+  $('loginPin').value = '';
+  renderAll();
+  toast(`${currentUser.name}님 로그인`);
+});
+$('logoutBtn').addEventListener('click',()=>{currentUser=null;selectedChoices=[null];feedbackText='';sessionStorage.removeItem('tripVoteCurrentUserIdV3');renderAll();});
+$('rankSelectors').addEventListener('change',e=>{const s=e.target.closest('[data-rankselect]');if(!s)return;const i=Number(s.dataset.rankselect)-1,v=s.value||null;if(v&&selectedChoices.some((x,idx)=>idx!==i&&x===v)){alert('이미 다른 지망에 선택한 후보입니다.');renderVotePanel();return;}selectedChoices[i]=v;renderVotePanel();});
 
-      const now = Date.now();
-      const pickObj = {memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:'KRX_STOCK',memo,selectedAt:now,updatedAt:now};
-      const btn = $('savePickBtn');
-      btn.disabled = true;
-      btn.textContent = '저장 및 가격 연동 중...';
+$('addCandidateBtn')?.addEventListener('click',()=>{const list=currentCandidates();const next={id:`custom_${Date.now()}`,num:list.length+1,title:'새 후보지',firstRank:'',note:'',active:true};settings={...settings,candidates:[...list,next]};renderAdminCandidates();});
+$('adminCandidateList')?.addEventListener('click',e=>{const btn=e.target.closest('[data-delete-candidate]');if(!btn)return;const idx=Number(btn.dataset.deleteCandidate);const list=currentCandidates();list.splice(idx,1);settings={...settings,candidates:list.map((c,i)=>({...c,num:i+1}))};renderAdminCandidates();});
 
-      try {
-        // 종목을 다시 선택하면 기존 가격을 먼저 해당 종목 기준으로 갈아끼웁니다.
-        // fetchSingleStockPrice에 새 pickObj를 직접 넘겨서 Firebase 실시간 반영 지연 때문에 이전 종목 가격이 들어가는 문제를 막습니다.
-        await set(ref(db,`${paths.picks}/${state.user.key}`), pickObj);
-        await fetchSingleStockPrice(state.user.key, 0, pickObj, true);
-        alert('종목 저장 및 시초가/현재가 연동이 완료되었습니다.');
-      } catch (err) {
-        console.error(err);
-        alert('종목은 저장되었으나 자동 가격 연동에 실패했습니다.\n네이버 가격 프록시가 막힌 경우 잠시 뒤 전체 가격 새로고침을 다시 눌러주세요.');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '내 종목 저장';
-        showTab('ranking');
-      }
-    }
-
-    async function saveSettings(){if(!isAdmin())return; await update(ref(db,paths.settings),{pickEndDate:$('pickEndDate').value,tradeStartDate:$('tradeStartDate').value,tradeEndDate:$('tradeEndDate').value,marketOpenTime:$('marketOpenTime').value||'09:00',marketCloseTime:$('marketCloseTime').value||'15:30',memo:$('adminMemo').value.trim(),proofEnabled:$('proofEnabled')?$('proofEnabled').checked:false,fines:{top3:+$('fineTop3').value||0,r4to6:+$('fine4to6').value||10000,r7to9:+$('fine7to9').value||20000,r10to12:+$('fine10to12').value||30000,r13plus:+$('fine13plus').value||40000},updatedAt:Date.now()}); alert('저장되었습니다.')}
-    async function setLocked(v){if(!isAdmin())return; await update(ref(db,paths.settings),{locked:v,lockedAt:v?Date.now():null}); alert(v?'고정했습니다.':'고정을 해제했습니다.')} async function resetPins(){if(!isAdmin())return;if(!confirm('전체 비밀번호를 0000으로 초기화할까요?'))return; const u={}; Object.keys(state.members).forEach(k=>{u[`${paths.members}/${k}/pin`]='0000';u[`${paths.members}/${k}/mustChangePin`]=true}); await update(ref(db),u); alert('초기화했습니다.')}
-    
-    // silent 모드가 켜져있으면 버튼 상태나 알람을 띄우지 않고 백그라운드 갱신
-    async function refreshAllPrices(silent = false) {
-      const keys = Object.keys(state.picks || {});
-      if(keys.length === 0) {
-        if(!silent) alert('선택된 종목이 없습니다.');
-        return;
-      }
-      
-      if(!silent) {
-        $('refreshBtn').textContent = '동기화 중... 잠시 대기';
-        $('refreshBtn').disabled = true;
-      }
-
-      for (const k of keys) {
-        try { await fetchSingleStockPrice(k); } catch (e) { console.error(`[${k}] 에러:`, e); }
-        await sleep(500); 
-      }
-      
-      await update(ref(db, paths.settings), { lastFetchedAt: Date.now() });
-      
-      if(!silent) {
-        $('refreshBtn').textContent = '전체 가격 새로고침';
-        $('refreshBtn').disabled = false;
-        alert(`가격 일괄 동기화 완료!`);
-      }
-    }
-
-    async function fetchSingleStockPrice(memberKey, retryCount = 0, pickOverride = null, forceRefreshStartOpen = false) {
-      const p = pickOverride || state.picks[memberKey];
-      const s = state.settings;
-      if (!p) return;
-      const code = p.code || codeFromSymbol(p.symbol);
-      if (!s.tradeStartDate || !s.tradeEndDate) return;
-
-      const priceBasis = buildStockPriceBasis(p, s);
-      const existingPrice = state.prices[memberKey] || {};
-      const sameSymbol = existingPrice.symbol === p.symbol || existingPrice.code === code;
-      const sameBasis = existingPrice.basis === priceBasis.basis;
-      const sameStartDate = existingPrice.startOpenDate === priceBasis.startDate;
-      const canReuseStartOpen = !forceRefreshStartOpen && sameSymbol && sameBasis && sameStartDate && Number(existingPrice.startOpen) > 0;
-
-      const startDateStr = String(priceBasis.startDate).replace(/-/g,'');
-      const endDateStr = String(priceBasis.endDate).replace(/-/g,'');
-      const naverUrl = `https://api.finance.naver.com/siseJson.naver?symbol=${code}&requestType=1&startTime=${startDateStr}&endTime=${endDateStr}&timeframe=day&_cb=${Date.now()}`;
-
-      try {
-        const rawText = await fetchTextWithProxy(naverUrl);
-        const dataArray = parseNaverSiseText(rawText);
-        const rows = dataArray.slice(1).filter(row => Array.isArray(row) && row.length >= 5 && /^\d{8}$/.test(String(row[0])));
-        if (!rows.length) throw new Error('해당 기간 주식 데이터가 없습니다. 휴장일이면 다음/이전 거래일 기준 데이터가 필요할 수 있습니다.');
-
-        const startData = rows[0];
-        const currentData = rows[rows.length - 1];
-        const prevData = rows.length > 1 ? rows[rows.length - 2] : startData;
-
-        let startOpen = canReuseStartOpen ? parseInt(existingPrice.startOpen, 10) : parseInt(startData[1], 10);
-        let currentPrice = parseInt(currentData[4], 10);
-        let prevClose = parseInt(prevData[4], 10);
-
-        if (isNaN(startOpen) || startOpen <= 0 || isNaN(currentPrice) || currentPrice <= 0) {
-          throw new Error('가격 숫자 변환 실패');
-        }
-
-        await set(ref(db, `${paths.prices}/${memberKey}`), {
-          name: p.name,
-          symbol: p.symbol,
-          code,
-          startOpen,
-          currentPrice,
-          prevClose,
-          finalClose: priceBasis.isFinished ? currentPrice : null,
-          fetchedAt: new Date().toISOString(),
-          source: 'naver-finance-proxy-v9',
-          basis: priceBasis.basis,
-          startOpenDate: String(startData[0]).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'),
-          requestedStartDate: priceBasis.startDate,
-          selectedAt: p.selectedAt || p.updatedAt || null,
-          lockedStartOpen: !priceBasis.beforeStart
-        });
-      } catch (error) {
-        if (retryCount < 2) {
-          await sleep(1000);
-          return fetchSingleStockPrice(memberKey, retryCount + 1, pickOverride, forceRefreshStartOpen);
-        }
-        throw error;
-      }
-    }
-
-    async function uploadProof(){if(!proofEnabled())return alert('관리자가 인증 사진 등록 메뉴를 비활성화했습니다.'); if(!state.user)return; const files=[...($('proofFile').files||[])], memo=$('proofMemo').value.trim(); if(!files.length)return alert('사진을 선택하세요.'); $('uploadProgress').classList.remove('hide'); let ok=0; for(let i=0;i<files.length;i++){const f=files[i]; $('uploadStatus').textContent=`${i+1}/${files.length} 압축/저장 중`; $('uploadProgress').querySelector('span').style.width=`${Math.round(i/files.length*100)}%`; const dataUrl=await compress(f,1280,.72); const item=push(ref(db,`${paths.proofs}/${state.user.key}`)); await set(item,{memberName:state.user.name,memo,dataUrl,createdAt:Date.now(),originalName:f.name,storageMode:'Realtime DB compressed image'}); ok++} $('uploadProgress').querySelector('span').style.width='100%'; $('proofFile').value=''; $('proofMemo').value=''; $('uploadStatus').textContent=`${ok}장 저장 완료`; alert(`${ok}장 저장되었습니다.`)}
-    function compress(file,max=1280,quality=.72){return new Promise((resolve,reject)=>{const reader=new FileReader(), img=new Image(); reader.onerror=reject; img.onerror=reject; reader.onload=()=>{img.onload=()=>{let w=img.width,h=img.height,ratio=Math.min(1,max/Math.max(w,h)); w=Math.round(w*ratio); h=Math.round(h*ratio); const c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h); resolve(c.toDataURL('image/jpeg',quality))}; img.src=reader.result}; reader.readAsDataURL(file)})}
-    
-    init().catch(e=>{console.error(e); alert('초기화 오류: Firebase 연결에 실패했습니다.')});
-  </script>
+$('feedbackText').addEventListener('input',e=>{feedbackText=e.target.value.slice(0,200);if(e.target.value!==feedbackText)e.target.value=feedbackText;$('feedbackCount').textContent=`${feedbackText.length} / 200자`;});
+$('voteBlockedReason').addEventListener('click',()=>{const r=voteBlockReason(); if(r) alert(r);});
+$('saveVoteBtn').addEventListener('click',saveMyVote);$('clearVoteBtn').addEventListener('click',clearMySelection);$('myVoteBtn').addEventListener('click',showMyVote);
+$('ranking').addEventListener('click',e=>{if(e.target.closest('#rankToggleBtn')){rankingExpanded=!rankingExpanded;renderRanking();return;}const row=e.target.closest('[data-option]');if(row && currentUser?.admin)showVoteDetail(row.dataset.option);});
+$('jumpNav').addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;document.getElementById('dest-'+b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});});
+$('destList').addEventListener('click',e=>{const voteBtn=e.target.closest('[data-vote-candidate]');if(voteBtn){voteForCandidate(voteBtn.dataset.voteCandidate);return;}const b=e.target.closest('[data-open]');if(b)showDestinationDetail(b.dataset.open);const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
+$('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면을 갱신했습니다.');});
+$('modalBody').addEventListener('click',e=>{const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
+$('closeModal').addEventListener('click',()=>$('detailModal').classList.remove('show'));
+$('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')$('detailModal').classList.remove('show');});
+$('saveSettingsBtn').addEventListener('click',async()=>{if(!currentUser?.admin){alert('관리자만 설정할 수 있습니다.');return;}const ok=await saveSettings({startAt:$('adminStart').value,endAt:$('adminEnd').value,noticeText:$('adminNoticeText')?.value||DEFAULT_NOTICE_TEXT,candidates:collectAdminCandidates(),voteOpen:$('adminVoteOpen').checked,showRanking:$('adminShowRanking').checked,showVoterNames:true,showPendingNames:true});if(ok)toast('설정 저장 완료');});
+$('exportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportCsv();});$('exportJsonBtn').addEventListener('click',()=>{if(currentUser?.admin)exportJson();});$('exportReportBtn').addEventListener('click',()=>{if(currentUser?.admin)renderAdminReport(true);});$('exportReportCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportReportCsv();});$('exportFeedbackCsvBtn').addEventListener('click',()=>{if(currentUser?.admin)exportFeedbackCsv();});$('resetVotesBtn').addEventListener('click',async()=>{if(!currentUser?.admin)return;if(confirm('모든 투표를 초기화할까요?')){const ok=await resetVotes();if(ok)toast('투표를 초기화했습니다.');}});
+$('verifyRosterBtn')?.addEventListener('click',verifyRosterFromInput);$('exportVerifyCsvBtn')?.addEventListener('click',exportVerifyCsv);
+function restoreSession(){
+  const saved=sessionStorage.getItem('tripVoteCurrentUserIdV3');
+  if(saved){
+    currentUser=ROSTER.find(u=>u.id===saved)||null;
+    const rec=votes[currentUser?.id];
+    selectedChoices=(currentUser?.viewerOnly||!validChoices(rec))?[null]:rec.choices.slice().sort((a,b)=>a.rank-b.rank).map(c=>c.optionId);
+    feedbackText=validChoices(rec)?(rec.feedback||''):'';
+  }
+}
+let booted=false;
+function bootstrap(){
+  if(booted) return;
+  booted=true;
+  restoreSession();
+  renderAll();
+  initStore();
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', bootstrap);
+}else{
+  bootstrap();
+}
+</script>
 </body>
 </html>

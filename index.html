@@ -116,7 +116,7 @@
       <section class="section" id="noticeSection">
         <div class="card notice-card">
           <h2>공지사항</h2>
-          <p id="noticeText">최근 환율 및 유가할증료 인상 이슈로 현재 상기 지역은 모두 중동 경유 항공편 이용 가능성이 매우 높습니다.<br><br>크로아티아/북미동부는 +100만원 이내 자부담 필요가능성 있음.<br><br>이번 투표는 4개 지역을 꼭 선정하는 투표가 아닙니다. 예를 들어 튀르키예 선택이 많으면 2개팀 이상이 갈수도 있음.</p>
+          <p id="noticeText">최근 환율 및 유가할증료 인상 이슈로 현재 상기 지역은 모두 중동 경유 항공편 이용 가능성이 매우 높습니다.<br><br>크로아티아/북미동부는 +100만원 이내 자부담 필요가능성 있음.<br><br>이번 투표는 6개 지역을 꼭 선정하는 투표가 아닙니다. 예를 들어 특정 후보지 선택이 많으면 2개팀 이상이 갈수도 있음.</p>
         </div>
       </section>
 
@@ -139,7 +139,7 @@
           <strong>하반기 국외연수 장소 2차 투표 안내</strong><br />
           최근 환율 및 유가할증료 인상 이슈로 현재 상기 지역은 모두 중동 경유 항공편 이용 가능성이 매우 높습니다.<br /><br />
           크로아티아/북미동부는 +100만원 이내 자부담 필요가능성 있음.<br /><br />
-          이번 투표는 4개 지역을 꼭 선정하는 투표가 아닙니다. 한 지역에 2팀 이상도 갈 수 있습니다. 예를 들어 튀르키예를 2개 팀이 선택할 수도 있습니다.
+          이번 투표는 모든 지역을 꼭 선정하는 투표가 아닙니다. 한 지역에 2팀 이상도 갈 수 있습니다. 예를 들어 튀르키예를 2개 팀이 선택할 수도 있습니다.
         </div>
         <input type="hidden" id="feedbackText" value="" />
         <span class="hide" id="feedbackCount">0 / 0자</span>
@@ -160,9 +160,6 @@
             <div class="field"><label for="adminEnd">종료일</label><input type="date" id="adminEnd" /></div>
           </div>
           <label class="check"><input type="checkbox" id="adminVoteOpen" /> 투표 개시 상태로 전환</label>
-          <!-- 후보지 선택 게시 기능 주석 처리: 모든 후보지를 투표 대상으로 공개합니다.
-          <div class="field"><label>게시할 여행 후보지 선택</label><div class="admin-dest-list" id="adminDestList"></div></div>
-          -->
           <label class="check"><input type="checkbox" id="adminShowRanking" /> 일반 사용자에게도 통계 공개</label>
           <input type="checkbox" id="adminShowVoters" class="hide" />
           <input type="checkbox" id="adminShowPending" class="hide" />
@@ -218,9 +215,7 @@
   <footer class="footer"><div class="wrap">하반기 국외연수 장소 2차 투표</div></footer>
 
 <script>
-
-
-  /* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
+/* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
   authDomain: "snu17-trip-vote.firebaseapp.com",
@@ -231,27 +226,10 @@ const FIREBASE_CONFIG = {
   appId: "1:1043680927852:web:98b6916873cda945d63849",
   measurementId: "G-MTF99DNV7M"
 };
-const APP_PATH = "snu17_trip_vote_2026_v3_11dest"; // 기존 Firebase 데이터와 보안규칙을 유지하기 위해 경로명은 그대로 사용합니다.
+const APP_PATH = "snu17_trip_vote_2026_round2"; // 2차 설문 전용 Firebase 경로
 const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
 const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
-const POINTS = [10, 7, 5, 2];
-  
-// /* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
-// const FIREBASE_CONFIG = {
-//   apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
-//   authDomain: "snu17-trip-vote.firebaseapp.com",
-//   databaseURL: "https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
-//   projectId: "snu17-trip-vote",
-//   storageBucket: "snu17-trip-vote.firebasestorage.app",
-//   messagingSenderId: "1043680927852",
-//   appId: "1:1043680927852:web:98b6916873cda945d63849",
-//   measurementId: "G-MTF99DNV7M"
-// };
-// const APP_PATH = "snu17_trip_vote_2026_round2"; // 2차 설문 전용 Firebase 경로
-// const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
-// const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
-// const POINTS = [1];
-  
+const POINTS = [1];
 const DESTINATIONS = [
   {
     "id": "turkiye",
@@ -349,6 +327,27 @@ const DESTINATIONS = [
     "season": "하반기 예산범위 내 진행이 어려울 수 있는 후보",
     "objective": "1차 설문 4위 후보이나 추가 자부담 가능성을 전제로 재검토",
     "brief": "",
+    "days": [],
+    "tags": [],
+    "pdfStatus": "textOnly"
+  },
+  /* 6번째 후보지 추가 - 정보를 알맞게 수정해주세요 */
+  {
+    "id": "destination_6",
+    "num": 6,
+    "title": "6번째 후보지 (이름 수정 필요)",
+    "subtitle": "",
+    "shortTitle": "6번후보지",
+    "tab": "6 후보지",
+    "image": "",
+    "imageDownload": "",
+    "pdf": "",
+    "route": "상세 경로 입력",
+    "price": "상세 협의",
+    "duration": "6박 8일 검토",
+    "season": "하반기 국외연수 장소 2차 투표 후보",
+    "objective": "추가된 6번째 후보지 검토",
+    "brief": "6번째 후보지에 대한 간략한 설명을 여기에 입력하세요.",
     "days": [],
     "tags": [],
     "pdfStatus": "textOnly"
@@ -1502,7 +1501,9 @@ const FLIGHT_INFO = {
   spain_north:{type:"직항 가능/경유 가능", time:"마드리드 왕복 기준 직항 약 14~15시간, 경유 약 17~23시간", airlines:"대한항공, 카타르항공, 에미레이트, 터키항공, 유럽계 항공사", note:"마드리드 도착 후 사리아·산티아고 구간은 국내선/철도/버스 연계가 필요합니다."},
   italy_north:{type:"직항/경유 혼합", time:"베네치아 IN·밀라노 OUT 기준 약 15~22시간", airlines:"대한항공·아시아나/이탈리아 노선 연계, 루프트한자, 에미레이트, 카타르항공, 터키항공 등", note:"밀라노는 직항 가능성이 있으나 베네치아는 경유가 일반적입니다. 오픈조 단체좌석 확인이 필요합니다."},
   turkey:{type:"직항", time:"인천↔이스탄불 직항 기준 약 11시간 40분~12시간 20분", airlines:"터키항공(Turkish Airlines), 대한항공 등", note:"인천-이스탄불은 직항 이용이 가능하며, 실제 소요시간·운항일·단체좌석은 항공사 스케줄에 따라 달라집니다. 일정 중 삼순 및 이스탄불 국내선 이동은 별도 확인이 필요합니다."},
-  japan_architecture:{type:"직항", time:"도쿄 기준 약 2시간 10분~2시간 40분", airlines:"대한항공, 아시아나항공, 제주항공, 진에어, 티웨이항공, 에어프레미아, ZIPAIR 등", note:"도쿄 직항편은 많지만 도쿄-오사카 이동과 건축 답사 동선은 별도 조율이 필요합니다."}
+  japan_architecture:{type:"직항", time:"도쿄 기준 약 2시간 10분~2시간 40분", airlines:"대한항공, 아시아나항공, 제주항공, 진에어, 티웨이항공, 에어프레미아, ZIPAIR 등", note:"도쿄 직항편은 많지만 도쿄-오사카 이동과 건축 답사 동선은 별도 조율이 필요합니다."},
+  /* 6번째 후보지에 대한 비행 정보 추가 */
+  destination_6: {type:"확인 필요", time:"확인 필요", airlines:"확인 필요", note:"6번째 후보지에 대한 항공 정보를 입력해주세요."}
 };
 function flightInfo(d){ return FLIGHT_INFO[d.id] || {type:"확인 필요", time:"항공 일정 확정 후 안내", note:""}; }
 let currentUser = null;
@@ -1521,7 +1522,6 @@ const $ = id => document.getElementById(id);
 const destById = id => DESTINATIONS.find(d => d.id === id);
 const voterRoster = () => ROSTER.filter(u => !u.viewerOnly);
 function defaultActiveDestinations(){ return DESTINATIONS.map(d=>d.id); }
-// 후보지 선택 게시 기능 주석 처리: 관리자가 후보지를 선별 게시하지 않고 모든 후보지를 항상 표시/선택 가능하게 합니다.
 function activeDestinationIds(){ return defaultActiveDestinations(); }
 function isDestinationActive(id){ return true; }
 function publicDestinations(){ return DESTINATIONS; }
@@ -1532,7 +1532,6 @@ function voteBlockReason(){
   if(!storeAvailable()) return 'Firebase 원격 저장소가 연결되지 않아 투표할 수 없습니다.';
   if(!settings.voteOpen) return '아직 투표가 개시되지 않았습니다.';
   const now=Date.now(), s=dateStartMs(settings.startAt), e=dateEndMs(settings.endAt);
-  // 2차 설문은 설문 기간을 별도로 설정하지 않아도 투표 가능하게 합니다.
   if(s && now<s) return '투표기간이 아직 시작되지 않았습니다.';
   if(e && now>e) return '투표기간이 종료되었습니다.';
   if(selectableDestinations().length<1) return '투표 가능한 후보지가 없습니다.';
@@ -1644,10 +1643,7 @@ async function sha256Hex(text){
 }
 async function hashPin(name,pin){return sha256Hex(`${AUTH_SALT}|${normalizeName(name)}|${pin}`);}
 function downloadBlob(content,filename,type='text/plain;charset=utf-8'){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);}
-function writeLocal(){
-  // 운영 안정성을 위해 더 이상 localStorage를 원격 저장소처럼 사용하지 않습니다.
-  // Firebase가 연결되지 않은 경우 설정/투표 저장은 차단됩니다.
-}
+function writeLocal(){}
 function setStorePill(cls, msg){
   const el = $('storeStatus');
   if (!el) return;
@@ -2097,8 +2093,6 @@ $('loginForm').addEventListener('submit', async e => {
   for (const u of candidates) {
     const hp = await hashPin(u.name, pin);
     const isHashMatched = hp === u.pinHash || (Array.isArray(u.altPinHashes) && u.altPinHashes.includes(hp));
-    // 김해영 계정은 이름 정정 과정에서 일부 브라우저/캐시 환경에서 해시 검증이 꼬이는 사례가 있어
-    // 요청에 따라 2083을 명시적으로 허용합니다. 다른 계정에는 적용되지 않습니다.
     const isKimHaeyoungForced = normalizeName(u.name) === '김해영' && pin === '2083';
     if (isHashMatched || isKimHaeyoungForced) {
       matched = u;

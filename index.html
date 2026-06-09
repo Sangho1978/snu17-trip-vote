@@ -48,6 +48,10 @@
     .notice-card p{margin:0;color:#39465e;font-weight:850;line-height:1.6}
     .round2-choice-card.selected{border:3px solid #16a34a!important;background:linear-gradient(135deg,#ecfdf3,#ffffff)!important;box-shadow:0 0 0 4px rgba(22,163,74,.12),0 10px 24px rgba(16,24,40,.08)}
     .selected-mark{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;background:#16a34a;color:#fff;font-size:12px;font-weight:1000;white-space:nowrap}
+    .round2-choice-head { padding: 14px; }
+    .round2-choice-title { font-weight: 900; font-size: 18px; color: var(--navy); margin-bottom: 4px; }
+    .round2-choice-note { font-size: 13px; color: #667085; }
+    .round2-choice-brief { font-size: 13px; color: #4c5870; margin-top: 8px; line-height: 1.45; background: #f8f9fb; padding: 10px; border-radius: 8px; border: 1px solid #edf0f5;}
   </style>
 </head>
 <body class="logged-out">
@@ -167,11 +171,14 @@
           </div>
 
           <div class="section-title" style="margin-top:16px;"><div><h3 style="margin:0; font-size:16px; color:var(--navy);">실시간 후보지 관리</h3><p style="margin-top:2px;">추가/수정 시 실시간으로 반영됩니다.</p></div></div>
-          <div id="adminDestListUI" style="display:grid; gap:6px; margin-bottom:10px;"></div>
+          
+          <div id="adminDestListUI" style="margin-bottom:12px;"></div>
+          
           <div class="field" style="background:#f8f9fb; padding:10px; border-radius:12px; border:1px solid #e4e9f2;">
             <label style="margin-bottom:6px;">새 후보지 추가</label>
             <input type="text" id="newDestTitle" placeholder="후보지 이름 (예: 스위스)" style="margin-bottom:6px;" />
             <input type="text" id="newDestRoute" placeholder="경로 요약 (예: 취리히-루체른)" style="margin-bottom:6px;" />
+            <textarea id="newDestBrief" placeholder="장소 설명 및 상세내용을 자유롭게 적어주세요." style="width:100%; height:60px; margin-bottom:6px; padding:10px; border:1px solid #d8dfec; border-radius:12px; font-family:inherit; resize:vertical;"></textarea>
             <button class="btn gold full" id="addDestBtn" type="button">새 후보지 등록하기</button>
           </div>
           
@@ -206,19 +213,18 @@ const FIREBASE_CONFIG = {
 };
 const APP_PATH = "snu17_trip_vote_2026_round2"; 
 const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
-const POINTS = [1];
 
-// 기본 제공되는 후보지 6개 (DB에 값이 없을 때만 최초로 사용됨)
+// 기본 제공되는 후보지 6개 (초기화용)
 const INITIAL_DESTINATIONS = [
   {"id":"turkiye","num":1,"title":"튀르키예","shortTitle":"튀르키예","route":"이스탄불 중심","duration":"6박 8일 검토","objective":"1차 설문 1위 후보지 재확인","brief":"","days":[],"tags":[]},
   {"id":"italy_north","num":2,"title":"이탈리아북부","shortTitle":"이탈리아북부","route":"베네치아 - 돌로미티 - 밀라노","duration":"6박 8일 검토","objective":"1차 설문 7위 후보지 재검토","brief":"","days":[],"tags":[]},
   {"id":"spain_south","num":3,"title":"스페인남부","shortTitle":"스페인남부","route":"마드리드 및 안달루시아 검토","duration":"6박 8일 검토","objective":"1차 설문 12위 후보지 재검토","brief":"","days":[],"tags":[]},
-  {"id":"croatia","num":4,"title":"크로아티아","shortTitle":"크로아티아","route":"자그레브 및 아드리아해 검토","duration":"6박 8일 검토","objective":"1차 설문 3위 재검토 (자부담 가능성)","brief":"","days":[],"tags":[]},
-  {"id":"canada","num":5,"title":"북미동부","shortTitle":"북미동부","route":"토론토 및 보스턴 검토","duration":"6박 8일 검토","objective":"1차 설문 4위 재검토 (자부담 가능성)","brief":"","days":[],"tags":[]},
-  {"id":"destination_6","num":6,"title":"6번째 후보지 (수정 요망)","shortTitle":"6번후보지","route":"상세 경로 입력","duration":"6박 8일 검토","objective":"추가된 6번째 후보지 검토","brief":"","days":[],"tags":[]}
+  {"id":"croatia","num":4,"title":"크로아티아","shortTitle":"크로아티아","route":"자그레브 및 아드리아해 검토","duration":"6박 8일 검토","objective":"1차 설문 3위 재검토 (자부담 가능성)","brief":"+100만원 이내 자부담 필요 가능성 있음","days":[],"tags":[]},
+  {"id":"canada","num":5,"title":"북미동부","shortTitle":"북미동부","route":"토론토 및 보스턴 검토","duration":"6박 8일 검토","objective":"1차 설문 4위 재검토 (자부담 가능성)","brief":"+100만원 이내 자부담 필요 가능성 있음","days":[],"tags":[]},
+  {"id":"destination_6","num":6,"title":"6번째 후보지 (수정 요망)","shortTitle":"6번후보지","route":"상세 경로 입력","duration":"6박 8일 검토","objective":"추가된 6번째 후보지 검토","brief":"관리자 패널에서 이 장소의 이름과 설명을 수정해 주세요.","days":[],"tags":[]}
 ];
 
-/* 112명의 전체 원본 명단 복원 완료 */
+/* 112명의 원본 명단 */
 const ROSTER = [
   { "id": "u001", "serial": 1, "name": "강명봉", "org": "한국중부발전", "gender": "남", "title": "부장", "pinHash": "a57bcba600dee5c47d21dd66782daa55dbb8676687c69b5ad3557a3df68a6561", "admin": false },
   { "id": "u002", "serial": 2, "name": "고재성", "org": "한국고용정보원", "gender": "남", "title": "선임연구위원", "pinHash": "273de2077092474990647eb043c5d238c5d7cbb0514de88a4c8cddbd341c5b88", "admin": false },
@@ -335,17 +341,14 @@ const ROSTER = [
 ];
 
 /* 상태 변수들 */
-const DEFAULT_PERIOD_VERSION = "2026-06-09_2026-06-12_v15";
 let currentUser = null, settings = {startAt:"2026-06-09",endAt:"2026-06-12",voteOpen:true}, votes = {};
-let dynamicDestinations = []; // DB에서 불러올 후보지 배열
+let dynamicDestinations = []; 
 let selectedChoices = [null];
 let usingFirebase = false, db = null, dataReady = false, remoteReady = false, storeError = "", rankingExpanded = false;
 
 const $ = id => document.getElementById(id);
 const destById = id => dynamicDestinations.find(d => d.id === id);
 const voterRoster = () => ROSTER.filter(u => !u.viewerOnly);
-function publicDestinations(){ return dynamicDestinations; }
-function selectableDestinations(){ return dynamicDestinations; }
 
 const normalizeName = v => String(v || '').normalize('NFC').replace(/\s+/g,'').trim();
 const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -398,7 +401,7 @@ function setStorePill(cls, msg){
   el.textContent = msg;
 }
 
-/* Firebase 초기화 및 연결 */
+/* Firebase 연결 */
 async function initStore() {
   usingFirebase = false; remoteReady = false; dataReady = true;
   setStorePill('warn', '연결 준비 중');
@@ -415,21 +418,16 @@ async function initStore() {
   try {
     if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
     if(firebase.auth) {
-      try {
-        await firebase.auth().signInAnonymously();
-      } catch (err) {
-        setStorePill('danger', '인증 실패'); return;
-      }
+      try { await firebase.auth().signInAnonymously(); } 
+      catch (err) { setStorePill('danger', '인증 실패'); return; }
     }
 
     db = firebase.database();
     usingFirebase = true;
 
-    // 설정(Settings) 및 후보지(Destinations) 읽기
     db.ref(`${APP_PATH}/settings`).on('value', snap => {
       const raw = snap.val() || {};
       
-      // [핵심] 설정값이 비어있거나 시작/종료일이 없다면 26년 6월 9일 ~ 6월 12일로 강제 초기화
       if(!raw.startAt || !raw.endAt) {
         settings = { startAt: "2026-06-09", endAt: "2026-06-12", voteOpen: true };
         db.ref(`${APP_PATH}/settings`).update(settings);
@@ -437,19 +435,15 @@ async function initStore() {
         settings = { startAt: raw.startAt, endAt: raw.endAt, voteOpen: raw.voteOpen };
       }
 
-      // 후보지(Destinations) 동기화 (없으면 INITIAL_DESTINATIONS 사용)
       if(raw.destinations && Array.isArray(raw.destinations) && raw.destinations.length > 0) {
         dynamicDestinations = raw.destinations;
       } else {
         dynamicDestinations = [...INITIAL_DESTINATIONS];
-        // 최초 DB에 후보지 정보 등록
         db.ref(`${APP_PATH}/settings/destinations`).set(dynamicDestinations);
       }
-
       checkReady();
     });
 
-    // 투표(Votes) 데이터 읽기
     db.ref(`${APP_PATH}/votes`).on('value', snap => {
       votes = snap.val() || {};
       checkReady();
@@ -469,11 +463,33 @@ async function initStore() {
   }
 }
 
-/* 관리자 후보지 CRUD 로직 */
+/* --- 장소 수정 / 추가 / 삭제 로직 --- */
+window.toggleEditDest = (id) => {
+  const form = document.getElementById(`edit_form_${id}`);
+  if(form) form.style.display = form.style.display === 'none' ? 'block' : 'none';
+};
+
+window.saveEditDest = async (id) => {
+  const title = document.getElementById(`edit_title_${id}`).value.trim();
+  const route = document.getElementById(`edit_route_${id}`).value.trim();
+  const brief = document.getElementById(`edit_brief_${id}`).value.trim();
+  
+  if(!title) { alert('장소명을 입력하세요.'); return; }
+
+  const updated = dynamicDestinations.map(d => {
+    if(d.id === id) {
+      return { ...d, title, shortTitle: title, route, brief };
+    }
+    return d;
+  });
+  
+  await db.ref(`${APP_PATH}/settings/destinations`).set(updated);
+  toast('장소 정보가 성공적으로 수정되었습니다.');
+};
+
 window.deleteDest = async (id) => {
   if(!confirm('정말 이 후보지를 삭제하시겠습니까?')) return;
   const updated = dynamicDestinations.filter(d => d.id !== id);
-  // 번호(num) 재정렬
   updated.forEach((d, i) => d.num = i + 1);
   await db.ref(`${APP_PATH}/settings/destinations`).set(updated);
   toast('후보지가 삭제되었습니다.');
@@ -483,13 +499,15 @@ $('addDestBtn').addEventListener('click', async () => {
   if(!currentUser?.admin) return;
   const title = $('newDestTitle').value.trim();
   const route = $('newDestRoute').value.trim();
+  const brief = $('newDestBrief').value.trim();
+  
   if(!title) { alert('추가할 후보지의 이름을 입력하세요.'); return; }
   
   const newId = 'dest_' + Date.now();
   const num = dynamicDestinations.length + 1;
   const newDest = { 
-    id: newId, num, title, shortTitle: title, route, 
-    duration: "6박 8일 검토", objective: "추가 후보지", brief: "", days: [], tags: [] 
+    id: newId, num, title, shortTitle: title, route, brief,
+    duration: "6박 8일 검토", objective: "추가 후보지", days: [], tags: [] 
   };
   
   const updated = [...dynamicDestinations, newDest];
@@ -497,6 +515,7 @@ $('addDestBtn').addEventListener('click', async () => {
   
   $('newDestTitle').value = '';
   $('newDestRoute').value = '';
+  $('newDestBrief').value = '';
   toast('새 후보지가 추가되었습니다.');
 });
 
@@ -504,10 +523,27 @@ function renderAdminDestinations() {
   const el = $('adminDestListUI');
   if(!el) return;
   const html = dynamicDestinations.map(d => `
-    <div style="display:flex; gap:10px; align-items:center; background:#fff; padding:10px 12px; border-radius:10px; border:1px solid #e4e9f2;">
-      <strong style="min-width: 90px; color: var(--navy);">${d.num}. ${escapeHtml(d.title)}</strong>
-      <span style="flex-grow:1; font-size:13px; color:#667085;">${escapeHtml(d.route)}</span>
-      <button class="btn danger" onclick="deleteDest('${d.id}')" style="min-height:32px; padding:6px 12px; font-size:12px;">삭제</button>
+    <div style="background:#fff; padding:12px; border-radius:10px; border:1px solid #e4e9f2; margin-bottom:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="color:var(--navy); font-size:14px;">${d.num}. ${escapeHtml(d.title)}</strong>
+        <div>
+          <button class="btn soft" onclick="toggleEditDest('${d.id}')" style="min-height:28px; padding:4px 8px; font-size:12px;">수정</button>
+          <button class="btn danger" onclick="deleteDest('${d.id}')" style="min-height:28px; padding:4px 8px; font-size:12px;">삭제</button>
+        </div>
+      </div>
+      
+      <div id="edit_form_${d.id}" style="display:none; background:#f8f9fb; padding:10px; border-radius:8px; border:1px solid #e4e9f2; margin-top:10px;">
+        <label style="font-size:12px; font-weight:bold; color:#4c5870;">장소명</label>
+        <input type="text" id="edit_title_${d.id}" value="${escapeHtml(d.title)}" style="width:100%; margin-bottom:6px; padding:8px; border:1px solid #d8dfec; border-radius:8px;" />
+        
+        <label style="font-size:12px; font-weight:bold; color:#4c5870;">경로 요약</label>
+        <input type="text" id="edit_route_${d.id}" value="${escapeHtml(d.route)}" style="width:100%; margin-bottom:6px; padding:8px; border:1px solid #d8dfec; border-radius:8px;" />
+        
+        <label style="font-size:12px; font-weight:bold; color:#4c5870;">장소 설명 및 상세내용</label>
+        <textarea id="edit_brief_${d.id}" style="width:100%; height:60px; margin-bottom:8px; padding:8px; border:1px solid #d8dfec; border-radius:8px; font-family:inherit; resize:vertical;">${escapeHtml(d.brief||'')}</textarea>
+        
+        <button class="btn green full" onclick="saveEditDest('${d.id}')" style="min-height:32px; font-size:13px;">변경사항 저장</button>
+      </div>
     </div>
   `).join('');
   el.innerHTML = html || '<div class="empty">후보지가 없습니다.</div>';
@@ -542,8 +578,7 @@ function renderStatus(){
   if($('responseFill')) $('responseFill').style.width=`${rate}%`;
   
   const s=dateStartMs(settings.startAt), e=dateEndMs(settings.endAt), now=Date.now();
-  let statusText = "진행 중";
-  let statusClass = "ok";
+  let statusText = "진행 중"; let statusClass = "ok";
   if(!settings.voteOpen) { statusText = "개시 전"; statusClass = "warn"; }
   else if(s && now<s) { statusText = "시작 전"; statusClass = "warn"; }
   else if(e && now>e) { statusText = "종료"; statusClass = "danger"; }
@@ -582,13 +617,24 @@ function renderRanking(){
 function renderDestinations(){
   const saved = currentUser && validChoices(votes[currentUser.id]) ? votes[currentUser.id].choices[0].optionId : null;
   const currentSelected = saved || selectedChoices[0];
-  $('destList').innerHTML=dynamicDestinations.map(d=>{
+  
+  $('destList').innerHTML = dynamicDestinations.map(d => {
     const selected = currentSelected === d.id;
-    return `<article class="round2-choice-card ${selected?'selected':''}" id="dest-${d.id}">
+    // brief 텍스트가 있을 경우 줄바꿈을 <br>로 변환하여 표시
+    const briefHtml = d.brief ? `<div class="round2-choice-brief">${escapeHtml(d.brief).replace(/\n/g, '<br>')}</div>` : '';
+    
+    return `
+    <article class="round2-choice-card ${selected?'selected':''}" id="dest-${d.id}">
       <div class="round2-choice-head">
-        <div><div class="round2-choice-title">${d.num}. ${escapeHtml(d.title)}</div><div class="round2-choice-note">${escapeHtml(d.route)}</div></div>
+        <div>
+          <div class="round2-choice-title">${d.num}. ${escapeHtml(d.title)}</div>
+          <div class="round2-choice-note">${escapeHtml(d.route)}</div>
+          ${briefHtml}
+        </div>
       </div>
-      <button class="btn ${selected?'green':'gold'} inline-vote-btn" type="button" data-inline-vote="${d.id}">${selected?'선택됨':'이 장소로 투표'}</button>
+      <div style="padding: 0 14px 14px 14px;">
+        <button class="btn ${selected?'green':'gold'} full inline-vote-btn" type="button" data-inline-vote="${d.id}">${selected?'현재 내 투표 장소':'이 장소로 투표하기'}</button>
+      </div>
     </article>`;
   }).join('');
 }
@@ -638,7 +684,7 @@ async function saveMyVote(){
   try {
     await db.ref(`${APP_PATH}/votes/${currentUser.id}`).set(record);
     votes[currentUser.id] = record;
-    toast(`투표 저장 완료`);
+    toast(`투표가 성공적으로 저장되었습니다.`);
     renderAll();
   } catch(err) {
     alert('투표 저장 실패: ' + err.message);
@@ -655,12 +701,12 @@ $('loginForm').addEventListener('submit', async e => {
     const hp = await hashPin(u.name, pin);
     if (hp === u.pinHash) { matched = u; break; }
   }
-  if (!matched) { alert('정보가 일치하지 않습니다.'); return; }
+  if (!matched) { alert('이름 또는 비밀번호가 일치하지 않습니다.'); return; }
   currentUser = matched;
   const rec = votes[currentUser.id];
   selectedChoices = (!validChoices(rec)) ? [null] : [rec.choices[0].optionId];
   renderAll();
-  toast(`${currentUser.name}님 로그인`);
+  toast(`${currentUser.name}님 로그인 성공`);
 });
 
 $('logoutBtn').addEventListener('click',()=>{currentUser=null; selectedChoices=[null]; renderAll();});
@@ -668,7 +714,7 @@ $('destList').addEventListener('click', e=>{
   const btn = e.target.closest('[data-inline-vote]');
   if(btn) { selectedChoices=[btn.dataset.inlineVote]; saveMyVote(); }
 });
-$('refreshBtn').addEventListener('click',()=>{renderAll();toast('새로고침 완료');});
+$('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면 새로고침 완료');});
 
 $('saveSettingsBtn').addEventListener('click', async () => {
   if(!currentUser?.admin) return;
@@ -685,7 +731,7 @@ $('resetVotesBtn').addEventListener('click', async () => {
   if(!currentUser?.admin) return;
   if(!confirm('정말 112명의 모든 투표 결과를 초기화하시겠습니까? (복구 불가)')) return;
   await db.ref(`${APP_PATH}/votes`).set(null);
-  toast('투표가 초기화되었습니다.');
+  toast('모든 투표가 초기화되었습니다.');
 });
 
 function downloadBlob(content,filename,type='text/plain;charset=utf-8'){const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);}

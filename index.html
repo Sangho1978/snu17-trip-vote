@@ -218,7 +218,9 @@
   <footer class="footer"><div class="wrap">하반기 국외연수 장소 2차 투표</div></footer>
 
 <script>
-/* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
+
+
+  /* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
   authDomain: "snu17-trip-vote.firebaseapp.com",
@@ -229,10 +231,27 @@ const FIREBASE_CONFIG = {
   appId: "1:1043680927852:web:98b6916873cda945d63849",
   measurementId: "G-MTF99DNV7M"
 };
-const APP_PATH = "snu17_trip_vote_2026_round2"; // 2차 설문 전용 Firebase 경로
+const APP_PATH = "snu17_trip_vote_2026_v3_11dest"; // 기존 Firebase 데이터와 보안규칙을 유지하기 위해 경로명은 그대로 사용합니다.
 const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
 const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
-const POINTS = [1];
+const POINTS = [10, 7, 5, 2];
+  
+// /* Firebase Console에서 받은 웹 앱 설정값으로 교체하세요. */
+// const FIREBASE_CONFIG = {
+//   apiKey: "AIzaSyCsyu_2FFLIPJE76pSiEoR0Uua9JMSB-ng",
+//   authDomain: "snu17-trip-vote.firebaseapp.com",
+//   databaseURL: "https://snu17-trip-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
+//   projectId: "snu17-trip-vote",
+//   storageBucket: "snu17-trip-vote.firebasestorage.app",
+//   messagingSenderId: "1043680927852",
+//   appId: "1:1043680927852:web:98b6916873cda945d63849",
+//   measurementId: "G-MTF99DNV7M"
+// };
+// const APP_PATH = "snu17_trip_vote_2026_round2"; // 2차 설문 전용 Firebase 경로
+// const REQUIRE_FIREBASE = true; // 실제 운영에서는 Firebase 원격 저장소가 연결되지 않으면 설정/투표 저장을 막습니다.
+// const AUTH_SALT = "snu_gspa_pl17_trip_2026_v1";
+// const POINTS = [1];
+  
 const DESTINATIONS = [
   {
     "id": "turkiye",

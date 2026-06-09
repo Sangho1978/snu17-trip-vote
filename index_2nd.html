@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
   <title>하반기 국외연수 장소 2차 투표</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+    (function(){
+      try{
+        var url = new URL(window.location.href);
+        if(!url.searchParams.has("_fresh")){
+          url.searchParams.set("_fresh", String(Date.now()));
+          window.location.replace(url.toString());
+        }
+      }catch(e){}
+    })();
+  </script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
@@ -1444,6 +1458,7 @@ const ROSTER = [
     "viewerOnly": true
   }
 ];
+const DEFAULT_PERIOD_VERSION = "2026-06-09_2026-06-12_v15";
 const DEFAULT_SETTINGS = {
   startAt:"2026-06-09",
   endAt:"2026-06-12",
@@ -1451,7 +1466,8 @@ const DEFAULT_SETTINGS = {
   showVoterNames:true,
   showPendingNames:false,
   voteOpen:true,
-  activeDestinations:null
+  activeDestinations:null,
+  defaultPeriodVersion: DEFAULT_PERIOD_VERSION
 };
 
 const FLIGHT_INFO = {
@@ -1504,7 +1520,7 @@ function voteBlockReason(){
   return '';
 }
 function isViewerOnly(){ return !!currentUser?.viewerOnly; }
-function storeAvailable(){ return usingFirebase && db && remoteReady; }
+function storeAvailable(){ return usingFirebase && !!db; }
 function storeUnavailableMessage(){
   if (!hasFirebaseConfig()) return "Firebase 설정값이 index_2nd.html에 입력되지 않았습니다. GitHub Pages에서는 원격 저장이 되지 않습니다.";
   return storeError || "Firebase 원격 저장소가 아직 연결되지 않았습니다.";
@@ -1665,6 +1681,12 @@ async function initStore(){
     }
     db = firebase.database();
     usingFirebase = true;
+    db.ref(`${APP_PATH}/_meta`).update({
+      file:'index_2nd.html',
+      appPath:APP_PATH,
+      version:'v15-cache-default-inline-vote-fix',
+      lastOpenedAt:new Date().toISOString()
+    }).catch(err=>console.warn('메타 정보 저장 실패:', err));
 
     let seenSettings=false, seenVotes=false;
     slowTimer = setTimeout(()=>{
@@ -1686,12 +1708,22 @@ async function initStore(){
     }
     db.ref(`${APP_PATH}/settings`).on('value',snap=>{
       const raw = snap.val();
-      const merged = {...DEFAULT_SETTINGS, ...(raw||{})};
+      let merged = {...DEFAULT_SETTINGS, ...(raw||{})};
+      const mustApplyDefaultPeriod = !raw || raw.defaultPeriodVersion !== DEFAULT_PERIOD_VERSION;
+      if(mustApplyDefaultPeriod){
+        merged = {
+          ...merged,
+          startAt: DEFAULT_SETTINGS.startAt,
+          endAt: DEFAULT_SETTINGS.endAt,
+          voteOpen: true,
+          defaultPeriodVersion: DEFAULT_PERIOD_VERSION
+        };
+      }
       if(!merged.startAt) merged.startAt = DEFAULT_SETTINGS.startAt;
       if(!merged.endAt) merged.endAt = DEFAULT_SETTINGS.endAt;
       if(typeof merged.voteOpen !== 'boolean') merged.voteOpen = true;
       settings = merged;
-      if(!raw || !raw.startAt || !raw.endAt || typeof raw.voteOpen !== 'boolean'){
+      if(mustApplyDefaultPeriod || !raw.startAt || !raw.endAt || typeof raw.voteOpen !== 'boolean'){
         db.ref(`${APP_PATH}/settings`).update({
           startAt: merged.startAt,
           endAt: merged.endAt,
@@ -1699,6 +1731,7 @@ async function initStore(){
           showRanking: merged.showRanking,
           showVoterNames: merged.showVoterNames,
           showPendingNames: merged.showPendingNames,
+          defaultPeriodVersion: DEFAULT_PERIOD_VERSION,
           defaultInitializedAt: raw?.defaultInitializedAt || new Date().toISOString()
         }).catch(err=>console.warn('기본 설정 저장 실패:', err));
       }
@@ -1733,9 +1766,9 @@ async function initStore(){
 async function saveSettings(next){
   if(!currentUser?.admin){ alert('관리자만 설정할 수 있습니다.'); return false; }
   if(!storeAvailable()){ alert('Firebase 원격 저장소가 연결되지 않아 설정을 저장할 수 없습니다.\n\n' + storeUnavailableMessage() + '\n\n' + firebaseHelpText()); return false; }
-  const nextSettings={...settings,...next,updatedAt:new Date().toISOString(),updatedBy:currentUser.id};
+  const nextSettings={...settings,...next,defaultPeriodVersion:settings.defaultPeriodVersion||DEFAULT_PERIOD_VERSION,updatedAt:new Date().toISOString(),updatedBy:currentUser.id};
   try{
-    await db.ref(`${APP_PATH}/settings`).set(nextSettings);
+    await db.ref(`${APP_PATH}/settings`).update(nextSettings);
     settings = nextSettings;
     renderAll();
     return true;
@@ -1812,6 +1845,7 @@ function renderLogin(){
   const loggedIn = !!currentUser;
   document.body.classList.toggle('logged-in', loggedIn);
   document.body.classList.toggle('logged-out', !loggedIn);
+  document.body.classList.toggle('admin-user', !!currentUser?.admin);
   $('loginCard').classList.toggle('hide', loggedIn);
   $('userCard').classList.toggle('hide', !loggedIn);
   if(currentUser){
@@ -1848,40 +1882,10 @@ function optionHtml(selected, rank){
 
 
 function renderVotePanel(){
-  const labels=['1순위 선택'];
-  const viewer = isViewerOnly();
-  const blockReason = voteBlockReason();
-  $('rankSelectors').innerHTML=labels.map((label,i)=>`<div class="select-row"><label for="rankSel${i+1}">${label}</label><select id="rankSel${i+1}" data-rankselect="${i+1}" ${viewer||!!blockReason?'disabled':''}>${optionHtml(selectedChoices[i],i+1)}</select></div>`).join('');
-  const rec=currentUser?votes[currentUser.id]:null;
-  const canInteract=!!currentUser && !viewer;
-  $('saveVoteBtn').disabled=!canInteract;
-  const showExtraVoteButtons = !!currentUser?.admin;
-  $('clearVoteBtn').classList.toggle('hide', !showExtraVoteButtons);
-  $('myVoteBtn').classList.toggle('hide', !showExtraVoteButtons);
-  $('clearVoteBtn').disabled=!canInteract;
-  $('myVoteBtn').disabled=!currentUser;
-  const fb=$('feedbackText');
-  if(fb){
-    fb.disabled=!canInteract || !!blockReason;
-    const saved='';
-    if(fb.value!==saved) fb.value=saved;
-    $('feedbackCount').textContent=`${fb.value.length} / 200자`;
-  }
-  const reasonBox=$('voteBlockedReason');
-  if(reasonBox){
-    reasonBox.classList.toggle('hide',!currentUser || !blockReason || viewer);
-    reasonBox.textContent=blockReason || '';
-  }
-  if(!currentUser){
-    $('myLastSave').textContent='로그인 후 투표할 수 있습니다.';
-  }else if(viewer){
-    $('myLastSave').textContent='조회 전용 계정입니다. 투표와 통계 집계에는 포함되지 않습니다.';
-  }else if(blockReason){
-    $('myLastSave').textContent=blockReason;
-  }else if(validChoices(rec)){
-    $('myLastSave').textContent=`마지막 저장: ${formatDateTime(rec.updatedAt)}`;
-  }else{
-    $('myLastSave').textContent='아직 저장된 내 투표가 없습니다.';
+  const card = $('voteCard');
+  if(card){
+    card.classList.add('hide');
+    card.setAttribute('aria-hidden','true');
   }
 }
 
@@ -2103,7 +2107,20 @@ $('voteBlockedReason').addEventListener('click',()=>{const r=voteBlockReason(); 
 $('saveVoteBtn').addEventListener('click',saveMyVote);$('clearVoteBtn').addEventListener('click',clearMySelection);$('myVoteBtn').addEventListener('click',showMyVote);
 $('ranking').addEventListener('click',e=>{if(e.target.closest('#rankToggleBtn')){rankingExpanded=!rankingExpanded;renderRanking();return;}const row=e.target.closest('[data-option]');if(row && currentUser?.admin)showVoteDetail(row.dataset.option);});
 $('jumpNav').addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;document.getElementById('dest-'+b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});});
-$('destList').addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)showDestinationDetail(b.dataset.open);const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
+$('destList').addEventListener('click',async e=>{
+  const voteBtn=e.target.closest('[data-inline-vote]');
+  if(voteBtn){
+    const id=voteBtn.dataset.inlineVote;
+    if(!currentUser){alert('먼저 로그인해 주세요.');return;}
+    if(isViewerOnly()){alert('조회 전용 계정은 투표할 수 없습니다.');return;}
+    selectedChoices=[id];
+    renderDestinations();
+    await saveMyVote();
+    return;
+  }
+  const b=e.target.closest('[data-open]');if(b)showDestinationDetail(b.dataset.open);
+  const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);
+});
 $('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면을 갱신했습니다.');});
 $('modalBody').addEventListener('click',e=>{const p=e.target.closest('[data-pdf-download]');if(p)downloadBrochure(p.dataset.pdfDownload);});
 $('closeModal').addEventListener('click',()=>$('detailModal').classList.remove('show'));

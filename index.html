@@ -48,7 +48,7 @@
     .notice-card{padding:14px;background:linear-gradient(135deg,#fff7e6,#eef4ff);border:1px solid #ead2a5}
     .notice-card h2{margin:0 0 8px;color:var(--navy);font-size:22px;letter-spacing:-.04em}
     .notice-card p{margin:0;color:#39465e;font-weight:850;line-height:1.6}
-    .round2-choice-card.selected{border:3px solid #16a34a!important;background:linear-gradient(135deg,#f0fdf4,#ffffff)!important;box-shadow:0 0 0 4px rgba(22,163,74,.12),0 10px 24px rgba(16,24,40,.08)}
+    .round2-choice-card{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(22,163,74,.15)}.inline-vote-btn{touch-action:manipulation;-webkit-tap-highlight-color:rgba(22,163,74,.18)}.round2-choice-card.selected{border:3px solid #16a34a!important;background:linear-gradient(135deg,#f0fdf4,#ffffff)!important;box-shadow:0 0 0 4px rgba(22,163,74,.12),0 10px 24px rgba(16,24,40,.08)}
     .selected-mark{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;background:#16a34a;color:#fff;font-size:12px;font-weight:1000;white-space:nowrap}
     .round2-choice-head { padding: 14px; }
     .round2-choice-title { font-weight: 900; font-size: 18px; color: var(--navy); margin-bottom: 4px; }
@@ -548,35 +548,32 @@ async function toggleVote(id) {
   const currentSelected = selectedChoices[0] || saved;
 
   if(currentSelected === id) {
-    // 이미 선택한 항목 재클릭 -> 투표 해제
-    selectedChoices = [null];
-    try {
-      await db.ref(`${APP_PATH}/votes/${currentUser.id}`).remove();
-      delete votes[currentUser.id];
-      toast('투표가 취소되었습니다.');
-      renderAll();
-    } catch(err) {
-      alert('투표 해제 실패: ' + err.message);
-    }
-  } else {
-    // 새로운 항목 클릭 -> 투표 저장
     selectedChoices = [id];
-    const now = new Date().toISOString();
-    const record = {
-      memberId: currentUser.id, 
-      name: currentUser.name, 
-      org: currentUser.org, 
-      choices: [{rank:1, optionId:id, points:1}], 
-      updatedAt: now
-    };
-    try {
-      await db.ref(`${APP_PATH}/votes/${currentUser.id}`).set(record);
-      votes[currentUser.id] = record;
-      toast('투표가 성공적으로 반영되었습니다.');
-      renderAll();
-    } catch(err) {
-      alert('투표 저장 실패: ' + err.message);
-    }
+    toast('이미 선택된 장소입니다.');
+    renderAll();
+    return;
+  }
+
+  // 새로운 항목 클릭 -> 투표 저장
+  selectedChoices = [id];
+  renderAll(); // 모바일 터치 즉시 선택 표시
+  const now = new Date().toISOString();
+  const record = {
+    memberId: currentUser.id,
+    name: currentUser.name,
+    org: currentUser.org,
+    choices: [{rank:1, optionId:id, points:1}],
+    updatedAt: now
+  };
+  try {
+    await db.ref(`${APP_PATH}/votes/${currentUser.id}`).set(record);
+    votes[currentUser.id] = record;
+    toast('투표가 성공적으로 반영되었습니다.');
+    renderAll();
+  } catch(err) {
+    selectedChoices = [currentSelected || null];
+    renderAll();
+    alert('투표 저장 실패: ' + (err.message || err.code || err));
   }
 }
 
@@ -749,7 +746,7 @@ function renderDestinations(){
     const selectedMark = selected ? `<span class="selected-mark">내가 선택한 장소</span>` : '';
     
     return `
-    <article class="round2-choice-card ${special?'budget-warning':''} ${selected?'selected':''}" id="dest-${d.id}">
+    <article class="round2-choice-card ${special?'budget-warning':''} ${selected?'selected':''}" id="dest-${d.id}" data-card-vote="${d.id}" role="button" tabindex="0" aria-label="${escapeHtml(d.title)} 투표">
       <div class="round2-choice-head">
         <div>
           <div class="round2-choice-title">${d.num}. ${escapeHtml(d.title)} ${selectedMark}</div>
@@ -826,8 +823,17 @@ $('ranking').addEventListener('click', e => {
 
 /* 아래쪽 투표 카드 버튼 클릭 시 토글 투표 동작 */
 $('destList').addEventListener('click', e=>{
-  const btn = e.target.closest('[data-inline-vote]');
-  if(btn) toggleVote(btn.dataset.inlineVote);
+  const target = e.target.closest('[data-inline-vote], [data-card-vote]');
+  if(!target || !$('destList').contains(target)) return;
+  const id = target.dataset.inlineVote || target.dataset.cardVote;
+  if(id) toggleVote(id);
+});
+$('destList').addEventListener('keydown', e=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const target = e.target.closest('[data-card-vote]');
+  if(!target) return;
+  e.preventDefault();
+  toggleVote(target.dataset.cardVote);
 });
 
 $('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면 새로고침 완료');});

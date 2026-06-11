@@ -419,13 +419,14 @@ let storeInitPromise = null;
 const $ = id => document.getElementById(id);
 const destById = id => dynamicDestinations.find(d => d.id === id);
 const voterRoster = () => ROSTER.filter(u => !u.viewerOnly);
+function isViewerOnly(){ return !!currentUser?.viewerOnly; }
 
 const normalizeName = v => String(v || '').normalize('NFC').replace(/\s+/g,'').trim();
 const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 function textWithBreaks(value){
   return escapeHtml(value || '').split(String.fromCharCode(13)).join('').split(String.fromCharCode(10)).join('<br>');
 }
-const SOURCE_VERSION = 'ROUND2_SAVE_VERIFY_FIX_V16_20260611';
+const SOURCE_VERSION = 'ROUND2_ISVIEWERONLY_FIX_V17_20260611';
 function isDateOnly(v){return /^\d{4}-\d{2}-\d{2}$/.test(String(v||''));}
 function dateStartMs(v){if(!v)return null; if(isDateOnly(v)) return new Date(`${v}T00:00:00`).getTime(); return new Date(v).getTime();}
 function dateEndMs(v){if(!v)return null; if(isDateOnly(v)) return new Date(`${v}T23:59:59`).getTime(); return new Date(v).getTime();}
@@ -821,7 +822,7 @@ function renderLogin(){
   $('loginCard').classList.toggle('hide', loggedIn);
   $('userCard').classList.toggle('hide', !loggedIn);
   if(currentUser){
-    $('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':''}`;
+    $('userName').textContent=`${currentUser.name}${currentUser.admin?' 관리자':(currentUser.viewerOnly?' 조회전용':'')}`;
     $('userOrg').textContent=`${currentUser.org}`;
   }
   $('adminPanel').classList.toggle('visible',!!currentUser?.admin);

@@ -736,8 +736,7 @@ function renderDestinations(){
   $('destList').innerHTML = dynamicDestinations.map(d => {
     const selected = currentSelected === d.id;
     const special = !!d.specialBudget;
-    const briefHtml = d.brief ? `<div class="round2-choice-brief">${escapeHtml(d.brief).replace(/
-/g, '<br>')}</div>` : '';
+    const briefHtml = d.brief ? `<div class="round2-choice-brief">${escapeHtml(d.brief).split('\n').join('<br>')}</div>` : '';
     const rankBadge = d.rankLabel ? `<span class="first-rank-badge">${escapeHtml(d.rankLabel)}</span>` : '';
     const budgetBadge = special ? `<span class="special-budget-badge">예산 범위 밖 자기 부담 후보</span>` : '';
     const budgetNote = special && d.specialNote ? `<div class="special-budget-note">${escapeHtml(d.specialNote)}</div>` : '';

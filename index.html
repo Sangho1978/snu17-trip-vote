@@ -413,6 +413,8 @@ let currentUser = null, settings = {startAt:DEFAULT_START_AT,endAt:DEFAULT_END_A
 let dynamicDestinations = []; 
 let selectedChoices = [null];
 let usingFirebase = false, db = null, dataReady = false, remoteReady = false, storeError = "";
+let storeInitStarted = false;
+let storeInitPromise = null;
 
 const $ = id => document.getElementById(id);
 const destById = id => dynamicDestinations.find(d => d.id === id);
@@ -423,7 +425,7 @@ const escapeHtml = s => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<
 function textWithBreaks(value){
   return escapeHtml(value || '').split(String.fromCharCode(13)).join('').split(String.fromCharCode(10)).join('<br>');
 }
-const SOURCE_VERSION = 'REGEX_FIX_FINAL_NO_REGEX_BRIEF_20260611_V7';
+const SOURCE_VERSION = 'ROUND2_SAVE_VERIFY_FIX_V16_20260611';
 function isDateOnly(v){return /^\d{4}-\d{2}-\d{2}$/.test(String(v||''));}
 function dateStartMs(v){if(!v)return null; if(isDateOnly(v)) return new Date(`${v}T00:00:00`).getTime(); return new Date(v).getTime();}
 function dateEndMs(v){if(!v)return null; if(isDateOnly(v)) return new Date(`${v}T23:59:59`).getTime(); return new Date(v).getTime();}
@@ -449,7 +451,8 @@ function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show')
 function voteBlockReason(){
   if(!currentUser) return '먼저 로그인해 주세요.';
   if(isViewerOnly()) return '조회 전용 계정은 투표할 수 없습니다.';
-  if(!usingFirebase || !db) return '저장소 연결 문제로 투표할 수 없습니다.';
+  // Firebase 연결은 저장 버튼을 누르는 순간 ensureFirebaseReady()에서 다시 시도합니다.
+  // 따라서 여기서 미리 차단하지 않아야, 초기 연결 지연 상태에서도 투표 저장을 재시도할 수 있습니다.
   if(!settings.voteOpen) return '투표가 개시되지 않았습니다.';
   const now=Date.now(), s=dateStartMs(settings.startAt), e=dateEndMs(settings.endAt);
   if(s && now<s) return '투표기간이 아직 시작되지 않았습니다.';
@@ -472,69 +475,173 @@ function setStorePill(cls, msg){
   el.className = `pill ${cls || ''}`;
   el.textContent = msg;
 }
+function firebaseErrorText(err){
+  if(!err) return '';
+  return err.code || err.message || String(err);
+}
+function firebaseHelpText(){
+  return '확인 항목: 1) Authentication > Anonymous 사용 설정 2) Realtime Database Rules의 snu17_trip_vote_2026_round2 read/write 허용 3) Authorized domains에 GitHub Pages 도메인 등록 4) index_2nd.html 최신 파일 반영';
+}
+async function ensureFirebaseReady(timeoutMs=9000){
+  if(usingFirebase && db) return true;
+  if(!window.firebase){
+    const started=Date.now();
+    while(!window.firebase && Date.now()-started<timeoutMs){ await new Promise(r=>setTimeout(r,120)); }
+  }
+  if(!window.firebase){ storeError='Firebase SDK가 로드되지 않았습니다. gstatic.com 접근이 차단되었을 수 있습니다.'; return false; }
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    if(firebase.auth && !firebase.auth().currentUser){ await firebase.auth().signInAnonymously(); }
+    db=firebase.database();
+    usingFirebase=true;
+    setStorePill('ok','정상 연결됨');
+    return true;
+  }catch(err){
+    storeError=firebaseErrorText(err);
+    setStorePill('danger','연결 실패');
+    return false;
+  }
+}
+async function firebaseWrite(path, value, mode='set'){
+  const ok=await ensureFirebaseReady();
+  if(!ok) throw new Error(storeError || 'Firebase 연결 실패');
+  const ref=db.ref(path);
+  if(mode==='update') await ref.update(value); else await ref.set(value);
+  return true;
+}
 
 /* Firebase 연결 */
 async function initStore() {
-  usingFirebase = false; remoteReady = false; dataReady = true;
-  setStorePill('warn', '연결 준비 중');
+  if (storeInitStarted && storeInitPromise) return storeInitPromise;
+  storeInitStarted = true;
+  storeInitPromise = (async () => {
+    usingFirebase = false; remoteReady = false; dataReady = true; storeError = '';
+    setStorePill('warn', 'Firebase 연결 중');
 
-  if(!window.firebase) {
-    let loaded = false;
-    for(let i=0; i<50; i++){
-      await new Promise(r=>setTimeout(r,100));
-      if(window.firebase){ loaded = true; break; }
+    if(!window.firebase) {
+      let loaded = false;
+      for(let i=0; i<80; i++){
+        await new Promise(r=>setTimeout(r,100));
+        if(window.firebase){ loaded = true; break; }
+      }
+      if(!loaded) {
+        storeError = 'Firebase SDK 로드 실패: gstatic.com 스크립트가 차단되었을 수 있습니다.';
+        setStorePill('danger', 'SDK 로드 실패');
+        renderAll();
+        return false;
+      }
     }
-    if(!loaded) { setStorePill('danger', 'SDK 로드 실패'); return; }
-  }
 
-  try {
-    if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
-    if(firebase.auth) {
-      try { await firebase.auth().signInAnonymously(); } 
-      catch (err) { setStorePill('danger', '인증 실패'); return; }
-    }
-
-    db = firebase.database();
-    usingFirebase = true;
-
-    db.ref(`${APP_PATH}/settings`).on('value', snap => {
-      const raw = snap.val() || {};
-      
-      const mustSeedSettings = !raw.startAt || !raw.endAt || raw.settingsVersion !== DEFAULT_SETTINGS_VERSION;
-      if(mustSeedSettings) {
-        settings = { startAt: DEFAULT_START_AT, endAt: DEFAULT_END_AT, voteOpen: true, settingsVersion: DEFAULT_SETTINGS_VERSION, candidateVersion: DEFAULT_CANDIDATE_VERSION };
-        db.ref(`${APP_PATH}/settings`).update(settings);
-      } else {
-        settings = { startAt: raw.startAt || DEFAULT_START_AT, endAt: raw.endAt || DEFAULT_END_AT, voteOpen: raw.voteOpen !== false, settingsVersion: raw.settingsVersion || DEFAULT_SETTINGS_VERSION, candidateVersion: raw.candidateVersion || "" };
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      if(firebase.auth) {
+        try { await firebase.auth().signInAnonymously(); }
+        catch (err) {
+          storeError = `Firebase 익명 인증 실패: ${err.code || err.message || err}`;
+          setStorePill('danger', '인증 실패');
+          renderAll();
+          return false;
+        }
       }
 
-      const mustSeedDestinations = !raw.destinations || !Array.isArray(raw.destinations) || raw.destinations.length < 1 || raw.candidateVersion !== DEFAULT_CANDIDATE_VERSION;
+      db = firebase.database();
+      usingFirebase = true;
+      remoteReady = true;
+      setStorePill('ok', 'Firebase 실시간 저장');
+
+      // 경로 생성 및 기본값 보정. 실패 시 실제 Firebase 오류를 표시합니다.
+      await db.ref(`${APP_PATH}/_meta`).update({ lastOpenAt: new Date().toISOString(), sourceVersion: SOURCE_VERSION });
+      const settingsSnap = await db.ref(`${APP_PATH}/settings`).once('value');
+      const raw = settingsSnap.val() || {};
+      // 이미 저장된 관리자 기간/투표상태/후보지는 초기화하지 않습니다.
+      // 값이 아예 없는 최초 상태에서만 기본값을 보정합니다.
+      settings = {
+        startAt: raw.startAt || DEFAULT_START_AT,
+        endAt: raw.endAt || DEFAULT_END_AT,
+        voteOpen: raw.voteOpen !== false,
+        settingsVersion: raw.settingsVersion || DEFAULT_SETTINGS_VERSION,
+        candidateVersion: raw.candidateVersion || DEFAULT_CANDIDATE_VERSION
+      };
+      const initialPatch = {};
+      if(!raw.startAt) initialPatch.startAt = DEFAULT_START_AT;
+      if(!raw.endAt) initialPatch.endAt = DEFAULT_END_AT;
+      if(typeof raw.voteOpen === 'undefined') initialPatch.voteOpen = true;
+      if(!raw.settingsVersion) initialPatch.settingsVersion = DEFAULT_SETTINGS_VERSION;
+
+      const mustSeedDestinations = !raw.destinations || !Array.isArray(raw.destinations) || raw.destinations.length < 1;
       if(mustSeedDestinations) {
         dynamicDestinations = INITIAL_DESTINATIONS.map(d => ({...d}));
-        db.ref(`${APP_PATH}/settings`).update({ destinations: dynamicDestinations, candidateVersion: DEFAULT_CANDIDATE_VERSION });
+        initialPatch.destinations = dynamicDestinations;
+        initialPatch.candidateVersion = raw.candidateVersion || DEFAULT_CANDIDATE_VERSION;
       } else {
         dynamicDestinations = raw.destinations;
+        if(!raw.candidateVersion) initialPatch.candidateVersion = DEFAULT_CANDIDATE_VERSION;
       }
-      checkReady();
-    });
+      if(Object.keys(initialPatch).length){
+        await db.ref(`${APP_PATH}/settings`).update(initialPatch);
+      }
 
-    db.ref(`${APP_PATH}/votes`).on('value', snap => {
-      votes = snap.val() || {};
-      checkReady();
-    });
-
-    let reads = 0;
-    function checkReady() {
-      reads++;
-      if(reads >= 2) {
-        remoteReady = true;
-        setStorePill('ok', '정상 연결됨');
+      db.ref(`${APP_PATH}/settings`).on('value', snap => {
+        const raw = snap.val() || {};
+        settings = { startAt: raw.startAt || DEFAULT_START_AT, endAt: raw.endAt || DEFAULT_END_AT, voteOpen: raw.voteOpen !== false, settingsVersion: raw.settingsVersion || DEFAULT_SETTINGS_VERSION, candidateVersion: raw.candidateVersion || DEFAULT_CANDIDATE_VERSION };
+        if(Array.isArray(raw.destinations) && raw.destinations.length) dynamicDestinations = raw.destinations;
+        else dynamicDestinations = INITIAL_DESTINATIONS.map(d => ({...d}));
+        setStorePill('ok', 'Firebase 실시간 저장');
         renderAll();
-      }
+      }, err => {
+        storeError = `settings 읽기 실패: ${err.code || err.message || err}`;
+        setStorePill('danger', '읽기 실패');
+        renderAll();
+      });
+
+      db.ref(`${APP_PATH}/votes`).on('value', snap => {
+        votes = snap.val() || {};
+        setStorePill('ok', 'Firebase 실시간 저장');
+        renderAll();
+      }, err => {
+        storeError = `votes 읽기 실패: ${err.code || err.message || err}`;
+        setStorePill('danger', '읽기 실패');
+        renderAll();
+      });
+
+      renderAll();
+      return true;
+    } catch(err) {
+      console.error('Firebase 연결/초기화 실패', err);
+      storeError = `Firebase 연결/초기화 실패: ${err.code || err.message || err}`;
+      usingFirebase = false; remoteReady = false;
+      setStorePill('danger', '연결 실패');
+      renderAll();
+      return false;
     }
-  } catch(err) {
-    setStorePill('danger', '연결 실패');
+  })();
+  return storeInitPromise;
+}
+
+async function ensureFirebaseReady() {
+  if(usingFirebase && db) return true;
+  // 이전 초기화가 실패했거나 너무 일찍 실행되어 false로 끝난 경우, 저장 시점에 다시 초기화를 시도합니다.
+  if(!usingFirebase || !db){
+    storeInitStarted = false;
+    storeInitPromise = null;
   }
+  const ok = await initStore();
+  if(ok || (usingFirebase && db)) return true;
+  return false;
+}
+
+async function firebaseSet(path, value) {
+  const ok = await ensureFirebaseReady();
+  if(!ok || !db) throw new Error(storeError || 'Firebase 연결이 완료되지 않았습니다.');
+  await db.ref(path).set(value);
+  return true;
+}
+
+async function firebaseUpdate(path, value) {
+  const ok = await ensureFirebaseReady();
+  if(!ok || !db) throw new Error(storeError || 'Firebase 연결이 완료되지 않았습니다.');
+  await db.ref(path).update(value);
+  return true;
 }
 
 /* 토글 투표 로직 (핵심 기능) */
@@ -566,14 +673,18 @@ async function toggleVote(id) {
     updatedAt: now
   };
   try {
-    await db.ref(`${APP_PATH}/votes/${currentUser.id}`).set(record);
+    const ok=await ensureFirebaseReady();
+    if(!ok) throw new Error(storeError || 'Firebase 연결 실패');
+    await firebaseSet(`${APP_PATH}/votes/${currentUser.id}`, record);
+    const verifySnap=await db.ref(`${APP_PATH}/votes/${currentUser.id}/choices/0/optionId`).once('value');
+    const verified=verifySnap.val()===id;
     votes[currentUser.id] = record;
-    toast('투표가 성공적으로 반영되었습니다.');
+    toast(verified ? '투표가 성공적으로 반영되었습니다.' : '저장 요청 완료 - 화면을 새로고침합니다.');
     renderAll();
   } catch(err) {
     selectedChoices = [currentSelected || null];
     renderAll();
-    alert('투표 저장 실패: ' + (err.message || err.code || err));
+    alert('투표 저장 실패: ' + firebaseErrorText(err) + '\n\n' + firebaseHelpText());
   }
 }
 
@@ -595,7 +706,10 @@ window.saveEditDest = async (id) => {
     return d;
   });
   
-  await db.ref(`${APP_PATH}/settings/destinations`).set(updated);
+  await firebaseWrite(`${APP_PATH}/settings/destinations`, updated);
+  dynamicDestinations = updated;
+  renderAdminDestinations();
+  renderDestinations();
   toast('장소 정보가 성공적으로 수정되었습니다.');
 };
 
@@ -603,7 +717,10 @@ window.deleteDest = async (id) => {
   if(!confirm('정말 이 후보지를 삭제하시겠습니까?')) return;
   const updated = dynamicDestinations.filter(d => d.id !== id);
   updated.forEach((d, i) => d.num = i + 1);
-  await db.ref(`${APP_PATH}/settings/destinations`).set(updated);
+  await firebaseWrite(`${APP_PATH}/settings/destinations`, updated);
+  dynamicDestinations = updated;
+  renderAdminDestinations();
+  renderDestinations();
   toast('후보지가 삭제되었습니다.');
 };
 
@@ -623,7 +740,10 @@ $('addDestBtn').addEventListener('click', async () => {
   };
   
   const updated = [...dynamicDestinations, newDest];
-  await db.ref(`${APP_PATH}/settings/destinations`).set(updated);
+  await firebaseWrite(`${APP_PATH}/settings/destinations`, updated);
+  dynamicDestinations = updated;
+  renderAdminDestinations();
+  renderDestinations();
   
   $('newDestTitle').value = ''; $('newDestRoute').value = ''; $('newDestBrief').value = '';
   toast('새 후보지가 추가되었습니다.');
@@ -841,20 +961,26 @@ $('refreshBtn').addEventListener('click',()=>{renderAll();toast('화면 새로�
 $('saveSettingsBtn').addEventListener('click', async () => {
   if(!currentUser?.admin) return;
   const nextSettings = {
-    startAt: $('adminStart').value || DEFAULT_START_AT,
-    endAt: $('adminEnd').value || DEFAULT_END_AT,
+    startAt: $('adminStart').value || settings.startAt || DEFAULT_START_AT,
+    endAt: $('adminEnd').value || settings.endAt || DEFAULT_END_AT,
     voteOpen: $('adminVoteOpen').checked,
-    settingsVersion: DEFAULT_SETTINGS_VERSION,
-    candidateVersion: DEFAULT_CANDIDATE_VERSION
+    settingsVersion: settings.settingsVersion || DEFAULT_SETTINGS_VERSION,
+    candidateVersion: settings.candidateVersion || DEFAULT_CANDIDATE_VERSION
   };
-  await db.ref(`${APP_PATH}/settings`).update(nextSettings);
-  toast('기본 설정이 저장되었습니다.');
+  try{
+    await firebaseWrite(`${APP_PATH}/settings`, nextSettings, 'update');
+    settings = {...settings, ...nextSettings};
+    renderStatus();
+    toast('기본 설정이 저장되었습니다.');
+  }catch(err){
+    alert('설정 저장 실패: '+firebaseErrorText(err)+'\n\n'+firebaseHelpText());
+  }
 });
 
 $('resetVotesBtn').addEventListener('click', async () => {
   if(!currentUser?.admin) return;
   if(!confirm('정말 112명의 모든 투표 결과를 초기화하시겠습니까? (복구 불가)')) return;
-  await db.ref(`${APP_PATH}/votes`).set(null);
+  await firebaseWrite(`${APP_PATH}/votes`, null);
   toast('모든 투표가 초기화되었습니다.');
 });
 

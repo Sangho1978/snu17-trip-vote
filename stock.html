@@ -12,7 +12,17 @@
     .metric{flex:1;background:#0f172a;border:1px solid rgba(148,163,184,.15);border-radius:10px;padding:7px 3px;min-width:0}
     .metric .label{font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:-0.5px}
     .metric .value{font-weight:900;font-size:12px;letter-spacing:-0.4px;word-break:keep-all}
-    .search-results{display:grid;gap:8px;max-height:430px;overflow:auto}.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;background:#020617;border:1px solid var(--line);border-radius:14px}.proof-list{display:grid;gap:10px}.proof-card{display:grid;grid-template-columns:104px 1fr auto;gap:12px;align-items:start;padding:10px;background:#020617;border:1px solid var(--line);border-radius:16px}.proof-card img{width:104px;height:104px;object-fit:cover;border-radius:13px;background:#111827}.progress{height:8px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress span{display:block;width:0%;height:100%;background:var(--accent)}.login-box{max-width:460px;margin:8vh auto}.charline{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}.divider{height:1px;background:rgba(148,163,184,.18);margin:14px 0}.bottom-safe{padding-bottom:env(safe-area-inset-bottom)}
+    .search-results{display:grid;gap:8px;max-height:430px;overflow:auto}.search-summary{display:flex;justify-content:space-between;gap:8px;color:#94a3b8;font-size:12px;padding:4px 2px}.more-btn{width:100%;background:#334155;color:#f8fafc}.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;background:#020617;border:1px solid var(--line);border-radius:14px}.proof-list{display:grid;gap:10px}.proof-card{display:grid;grid-template-columns:104px 1fr auto;gap:12px;align-items:start;padding:10px;background:#020617;border:1px solid var(--line);border-radius:16px}.proof-card img{width:104px;height:104px;object-fit:cover;border-radius:13px;background:#111827}.progress{height:8px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress span{display:block;width:0%;height:100%;background:var(--accent)}.login-box{max-width:460px;margin:8vh auto}.charline{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}.divider{height:1px;background:rgba(148,163,184,.18);margin:14px 0}.bottom-safe{padding-bottom:env(safe-area-inset-bottom)}
+
+    .stock-master-box{display:grid;gap:8px}
+    .stock-master-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .stock-master-row label{margin:0;display:inline-flex;gap:6px;align-items:center;color:var(--muted);font-size:13px}
+    .stock-master-row input[type="checkbox"]{width:auto;min-height:auto}
+    .stock-badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:900;border:1px solid rgba(148,163,184,.22);margin-right:5px}
+    .badge-kospi{background:rgba(56,189,248,.14);color:#bae6fd}
+    .badge-kosdaq{background:rgba(34,197,94,.14);color:#bbf7d0}
+    .badge-etf{background:rgba(245,158,11,.16);color:#fde68a}
+    .stock-status-line{font-size:12px;color:var(--muted);line-height:1.45}
     @media(max-width:860px){body{font-size:13px}.wrap{padding:12px 10px 18px}.top{align-items:flex-start;flex-direction:column}.brand{width:100%}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.grid.two,.grid.three{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.card{padding:14px;border-radius:16px}.desktop-table{display:none}.mobile-list{display:grid;gap:10px}.tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}.tabs button{padding:10px 12px;min-height:42px}.proof-card{grid-template-columns:88px 1fr}.proof-card img{width:88px;height:88px}.proof-card button{grid-column:1/-1}.toolbar button{flex:1 1 auto}.result-item{align-items:flex-start}.result-item button{flex:0 0 auto}.pill{font-size:12px;padding:7px 9px}.login-box{margin:5vh auto}.reason{max-width:none}}
     @media(max-width:390px){.proof-card{grid-template-columns:76px 1fr}.proof-card img{width:76px;height:76px}.top .toolbar{width:100%}.top .toolbar button{flex:1}}
 
@@ -57,11 +67,11 @@
 
     <section id="rankingTab"><div class="grid two"><div class="card"><div class="toolbar" style="justify-content:space-between;margin-bottom:12px"><h2 style="margin:0">랭킹 조회</h2><button id="refreshBtn">전체 가격 새로고침</button></div><div class="toolbar" style="margin-bottom:12px"><span class="pill">선택마감 <strong id="pickPeriodLabel">-</strong></span><span class="pill">경쟁기간 <strong id="tradePeriodLabel">-</strong></span><span class="pill">상태 <strong id="statusLabel">-</strong></span></div><div id="hiddenPickNotice" class="info hide" style="margin-bottom:12px">종목 선택 기간에는 다른 회원의 선택 종목과 선정 사유가 보이지 않습니다.</div><div id="rankingLockedNotice" class="notice hide" style="margin-bottom:12px">경쟁 종료 후에는 종료일 장마감 종가 기준으로 순위가 고정됩니다.</div><div class="table-wrap desktop-table"><table><thead><tr><th>순위</th><th>회원</th><th>종목/선정 사유</th><th>시초가(시가)</th><th>현재가(종가)</th><th>수익률</th><th>전일대비</th><th>벌금</th><th>종목등록일</th></tr></thead><tbody id="rankingBody"></tbody></table></div><div id="mobileRanking" class="mobile-list"></div></div><div class="card"><h2>벌금 규칙</h2><div id="fineSummary" class="toolbar"></div><div class="divider"></div><h2>운영 메모</h2><p id="memoText"></p><div class="notice">화면을 켜두면 30초마다 자동으로 가격이 갱신됩니다.<br/>* <b>종목을 다시 선택하면 새 종목의 선택일 시초가로 바뀝니다.</b><br/>* <b>경쟁 시작 전:</b> 종목 선택일의 시초가 기준<br/>* <b>경쟁 시작 후:</b> 랭킹 시작일 정규장 시초가로 자동 변경/저장</div></div></div></section>
 
-    <section id="pickTab" class="hide"><div class="grid two"><div class="card"><h2>내 종목 선택</h2><div id="pickWindowNotice" class="notice" style="margin-bottom:12px"></div><div class="grid"><div><label for="stockKeyword">코스피/코스닥 주식 검색</label><input id="stockKeyword" placeholder="예: LG, LG전자, 삼성, 현대" /></div><div class="toolbar"><button id="searchStockBtn">검색</button><button class="secondary" id="manualInputBtn">직접 입력</button></div><div id="searchResults" class="search-results"></div></div></div><div class="card"><h2>선택된 종목</h2><div class="grid"><div><label for="pickName">종목명</label><input id="pickName" placeholder="LG전자" /></div><div><label for="pickSymbol">종목코드</label><input id="pickSymbol" placeholder="066570 또는 066570.KS" /></div><div><label for="pickMemo">선정 사유 1,000자 이내</label><textarea id="pickMemo" maxlength="1000" placeholder="선정 이유를 적어주세요. 경쟁 시작 후 종목 밑에 공개됩니다."></textarea><div class="charline"><span id="memoCount">0</span>/1000</div></div><button id="savePickBtn">내 종목 저장</button></div></div></div></section>
+    <section id="pickTab" class="hide"><div class="grid two"><div class="card"><h2>내 종목 선택</h2><div id="pickWindowNotice" class="notice" style="margin-bottom:12px"></div><div class="grid"><div class="stock-master-box"><label for="stockKeyword">코스피/코스닥 전체 종목 검색</label><input id="stockKeyword" placeholder="예: HL, HL만도, LG, 삼성, 204320, KODEX" /><div class="stock-master-row"><button id="searchStockBtn">검색</button><button class="secondary" id="manualInputBtn">직접 입력</button><button class="secondary" id="loadStockMasterBtn" type="button">전체 종목 새로고침</button><button class="secondary" id="stockSearchTestBtn" type="button">검색 테스트</button><label><input id="includeEtfToggle" type="checkbox" checked /> 국내 ETF 포함</label></div><div id="stockMasterStatus" class="stock-status-line">전체 종목 목록을 불러오는 중입니다.</div></div><div id="searchResults" class="search-results"></div></div></div><div class="card"><h2>선택된 종목</h2><div class="grid"><div><label for="pickName">종목명</label><input id="pickName" placeholder="LG전자" /></div><div><label for="pickSymbol">종목코드</label><input id="pickSymbol" placeholder="066570 또는 066570.KS" /></div><div><label for="pickMemo">선정 사유 1,000자 이내</label><textarea id="pickMemo" maxlength="1000" placeholder="선정 이유를 적어주세요. 경쟁 시작 후 종목 밑에 공개됩니다."></textarea><div class="charline"><span id="memoCount">0</span>/1000</div></div><button id="savePickBtn">내 종목 저장</button></div></div></div></section>
 
     <section id="proofTab" class="hide"><div class="grid two"><div class="card"><h2>실제구매 및 수익률 인증 업로드</h2><div id="proofDisabledPanel" class="proof-disabled-panel hide">관리자가 인증 사진 등록 메뉴를 비활성화했습니다. 현재는 업로드할 수 없습니다.</div><div class="info" style="margin-bottom:12px">모바일 사진을 1280px 이하 JPG로 자동 압축해서 저장합니다.</div><div class="grid"><div><label for="proofFile">사진 선택 / 카메라 촬영</label><input id="proofFile" type="file" accept="image/*" multiple /></div><div><label for="proofMemo">설명</label><textarea id="proofMemo" maxlength="1000" placeholder="예: 실제 매수 내역, 보유 화면, 수익률 화면 등"></textarea></div><button id="uploadProofBtn">인증 이미지 저장</button><div id="uploadStatus" class="small muted"></div><div class="progress hide" id="uploadProgress"><span></span></div></div></div><div class="card"><h2>전체 인증 조회</h2><div id="proofList" class="proof-list"></div></div></div></section>
 
-    <section id="adminTab" class="hide"><div class="grid two"><div class="card"><h2>관리자 설정</h2><div class="grid"><h2>랭킹 경쟁 기간 (이 기간 전까지만 종목 등록 가능)</h2><div class="row"><div><label for="pickEndDate">선택 마감일 (기본: 2026-06-11)</label><input id="pickEndDate" type="date" /></div></div><div class="row"><div><label for="tradeStartDate">경쟁 시작일 (기본: 2026-06-12)</label><input id="tradeStartDate" type="date" /></div><div><label for="tradeEndDate">경쟁 종료일 (기본: 2026-08-28)</label><input id="tradeEndDate" type="date" /></div></div><div class="row"><div><label for="marketOpenTime">장시작 시간</label><input id="marketOpenTime" type="time" value="09:00" /></div><div><label for="marketCloseTime">장마감 시간</label><input id="marketCloseTime" type="time" value="15:30" /></div></div><h2>인증 사진 등록 메뉴</h2><div class="admin-toggle-card"><label class="toggle-row"><input id="proofEnabled" type="checkbox" /> <span>인증 조회/업로드 메뉴 활성화</span></label><div class="small muted" style="margin-top:6px">기본값은 비활성입니다. 이 체크박스는 관리자 페이지에서만 변경할 수 있습니다. 비활성 시 모든 사용자에게 인증 탭이 보이지 않고 업로드도 막힙니다.</div></div><h2>벌금 설정</h2><div class="grid three"><div><label for="fineTop3">1~3등</label><input id="fineTop3" type="number" step="10000" value="0" /></div><div><label for="fine4to6">4~6등</label><input id="fine4to6" type="number" step="10000" value="10000" /></div><div><label for="fine7to9">7~9등</label><input id="fine7to9" type="number" step="10000" value="20000" /></div><div><label for="fine10to12">10~12등</label><input id="fine10to12" type="number" step="10000" value="30000" /></div><div><label for="fine13plus">13등 이하</label><input id="fine13plus" type="number" step="10000" value="40000" /></div></div><div><label for="adminMemo">공지/운영 메모</label><textarea id="adminMemo"></textarea></div><div class="toolbar"><button id="saveSettingsBtn">설정 저장</button><button class="secondary" id="lockRankingBtn">순위 고정</button><button class="secondary" id="unlockRankingBtn">고정 해제</button><button class="danger" id="resetPinsBtn">비번 0000 초기화</button></div></div></div><div class="card"><h2>회원 관리</h2><div class="toolbar" style="margin-bottom:12px"><button id="seedBtn">초기 회원 보정</button></div><div id="memberAdminList" class="proof-list"></div></div></div></section>
+    <section id="adminTab" class="hide"><div class="grid two"><div class="card"><h2>관리자 설정</h2><div class="grid"><h2>랭킹 경쟁 기간 (이 기간 전까지만 종목 등록 가능)</h2><div class="row"><div><label for="pickEndDate">선택 마감일 (기본: 2026-06-11)</label><input id="pickEndDate" type="date" /></div></div><div class="row"><div><label for="tradeStartDate">경쟁 시작일 (기본: 2026-06-12)</label><input id="tradeStartDate" type="date" /></div><div><label for="tradeEndDate">경쟁 종료일 (기본: 2026-08-28)</label><input id="tradeEndDate" type="date" /></div></div><div class="row"><div><label for="marketOpenTime">장시작 시간</label><input id="marketOpenTime" type="time" value="09:00" /></div><div><label for="marketCloseTime">장마감 시간</label><input id="marketCloseTime" type="time" value="15:30" /></div></div><h2>인증 사진 등록 메뉴</h2><div class="admin-toggle-card"><label class="toggle-row"><input id="proofEnabled" type="checkbox" /> <span>인증 조회/업로드 메뉴 활성화</span></label><div class="small muted" style="margin-top:6px">기본값은 비활성입니다. 이 체크박스는 관리자 페이지에서만 변경할 수 있습니다. 비활성 시 모든 사용자에게 인증 탭이 보이지 않고 업로드도 막힙니다.</div></div><h2>벌금 설정</h2><div class="grid three"><div><label for="fineTop3">1~3등</label><input id="fineTop3" type="number" step="10000" value="0" /></div><div><label for="fine4to6">4~6등</label><input id="fine4to6" type="number" step="10000" value="10000" /></div><div><label for="fine7to9">7~9등</label><input id="fine7to9" type="number" step="10000" value="20000" /></div><div><label for="fine10to12">10~12등</label><input id="fine10to12" type="number" step="10000" value="30000" /></div><div><label for="fine13plus">13등 이하</label><input id="fine13plus" type="number" step="10000" value="40000" /></div></div><div><label for="adminMemo">공지/운영 메모</label><textarea id="adminMemo"></textarea></div><div class="toolbar"><button id="saveSettingsBtn">설정 저장</button><button class="secondary" id="lockRankingBtn">순위 고정</button><button class="secondary" id="unlockRankingBtn">고정 해제</button><button class="danger" id="resetPinsBtn">비번 0000 초기화</button><button class="danger" id="resetPicksBtn">선택 종목 초기화</button></div></div></div><div class="card"><h2>회원 관리</h2><div class="grid" style="margin-bottom:14px"><div class="row"><div><label for="newMemberName">회원 이름</label><input id="newMemberName" placeholder="예: 김진웅" /></div><div><label for="newMemberOrg">기관명</label><input id="newMemberOrg" placeholder="예: 한국환경공단" /></div></div><div class="toolbar"><button id="addMemberBtn">회원 추가</button><button class="secondary" id="seedBtn">초기 회원 보정</button><button class="secondary" id="addRequiredMembersBtn">김진웅/최원욱 추가</button></div><div class="small muted">추가 회원은 일반 회원으로 등록되며 초기 비밀번호는 0000입니다. 첫 로그인 후 비밀번호 변경 화면이 표시됩니다.</div><div id="memberCount" class="info small">회원 목록을 불러오는 중입니다.</div></div><div id="memberAdminList" class="proof-list"></div></div></div></section>
   </div>
 
   <script type="module">
@@ -72,11 +82,21 @@
     const app = initializeApp(FIREBASE_CONFIG); const db = getDatabase(app);
 
     // 김윤정 회원 기관명(한국수자원공사) 반영 완료
-    const INITIAL_MEMBERS=[{name:'한상호',org:'',role:'admin'},{name:'곽영은',org:'한국부동산원',role:'member'},{name:'김수정',org:'한국소비자원',role:'member'},{name:'김태균',org:'농협중앙회',role:'member'},{name:'김해영',org:'한국농어촌공사',role:'member'},{name:'김현교',org:'국립공원공단',role:'member'},{name:'류준호',org:'한국전력공사',role:'member'},{name:'문철웅',org:'한국전력공사',role:'member'},{name:'박상환',org:'한국인터넷진흥원',role:'member'},{name:'변태윤',org:'국가철도공단',role:'member'},{name:'김윤정',org:'한국수자원공사',role:'member'},{name:'신명진',org:'한국서부발전',role:'member'},{name:'윤선아',org:'강원랜드',role:'member'},{name:'이승민',org:'농협중앙회',role:'member'},{name:'이주훈',org:'한국산업기술기획평가원',role:'member'},{name:'정장식',org:'한국환경공단',role:'member'},{name:'정형모',org:'한국농어촌공사',role:'member'},{name:'최미숙',org:'한국철도공사',role:'member'}];
-    const STOCKS=[['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['009150','삼성전기','KOSPI'],['028260','삼성물산','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['091990','셀트리온헬스케어','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['028300','HLB','KOSDAQ']].map(([code,name,market])=>({code,name,market,symbol:`${code}.KS`}));
+    const INITIAL_MEMBERS=[{name:'한상호',org:'',role:'admin'},{name:'곽영은',org:'한국부동산원',role:'member'},{name:'김수정',org:'한국소비자원',role:'member'},{name:'김태균',org:'농협중앙회',role:'member'},{name:'김해영',org:'한국농어촌공사',role:'member'},{name:'김현교',org:'국립공원공단',role:'member'},{name:'류준호',org:'한국전력공사',role:'member'},{name:'문철웅',org:'한국전력공사',role:'member'},{name:'박상환',org:'한국인터넷진흥원',role:'member'},{name:'변태윤',org:'국가철도공단',role:'member'},{name:'김윤정',org:'한국수자원공사',role:'member'},{name:'신명진',org:'한국서부발전',role:'member'},{name:'윤선아',org:'강원랜드',role:'member'},{name:'이승민',org:'농협중앙회',role:'member'},{name:'이주훈',org:'한국산업기술기획평가원',role:'member'},{name:'정장식',org:'한국환경공단',role:'member'},{name:'김진웅',org:'한국환경공단',role:'member'},{name:'최원욱',org:'국립공원공단',role:'member'},{name:'정형모',org:'한국농어촌공사',role:'member'},{name:'최미숙',org:'한국철도공사',role:'member'}];
+    const STOCKS=[
+      ['005930','삼성전자','KOSPI'],['005935','삼성전자우','KOSPI'],['207940','삼성바이오로직스','KOSPI'],['006400','삼성SDI','KOSPI'],['006405','삼성SDI우','KOSPI'],['009150','삼성전기','KOSPI'],['009155','삼성전기우','KOSPI'],['028260','삼성물산','KOSPI'],['02826K','삼성물산우B','KOSPI'],['032830','삼성생명','KOSPI'],['000810','삼성화재','KOSPI'],['000815','삼성화재우','KOSPI'],['016360','삼성증권','KOSPI'],['010140','삼성중공업','KOSPI'],['010145','삼성중공우','KOSPI'],['018260','삼성에스디에스','KOSPI'],['029780','삼성카드','KOSPI'],['028050','삼성E&A','KOSPI'],
+      ['066570','LG전자','KOSPI'],['051910','LG화학','KOSPI'],['373220','LG에너지솔루션','KOSPI'],['011070','LG이노텍','KOSPI'],['034220','LG디스플레이','KOSPI'],['003550','LG','KOSPI'],['003555','LG우','KOSPI'],['032640','LG유플러스','KOSPI'],['051900','LG생활건강','KOSPI'],['051905','LG생활건강우','KOSPI'],
+      ['204320','HL만도','KOSPI'],['060980','HL홀딩스','KOSPI'],['014790','HL D&I','KOSPI'],['028300','HLB','KOSDAQ'],['003580','HLB글로벌','KOSPI'],['047920','HLB제약','KOSDAQ'],['067630','HLB생명과학','KOSDAQ'],['115450','HLB테라퓨틱스','KOSDAQ'],['278650','HLB바이오스텝','KOSDAQ'],['024850','HLB이노베이션','KOSDAQ'],['046210','HLB파나진','KOSDAQ'],
+      ['000660','SK하이닉스','KOSPI'],['034730','SK','KOSPI'],['017670','SK텔레콤','KOSPI'],['096770','SK이노베이션','KOSPI'],['011200','HMM','KOSPI'],['005380','현대차','KOSPI'],['005385','현대차우','KOSPI'],['000270','기아','KOSPI'],['012330','현대모비스','KOSPI'],['086280','현대글로비스','KOSPI'],['267260','HD현대일렉트릭','KOSPI'],['329180','HD현대중공업','KOSPI'],['009540','HD한국조선해양','KOSPI'],
+      ['035420','NAVER','KOSPI'],['035720','카카오','KOSPI'],['323410','카카오뱅크','KOSPI'],['377300','카카오페이','KOSPI'],['068270','셀트리온','KOSPI'],['005490','POSCO홀딩스','KOSPI'],['003670','포스코퓨처엠','KOSPI'],['105560','KB금융','KOSPI'],['055550','신한지주','KOSPI'],['086790','하나금융지주','KOSPI'],['316140','우리금융지주','KOSPI'],['024110','기업은행','KOSPI'],['015760','한국전력','KOSPI'],['012450','한화에어로스페이스','KOSPI'],['042660','한화오션','KOSPI'],['034020','두산에너빌리티','KOSPI'],['000100','유한양행','KOSPI'],['009830','한화솔루션','KOSPI'],
+      ['247540','에코프로비엠','KOSDAQ'],['086520','에코프로','KOSDAQ'],['196170','알테오젠','KOSDAQ'],['141080','리가켐바이오','KOSDAQ'],['277810','레인보우로보틱스','KOSDAQ'],['035900','JYP Ent.','KOSDAQ'],['041510','에스엠','KOSDAQ'],['122870','와이지엔터테인먼트','KOSDAQ'],['263750','펄어비스','KOSDAQ'],['293490','카카오게임즈','KOSDAQ']
+    ].map(([code,name,market])=>({code:String(code),name,market,symbol:`${String(code).replace(/\.KS$/,'')}.KS`}));
+    const POPULAR_ETFS=[
+      ['069500','KODEX 200'],['102110','TIGER 200'],['278530','KODEX 200TR'],['148020','KBSTAR 200'],['229200','KODEX 코스닥150'],['232080','TIGER 코스닥150'],['122630','KODEX 레버리지'],['252670','KODEX 200선물인버스2X'],['114800','KODEX 인버스'],['233740','KODEX 코스닥150레버리지'],['251340','KODEX 코스닥150선물인버스'],['360750','TIGER 미국S&P500'],['379800','KODEX 미국S&P500TR'],['360200','ACE 미국S&P500'],['133690','TIGER 미국나스닥100'],['379810','KODEX 미국나스닥100TR'],['305720','KODEX 2차전지산업'],['305540','TIGER 2차전지테마'],['091160','KODEX 반도체'],['091230','TIGER 반도체'],['381180','TIGER 미국필라델피아반도체나스닥']
+    ].map(([code,name])=>({code:String(code),name,market:'ETF',type:'ETF',symbol:`${String(code)}.KS`,source:'ETF 보조목록'}));
 
-    const state={user:null,members:{},picks:{},prices:{},settings:{},proofs:{}}; const $=id=>document.getElementById(id); const KRW=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:0}); const NUM=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2,minimumFractionDigits:2}); const paths={members:'moneyPlus/members',picks:'moneyPlus/picks',prices:'moneyPlus/prices',settings:'moneyPlus/settings',proofs:'moneyPlus/proofs'};
-    const sleep = ms => new Promise(r => setTimeout(r, ms)); 
+    const state={user:null,members:{},picks:{},prices:{},settings:{},proofs:{},stockSearchResults:[],stockSearchVisible:5,editingPick:false,stockMaster:[],stockMasterBase:[],etfMaster:[],stockMasterLoading:null,stockMasterMeta:{kospi:0,kosdaq:0,etf:0,total:0,source:'내장 목록',loadedAt:null},selectedStockItem:null}; const $=id=>document.getElementById(id); const KRW=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:0}); const NUM=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2,minimumFractionDigits:2}); const paths={members:'moneyPlus/members',picks:'moneyPlus/picks',prices:'moneyPlus/prices',settings:'moneyPlus/settings',proofs:'moneyPlus/proofs'};
+    const sleep = ms => new Promise(r => setTimeout(r, ms)); const REQUIRED_MEMBERS=[{name:'김진웅',org:'한국환경공단',role:'member'},{name:'최원욱',org:'국립공원공단',role:'member'}]; 
 
     function kstYMD(value){
       const d = value ? new Date(value) : new Date();
@@ -139,7 +159,7 @@
       return { beforeStart, basis, startObj, endObj, startDate, endDate, selectedYMD, isFinished: now > tradeEnd || !!s.locked };
     }
 
-    function safeKey(n){return String(n||'').trim().replace(/[.#$\[\]/]/g,'_')} function today(){return new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'})} function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} function isPin(v){return /^\d{4}$/.test(String(v||''))} function fmtDt(v){return v?new Date(v).toLocaleString('ko-KR',{hour12:false}):'-'} function norm(v){return String(v||'').toLowerCase().replace(/\s/g,'')} function normalizeSymbol(v){const s=String(v||'').trim().toUpperCase(); if(/^\d{6}$/.test(s)) return `${s}.KS`; if(/^\d{6}\.KS$/.test(s)) return s; return s} function codeFromSymbol(v){return normalizeSymbol(v).replace('.KS','')}
+    function safeKey(n){return String(n||'').trim().replace(/[.#$\[\]/]/g,'_')} function today(){return new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'})} function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} function isPin(v){return /^\d{4}$/.test(String(v||''))} function fmtDt(v){return v?new Date(v).toLocaleString('ko-KR',{hour12:false}):'-'} function norm(v){return String(v||'').normalize('NFKC').toLowerCase().replace(/[^0-9a-z가-힣]/g,'')} function normalizeSymbol(v){let s=String(v||'').trim().toUpperCase().replace(/\.(KS|KQ)$/,''); if(/^[0-9A-Z]{6}$/.test(s)) return `${s}.KS`; return s} function codeFromSymbol(v){return normalizeSymbol(v).replace('.KS','')}
     
     // 기본 세팅: 선택마감 6/11, 시작일 6/12, 종료일 8/28
     function defaultSettings(){return{pickEndDate:'2026-06-11',tradeStartDate:'2026-06-12',tradeEndDate:'2026-08-28',marketOpenTime:'09:00',marketCloseTime:'15:30',locked:false,proofEnabled:false,memo:'Money Plus 국내주식 리그입니다.',fines:{top3:0,r4to6:10000,r7to9:20000,r10to12:30000,r13plus:40000},updatedAt:Date.now()}}
@@ -153,11 +173,14 @@
         if(!ms.exists()){
           $('seedNotice').textContent = 'Firebase에 회원 데이터가 없어 초기 데이터를 자동 생성합니다.';
           $('seedNotice').classList.remove('hide'); 
-          await seed();
-        } 
+        }
+        // 기존 DB가 있어도 신규 기본 회원(김진웅, 최원욱 등)이 자동 반영되도록 보정합니다.
+        // 기존 회원의 비밀번호와 선택 종목은 변경하지 않습니다.
+        await seed();
         $('seedNotice').classList.add('hide'); 
         bindRealtime(); 
         bindEvents(); 
+        loadStockMaster(false).catch(e=>console.warn('전체 종목 목록 초기 로딩 실패:', e));
         const saved=localStorage.getItem('moneyPlusLoginName'); 
         if(saved) $('loginName').value=saved;
 
@@ -179,7 +202,7 @@
     }
     
     function bindRealtime(){onValue(ref(db,paths.members),s=>{state.members=s.val()||{}; renderAll()}); onValue(ref(db,paths.picks),s=>{state.picks=s.val()||{}; renderAll()}); onValue(ref(db,paths.prices),s=>{state.prices=s.val()||{}; renderAll()}); onValue(ref(db,paths.settings),s=>{const val=s.val()||{}; state.settings={...defaultSettings(),...val,fines:{...defaultSettings().fines,...(val.fines||{})}}; renderAll()}); onValue(ref(db,paths.proofs),s=>{state.proofs=s.val()||{}; renderAll()})}
-    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';$('pickName').focus()}; $('pickMemo').oninput=()=>{$('memoCount').textContent=$('pickMemo').value.length}; $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=()=>refreshAllPrices(false); $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; $('seedBtn').onclick=async()=>{await seed();alert('회원 데이터를 보정했습니다.')}}
+    function bindEvents(){$('loginBtn').onclick=login; $('loginPin').onkeydown=e=>{if(e.key==='Enter')login()}; $('logoutBtn').onclick=()=>{state.user=null;$('appView').classList.add('hide');$('loginView').classList.remove('hide')}; $('changePinBtn').onclick=()=>$('passwordChangePanel').classList.toggle('hide'); $('savePinBtn').onclick=saveNewPin; document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab)); $('searchStockBtn').onclick=searchStock; $('stockKeyword').onkeydown=e=>{if(e.key==='Enter')searchStock()}; $('manualInputBtn').onclick=()=>{$('searchResults').innerHTML='<div class="notice">종목명과 6자리 종목코드를 직접 입력하세요.</div>';state.editingPick=true;$('pickName').focus()}; ['pickName','pickSymbol','pickMemo'].forEach(id=>$(id).oninput=()=>{state.editingPick=true; if(id==='pickMemo') $('memoCount').textContent=$('pickMemo').value.length}); $('savePickBtn').onclick=savePick; $('uploadProofBtn').onclick=uploadProof; $('refreshBtn').onclick=()=>refreshAllPrices(false); $('saveSettingsBtn').onclick=saveSettings; $('lockRankingBtn').onclick=()=>setLocked(true); $('unlockRankingBtn').onclick=()=>setLocked(false); $('resetPinsBtn').onclick=resetPins; if($('resetPicksBtn')) $('resetPicksBtn').onclick=resetPickData; $('seedBtn').onclick=async()=>{await seed(); const snap=await get(ref(db,paths.members)); state.members=snap.val()||state.members; renderAll(); alert('회원 데이터를 보정했습니다. 김진웅/최원욱이 목록에 없었다면 이제 추가됩니다.')}; if($('addMemberBtn')) $('addMemberBtn').onclick=addMember; if($('addRequiredMembersBtn')) $('addRequiredMembersBtn').onclick=ensureRequiredMembers; if($('loadStockMasterBtn')) $('loadStockMasterBtn').onclick=()=>loadStockMaster(true); if($('stockSearchTestBtn')) $('stockSearchTestBtn').onclick=showStockSearchDiagnostics; if($('includeEtfToggle')) $('includeEtfToggle').onchange=()=>loadStockMaster(true).then(()=>{const q=$('stockKeyword').value.trim(); if(q) searchStock();})}
     
     async function login(){
       try {
@@ -266,20 +289,167 @@
       });
     }
     function renderFines(){const f=state.settings.fines||defaultSettings().fines; $('fineSummary').innerHTML=`<span class="pill fine-badge fine-bg-0">1~3등 <strong>${KRW.format(f.top3)}원</strong></span><span class="pill fine-badge fine-bg-1">4~6등 <strong>${KRW.format(f.r4to6)}원</strong></span><span class="pill fine-badge fine-bg-2">7~9등 <strong>${KRW.format(f.r7to9)}원</strong></span><span class="pill fine-badge fine-bg-3">10~12등 <strong>${KRW.format(f.r10to12)}원</strong></span><span class="pill fine-badge fine-bg-4">13등 이하 <strong>${KRW.format(f.r13plus)}원</strong></span>`}
-    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?`현재 종목 선택이 가능합니다. (선택 마감일 ${state.settings.pickEndDate} 24:00 이후에는 등록/수정이 불가능합니다.)`:'현재는 종목 등록/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>$(id).disabled=!ok); const p=state.picks[state.user.key]||{}; $('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||''; $('memoCount').textContent=($('pickMemo').value||'').length}
+    function renderPick(){const ok=canPick(); $('pickWindowNotice').textContent=ok?`현재 종목 선택이 가능합니다. (선택 마감일 ${state.settings.pickEndDate} 24:00 이후에는 등록/수정이 불가능합니다.)`:'현재는 종목 등록/수정 기간이 아닙니다.'; ['stockKeyword','searchStockBtn','manualInputBtn','loadStockMasterBtn','includeEtfToggle','pickName','pickSymbol','pickMemo','savePickBtn'].forEach(id=>{if($(id)) $(id).disabled=!ok}); const p=state.picks[state.user.key]||{}; if(!state.editingPick){$('pickName').value=p.name||''; $('pickSymbol').value=p.symbol||''; $('pickMemo').value=p.memo||'';} $('memoCount').textContent=($('pickMemo').value||'').length}
     function renderProofs(){const enabled=proofEnabled(); if($('proofDisabledPanel')) $('proofDisabledPanel').classList.toggle('hide',enabled); ['proofFile','proofMemo','uploadProofBtn'].forEach(id=>{if($(id)) $(id).disabled=!enabled;}); const box=$('proofList'); box.innerHTML=''; if(!enabled){box.innerHTML='<div class="notice">인증 사진 등록 메뉴가 현재 비활성 상태입니다. 관리자 페이지에서 활성화하면 인증 탭이 열립니다.</div>'; if(!isAdmin()) return;} const list=[]; Object.entries(state.proofs||{}).forEach(([mk,items])=>Object.entries(items||{}).forEach(([id,it])=>list.push({memberKey:mk,id,...it}))); list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); if(!list.length){box.innerHTML='<p>아직 인증 이미지가 없습니다.</p>';return} list.forEach(it=>{const m=state.members[it.memberKey]||{}, p=state.picks[it.memberKey]||{}, src=it.dataUrl||it.url||'', div=document.createElement('div'); div.className='proof-card'; div.innerHTML=`<a href="${esc(src)}" target="_blank"><img src="${esc(src)}" alt="인증 이미지"></a><div><b>${esc(m.name||it.memberName||'-')}</b><div class="small muted">${esc(p.name||'-')} ${esc(p.symbol||'')}</div><div class="reason">선정 사유: ${esc(p.memo||'-')}</div><div class="small muted">인증 설명: ${esc(it.memo||'-')}</div><div class="small muted">${fmtDt(it.createdAt)} · ${esc(it.storageMode||'DB image')}</div></div>${isAdmin()||it.memberKey===state.user.key?`<button class="danger small" data-del="${esc(it.memberKey)}|${esc(it.id)}">삭제</button>`:''}`; box.appendChild(div)}); box.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('삭제할까요?'))return; const [mk,id]=b.dataset.del.split('|'); await remove(ref(db,`${paths.proofs}/${mk}/${id}`))})}
-    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('adminMemo').value=s.memo||''; if($('proofEnabled')) $('proofEnabled').checked=!!s.proofEnabled; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
-    async function searchStock(){const q=$('stockKeyword').value.trim(); if(!q)return alert('검색어를 입력하세요.'); const box=$('searchResults'); box.innerHTML='<p>검색 중...</p>'; let results=localSearch(q); results=results.map(x=>({name:x.name||x.stockName||x.korName||'', code:String(x.code||x.symbol||'').replace('.KS','').trim(), market:x.market||x.marketName||''})).filter(x=>/^\d{6}$/.test(x.code)); box.innerHTML=''; if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 6자리 종목코드를 직접 입력하세요.</div>';return} results.slice(0,100).forEach(it=>{const d=document.createElement('div'); d.className='result-item'; d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted">${esc(it.code)} · ${esc(it.market||'KOSPI/KOSDAQ')}</div></div><button>선택</button>`; d.querySelector('button').onclick=()=>{$('pickName').value=it.name;$('pickSymbol').value=normalizeSymbol(it.code)}; box.appendChild(d)})}
-    function localSearch(q){const s=norm(q); return STOCKS.filter(x=>norm(x.name).includes(s)||x.code.includes(s)||norm(x.symbol).includes(s))}
-    
+    function renderAdmin(){if(!isAdmin())return; const s=state.settings,f=s.fines||defaultSettings().fines; $('pickEndDate').value=s.pickEndDate||''; $('tradeStartDate').value=s.tradeStartDate||''; $('tradeEndDate').value=s.tradeEndDate||''; $('marketOpenTime').value=s.marketOpenTime||'09:00'; $('marketCloseTime').value=s.marketCloseTime||'15:30'; $('adminMemo').value=s.memo||''; if($('proofEnabled')) $('proofEnabled').checked=!!s.proofEnabled; $('fineTop3').value=f.top3; $('fine4to6').value=f.r4to6; $('fine7to9').value=f.r7to9; $('fine10to12').value=f.r10to12; $('fine13plus').value=f.r13plus; if($('memberCount')) $('memberCount').textContent=`현재 등록 회원 ${Object.keys(state.members||{}).length}명 · 이름/기관 입력 후 회원 추가 버튼을 누르면 바로 추가됩니다.`; const box=$('memberAdminList'); box.innerHTML=''; Object.entries(state.members).sort((a,b)=>(a[1].name||'').localeCompare(b[1].name||'ko')).forEach(([k,m])=>{const d=document.createElement('div'); d.className='proof-card'; d.innerHTML=`<div style="width:64px;height:64px;border-radius:14px;background:#1f2937;display:grid;place-items:center;font-size:25px">👤</div><div><b>${esc(m.name)}</b><div class="small muted">${esc(m.org||'-')} · ${m.role==='admin'?'관리자':'회원'} · ${m.active===false?'비활성':'활성'}</div></div><button class="secondary small" data-member="${esc(k)}">${m.active===false?'활성화':'비활성'}</button>`; box.appendChild(d)}); box.querySelectorAll('[data-member]').forEach(b=>b.onclick=async()=>{const k=b.dataset.member,m=state.members[k]; await update(ref(db,`${paths.members}/${k}`),{active:m.active===false})})}
+    async function searchStock(){
+      const q=$('stockKeyword').value.trim();
+      const codeQuery=q.trim().toUpperCase().replace(/\.(KS|KQ)$/,'');
+      const onlyDigits=codeQuery.replace(/\D/g,'');
+      const box=$('searchResults');
+      if(!q){box.innerHTML='<div class="notice">검색어를 입력하세요. 예: LG, 삼성, HL, 204320, KODEX</div>';return;}
+      if(norm(q).length<2 && !/^[0-9A-Z]{2,6}$/.test(codeQuery)){box.innerHTML='<div class="notice">검색어는 최소 2글자 이상 입력하세요. 종목코드는 2자리 이상 입력해도 검색됩니다.</div>';return;}
+      box.innerHTML='<p>전체 종목 목록 확인 중...</p>';
+      await loadStockMaster(false).catch(e=>console.warn('전체 목록 로딩 실패, 내장 목록으로 검색합니다:', e));
+      let results=localSearch(q).map(x=>normalizeMasterItem(x)).filter(x=>/^[0-9A-Z]{6}$/.test(x.code));
+      if(/^[0-9A-Z]{6}$/.test(codeQuery) && !results.some(x=>x.code===codeQuery)) results.unshift({name:`종목코드 ${codeQuery}`,code:codeQuery,symbol:normalizeSymbol(codeQuery),market:'직접입력',type:'STOCK',source:'manual'});
+      const seen=new Set(); results=results.filter(x=>{if(seen.has(x.type+'_'+x.code))return false; seen.add(x.type+'_'+x.code); return true;});
+      state.stockSearchResults=results; state.stockSearchVisible=5; renderStockSearchResults();
+    }
+    function renderStockSearchResults(){
+      const box=$('searchResults'), results=state.stockSearchResults||[]; box.innerHTML='';
+      if(!results.length){box.innerHTML='<div class="notice">검색 결과가 없습니다. 전체 목록 로딩 상태를 확인한 뒤 종목명 2글자 이상 또는 6자리 종목코드로 검색하세요.</div>';return;}
+      const shown=results.slice(0,state.stockSearchVisible||5);
+      const meta=state.stockMasterMeta||{};
+      box.insertAdjacentHTML('beforeend',`<div class="info small">검색 결과 총 ${results.length}개 · ${shown.length}개 표시 / 현재 목록: KOSPI ${meta.kospi||0}개, KOSDAQ ${meta.kosdaq||0}개${$('includeEtfToggle')?.checked?`, ETF ${meta.etf||0}개`:''}</div>`);
+      shown.forEach(it=>{
+        const badgeClass=it.type==='ETF'?'badge-etf':(it.market==='KOSDAQ'?'badge-kosdaq':'badge-kospi');
+        const badgeText=it.type==='ETF'?'ETF':(it.market||'STOCK');
+        const d=document.createElement('div');
+        d.className='result-item';
+        d.innerHTML=`<div><b>${esc(it.name)}</b><div class="small muted"><span class="stock-badge ${badgeClass}">${esc(badgeText)}</span>${esc(it.code)} · ${esc(it.source||'전체 목록')}</div></div><button>선택</button>`;
+        d.querySelector('button').onclick=()=>{state.editingPick=true; state.selectedStockItem=it; $('pickName').value=it.name; $('pickSymbol').value=normalizeSymbol(it.code);};
+        box.appendChild(d)
+      });
+      if(results.length>shown.length){const b=document.createElement('button'); b.className='secondary'; b.textContent=`더보기 (${Math.min(5,results.length-shown.length)}개 더 보기)`; b.onclick=()=>{state.stockSearchVisible=(state.stockSearchVisible||5)+5; renderStockSearchResults();}; box.appendChild(b);}
+    }
+    function getUniverse(){return state.stockMaster&&state.stockMaster.length?state.stockMaster:STOCKS.map(normalizeMasterItem)}
+    function localSearch(q){
+      const raw=String(q||'').trim(); const s=norm(raw); const codeQuery=raw.toUpperCase().replace(/\.(KS|KQ)$/,'');
+      const includeEtf=!!($('includeEtfToggle')&&$('includeEtfToggle').checked);
+      return getUniverse().filter(x=>includeEtf||x.type!=='ETF').map((x,idx)=>{
+        x=normalizeMasterItem(x); const name=norm(x.name), code=String(x.code).toUpperCase(), symbol=norm(x.symbol), keywords=norm(x.keywords||x.aliases||''); let score=999;
+        if(codeQuery&&code===codeQuery)score=0; else if(codeQuery&&/^[0-9A-Z]{2,6}$/.test(codeQuery)&&code.startsWith(codeQuery))score=1; else if(name===s||keywords===s)score=2; else if(name.startsWith(s)||keywords.startsWith(s))score=3; else if(name.includes(s)||keywords.includes(s))score=4; else if(symbol.includes(s))score=5;
+        return {...x,score,idx};
+      }).filter(x=>x.score<999).sort((a,b)=>a.score-b.score||a.idx-b.idx)
+    }
+
+    async function loadStockMaster(force=false){
+      if(state.stockMasterLoading && !force) return state.stockMasterLoading;
+      if(state.stockMasterBase.length && !force){composeStockMaster(); renderStockMasterStatus(); return state.stockMaster;}
+      const task=(async()=>{
+        renderStockMasterStatus('loading');
+        const errors=[]; let base=[]; let kospi=[], kosdaq=[];
+        try{ kospi=await fetchNaverMarketStocks('KOSPI'); }catch(e){errors.push('Naver KOSPI '+e.message);}
+        try{ kosdaq=await fetchNaverMarketStocks('KOSDAQ'); }catch(e){errors.push('Naver KOSDAQ '+e.message);}
+        base=[...kospi,...kosdaq];
+        if(base.length<1000){
+          try{ const k1=await fetchKindMarket('stockMkt','KOSPI'); const k2=await fetchKindMarket('kosdaqMkt','KOSDAQ'); if(k1.length+k2.length>base.length) base=[...k1,...k2]; }
+          catch(e){errors.push('KRX KIND '+e.message);}
+        }
+        if(base.length<1000){
+          base=STOCKS.map(normalizeMasterItem);
+          errors.push('온라인 전체 목록 실패: 내장 보조 목록 사용');
+        }
+        state.stockMasterBase=dedupeMaster(base.map(x=>({...normalizeMasterItem(x), type:'STOCK'})));
+        if($('includeEtfToggle')?.checked || force){
+          try{ state.etfMaster=await fetchNaverEtfs(); }catch(e){errors.push('ETF '+e.message); state.etfMaster=POPULAR_ETFS.map(normalizeMasterItem);}
+        }
+        composeStockMaster();
+        state.stockMasterMeta={...countMaster(state.stockMaster),source:base.length>=1000?'Naver/KRX 전체 목록':'내장 보조 목록',loadedAt:Date.now(),errors};
+        renderStockMasterStatus();
+        runStockSearchSelfTest();
+        return state.stockMaster;
+      })();
+      state.stockMasterLoading=task;
+      try{return await task;} finally{state.stockMasterLoading=null;}
+    }
+    function composeStockMaster(){
+      const includeEtf=!!($('includeEtfToggle')&&$('includeEtfToggle').checked);
+      state.stockMaster=dedupeMaster([...(state.stockMasterBase||[]), ...(includeEtf?(state.etfMaster||[]):[])]);
+      state.stockMasterMeta={...(state.stockMasterMeta||{}), ...countMaster(state.stockMaster), loadedAt:state.stockMasterMeta?.loadedAt||Date.now()};
+    }
+    function renderStockMasterStatus(mode){
+      const el=$('stockMasterStatus'); if(!el)return; const m=state.stockMasterMeta||{};
+      if(mode==='loading'){el.textContent='KOSPI/KOSDAQ 전체 종목 목록을 불러오는 중입니다. 최초 1회 5~15초 걸릴 수 있습니다.';return;}
+      const loaded=m.loadedAt?fmtDt(m.loadedAt):'-';
+      const err=(m.errors&&m.errors.length)?` · 일부 실패: ${m.errors[0]}`:'';
+      el.textContent=`목록 ${m.total||0}개 로딩됨 · KOSPI ${m.kospi||0}개 · KOSDAQ ${m.kosdaq||0}개${$('includeEtfToggle')?.checked?` · ETF ${m.etf||0}개`:''} · ${m.source||'내장 목록'} · ${loaded}${err}`;
+    }
+    function countMaster(list){
+      const m={kospi:0,kosdaq:0,etf:0,total:(list||[]).length};
+      (list||[]).forEach(x=>{if(x.type==='ETF')m.etf++; else if(x.market==='KOSDAQ')m.kosdaq++; else if(x.market==='KOSPI')m.kospi++;});
+      return m;
+    }
+    function normalizeMasterItem(x){
+      const code=String(x.code||x.itemCode||x.itemcode||x.symbol||'').replace(/\.(KS|KQ)$/,'').trim().toUpperCase();
+      const market=String(x.market||x.marketName||x.category||'').toUpperCase().includes('KOSDAQ')?'KOSDAQ':(String(x.market||'').toUpperCase().includes('ETF')?'ETF':'KOSPI');
+      const type=(x.type==='ETF'||market==='ETF')?'ETF':'STOCK';
+      return {code,name:String(x.name||x.stockName||x.itemname||x.itemName||'').trim(),market:type==='ETF'?'ETF':market,type,symbol:`${code}.KS`,source:x.source||'',keywords:x.keywords||x.aliases||''};
+    }
+    function dedupeMaster(list){const seen=new Set(); return (list||[]).map(normalizeMasterItem).filter(x=>x.code&&x.name&&/^[0-9A-Z]{6}$/.test(x.code)).filter(x=>{const k=x.type+'_'+x.code;if(seen.has(k))return false;seen.add(k);return true;});}
+    async function fetchRemoteText(url){
+      const encoded=encodeURIComponent(url);
+      const candidates=[url,`https://api.allorigins.win/raw?url=${encoded}`,`https://api.allorigins.win/get?url=${encoded}`,`https://api.codetabs.com/v1/proxy?quest=${encoded}`];
+      let last;
+      for(const u of candidates){
+        try{const res=await fetch(u,{cache:'no-store'}); if(!res.ok)throw new Error(`HTTP ${res.status}`); if(u.includes('allorigins.win/get')){const j=await res.json(); if(!j.contents)throw new Error('빈 JSON proxy 응답'); return j.contents;} const buf=await res.arrayBuffer(); let text=''; try{text=new TextDecoder('utf-8').decode(buf);}catch(_){text='';} if(!text||text.includes('�')){try{text=new TextDecoder('euc-kr').decode(buf);}catch(_){}} if(text) return text;}catch(e){last=e;}
+      }
+      throw last||new Error('원격 데이터를 가져오지 못했습니다.');
+    }
+    async function fetchRemoteJson(url){const text=await fetchRemoteText(url); return JSON.parse(text.replace(/^\uFEFF/,''));}
+    async function fetchNaverMarketStocks(market){
+      const out=[]; const pageSize=200;
+      for(let page=1;page<=30;page++){
+        const url=`https://m.stock.naver.com/api/stocks/marketValue/${market}?page=${page}&pageSize=${pageSize}`;
+        const j=await fetchRemoteJson(url);
+        const arr=Array.isArray(j.stocks)?j.stocks:(Array.isArray(j.result?.stocks)?j.result.stocks:(Array.isArray(j.data?.stocks)?j.data.stocks:(Array.isArray(j.result)?j.result:(Array.isArray(j.items)?j.items:(Array.isArray(j.list)?j.list:(Array.isArray(j.content)?j.content:[]))))));
+        if(!arr.length)break;
+        arr.forEach(it=>out.push({code:String(it.itemCode||it.stockCode||it.code||'').trim(),name:String(it.stockName||it.name||it.itemName||'').trim(),market,type:'STOCK',source:'Naver marketValue'}));
+        if(arr.length<pageSize)break;
+      }
+      return dedupeMaster(out);
+    }
+    async function fetchKindMarket(marketType, market){
+      const url=`https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13&marketType=${marketType}`;
+      const html=await fetchRemoteText(url);
+      return parseKindCorpList(html, market);
+    }
+    function parseKindCorpList(html, market){
+      const doc=new DOMParser().parseFromString(html,'text/html'); const out=[];
+      doc.querySelectorAll('tr').forEach(tr=>{const cells=[...tr.children].map(td=>td.textContent.trim().replace(/\s+/g,' ')); const codeIdx=cells.findIndex(c=>/^[0-9A-Z]{6}$/.test(c)); if(codeIdx<0)return; let code=cells[codeIdx].replace(/[^0-9A-Z]/gi,'').toUpperCase(); if(/^\d{1,5}$/.test(code)) code=code.padStart(6,'0'); const name=(cells[0]||cells[codeIdx-1]||'').trim(); if(!name||name==='회사명'||name===code)return; out.push({code,name,market,type:'STOCK',source:'KRX KIND'});});
+      return dedupeMaster(out);
+    }
+    async function fetchNaverEtfs(){
+      const j=await fetchRemoteJson('https://finance.naver.com/api/sise/etfItemList.nhn');
+      const arr=j?.result?.etfItemList||[];
+      return dedupeMaster(arr.map(it=>({code:String(it.itemcode||'').trim(),name:String(it.itemname||'').trim(),market:'ETF',type:'ETF',source:'Naver ETF'})));
+    }
+    function findStockByCode(code){code=String(code||'').replace(/\.(KS|KQ)$/,'').toUpperCase(); return getUniverse().map(normalizeMasterItem).find(x=>x.code===code);}
+    function runStockSearchSelfTest(){
+      const tests=['LG','HL','HL만도','204320','삼성','005930'];
+      const report=tests.map(q=>`${q}:${localSearch(q).length}`).join(', ');
+      console.info('[MoneyPlus] 종목검색 자체점검', {counts:state.stockMasterMeta, tests:report});
+    }
+    async function showStockSearchDiagnostics(){
+      const box=$('searchResults');
+      box.innerHTML='<p>전체 종목 목록을 불러오고 검색 테스트를 진행 중입니다...</p>';
+      await loadStockMaster(true);
+      const includeEtf=!!($('includeEtfToggle')&&$('includeEtfToggle').checked);
+      const terms=['LG','HL','HL만도','204320','삼성','005930','KODEX'];
+      const lines=terms.map(q=>{const r=localSearch(q); return `${q}: ${r.length}개${r.length?` · 예: ${r.slice(0,5).map(x=>x.name).join(', ')}`:''}`;});
+      const m=state.stockMasterMeta||{};
+      box.innerHTML=`<div class="info"><b>검색 테스트 결과</b><br>목록 수: 전체 ${m.total||0}개 · KOSPI ${m.kospi||0}개 · KOSDAQ ${m.kosdaq||0}개${includeEtf?` · ETF ${m.etf||0}개`:''}<br>출처: ${esc(m.source||'')}<br>${lines.map(esc).join('<br>')}<br><br><span class="small muted">목록 수가 1,000개 미만이면 네이버/KRX 전체 목록 로딩이 실패한 상태입니다. 이 경우 잠시 뒤 전체 종목 새로고침을 다시 눌러주세요.</span></div>`;
+    }
+
     async function savePick(){
       if(!canPick())return alert('현재는 종목 선택 및 수정이 불가능합니다.');
       const name=$('pickName').value.trim(), sym=normalizeSymbol($('pickSymbol').value), memo=$('pickMemo').value.trim();
       if(memo.length>1000)return alert('선정 사유는 1,000자 이내로 입력하세요.');
-      if(!name||!/^[0-9]{6}\.KS$/.test(sym))return alert('코스피/코스닥 국내 주식만 등록 가능합니다. 예: 066570 또는 066570.KS');
+      if(!name||!/^[0-9A-Z]{6}\.KS$/.test(sym))return alert('국내 상장 주식/ETF만 등록 가능합니다. 예: 066570, 204320, 02826K 또는 066570.KS');
 
       const now = Date.now();
-      const pickObj = {memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:'KRX_STOCK',memo,selectedAt:now,updatedAt:now};
+      const meta=findStockByCode(codeFromSymbol(sym))||state.selectedStockItem||{}; const pickObj = {memberName:state.user.name,name,symbol:sym,code:codeFromSymbol(sym),market:meta.type==='ETF'?'KRX_ETF':'KRX_STOCK',assetType:meta.type||'STOCK',displayMarket:meta.market||'',memo,selectedAt:now,updatedAt:now};
       const btn = $('savePickBtn');
       btn.disabled = true;
       btn.textContent = '저장 및 가격 연동 중...';
@@ -296,12 +466,67 @@
       } finally {
         btn.disabled = false;
         btn.textContent = '내 종목 저장';
+        state.editingPick=false;
         showTab('ranking');
       }
     }
 
+    async function ensureRequiredMembers(){
+      if(!isAdmin()) return;
+      try{
+        for(const m of REQUIRED_MEMBERS){
+          const key=safeKey(m.name);
+          const snap=await get(ref(db,`${paths.members}/${key}`));
+          if(snap.exists()){
+            await update(ref(db,`${paths.members}/${key}`),{name:m.name,org:m.org,role:'member',active:true,updatedAt:Date.now()});
+            state.members[key]={...(state.members[key]||{}),name:m.name,org:m.org,role:'member',active:true,updatedAt:Date.now()};
+          } else {
+            const data={name:m.name,org:m.org,role:'member',pin:'0000',mustChangePin:true,active:true,createdAt:Date.now(),updatedAt:Date.now()};
+            await set(ref(db,`${paths.members}/${key}`),data);
+            state.members[key]=data;
+          }
+        }
+        renderAdmin();
+        alert('김진웅/최원욱 회원을 추가/보정했습니다. 초기 비밀번호는 0000입니다.');
+      }catch(e){
+        console.error(e);
+        alert('회원 보정에 실패했습니다. Firebase Realtime Database 쓰기 권한을 확인하세요: '+e.message);
+      }
+    }
+    async function addMember(){
+      if(!isAdmin()) return;
+      const name=$('newMemberName').value.trim();
+      const org=$('newMemberOrg').value.trim();
+      if(!name) return alert('회원 이름을 입력하세요.');
+      if(!org) return alert('기관명을 입력하세요.');
+      const key=safeKey(name);
+      const snap=await get(ref(db,`${paths.members}/${key}`));
+      if(snap.exists()){
+        if(!confirm(`${name} 회원이 이미 있습니다. 기관명을 수정하고 활성화할까요?`)) return;
+        await update(ref(db,`${paths.members}/${key}`),{name,org,role:'member',active:true,updatedAt:Date.now()});
+      } else {
+        await set(ref(db,`${paths.members}/${key}`),{name,org,role:'member',pin:'0000',mustChangePin:true,active:true,createdAt:Date.now(),updatedAt:Date.now()});
+      }
+      $('newMemberName').value='';
+      $('newMemberOrg').value='';
+      state.members[key]={...(state.members[key]||{}),name,org,role:'member',active:true,pin:(state.members[key]&&state.members[key].pin)||'0000',mustChangePin:(state.members[key]&&state.members[key].mustChangePin)!==false};
+      renderAll();
+      alert(`${name} 회원을 추가했습니다. 초기 비밀번호는 0000입니다.`);
+    }
     async function saveSettings(){if(!isAdmin())return; await update(ref(db,paths.settings),{pickEndDate:$('pickEndDate').value,tradeStartDate:$('tradeStartDate').value,tradeEndDate:$('tradeEndDate').value,marketOpenTime:$('marketOpenTime').value||'09:00',marketCloseTime:$('marketCloseTime').value||'15:30',memo:$('adminMemo').value.trim(),proofEnabled:$('proofEnabled')?$('proofEnabled').checked:false,fines:{top3:+$('fineTop3').value||0,r4to6:+$('fine4to6').value||10000,r7to9:+$('fine7to9').value||20000,r10to12:+$('fine10to12').value||30000,r13plus:+$('fine13plus').value||40000},updatedAt:Date.now()}); alert('저장되었습니다.')}
     async function setLocked(v){if(!isAdmin())return; await update(ref(db,paths.settings),{locked:v,lockedAt:v?Date.now():null}); alert(v?'고정했습니다.':'고정을 해제했습니다.')} async function resetPins(){if(!isAdmin())return;if(!confirm('전체 비밀번호를 0000으로 초기화할까요?'))return; const u={}; Object.keys(state.members).forEach(k=>{u[`${paths.members}/${k}/pin`]='0000';u[`${paths.members}/${k}/mustChangePin`]=true}); await update(ref(db),u); alert('초기화했습니다.')}
+
+    async function resetPickData(){
+      if(!isAdmin())return;
+      const msg='전체 회원의 선택 종목 데이터와 가격/랭킹 계산 데이터를 모두 초기화할까요?\n\n삭제 대상: 선택 종목, 선정 사유, 시초가/현재가/수익률 가격 데이터\n유지 대상: 회원, 비밀번호, 관리자 설정, 인증 사진';
+      if(!confirm(msg))return;
+      if(!confirm('정말 초기화합니다. 이 작업은 되돌릴 수 없습니다.'))return;
+      await remove(ref(db,paths.picks));
+      await remove(ref(db,paths.prices));
+      await update(ref(db,paths.settings),{locked:false,lockedAt:null,lastFetchedAt:null,pickResetAt:Date.now(),pickResetBy:state.user.name});
+      alert('선택 종목과 가격/랭킹 데이터가 초기화되었습니다.');
+      showTab('admin');
+    }
     
     // silent 모드가 켜져있으면 버튼 상태나 알람을 띄우지 않고 백그라운드 갱신
     async function refreshAllPrices(silent = false) {
